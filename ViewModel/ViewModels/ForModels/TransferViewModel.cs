@@ -11,9 +11,11 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -31,8 +33,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// </summary>
         IAccountViewModel? ToAccount { get; set; }
 
-        IRxRelayCommand NonInsertedConvertToTransaction { get; }
-        IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
+        ICommand NonInsertedConvertToTransaction { get; }
+        ICommand NonInsertedConvertToParentTransaction { get; }
     }
 
     /// <summary>
@@ -67,8 +69,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             set => _transfer.ToAccount = _accountViewModelService.GetModel(value);
         }
 
-        public IRxRelayCommand NonInsertedConvertToTransaction { get; }
-        public IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
+        public ICommand NonInsertedConvertToTransaction { get; }
+        public ICommand NonInsertedConvertToParentTransaction { get; }
 
         /// <summary>
         /// The amount of money, which is transfered.
@@ -171,7 +173,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             transfer
                 .ObservePropertyChanged(nameof(transfer.Sum))
                 .Where(_ => transfer.IsInserted)
-                .Subscribe(sum =>
+                .Subscribe(_ =>
                 {
                     FromAccount?.RefreshBalance();
                     ToAccount?.RefreshBalance();
@@ -179,17 +181,21 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             SumEdit = createSumEdit(Sum);
 
+            NonInsertedConvertToTransaction = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => Owner.ReplaceNewTrans(
+                        this,
+                        transTransformingManager.NotInsertedToTransactionViewModel(this)));
 
-            NonInsertedConvertToTransaction = new RxRelayCommand(
+            NonInsertedConvertToParentTransaction = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
                     () => Owner.ReplaceNewTrans(
                         this,
-                        transTransformingManager.NotInsertedToTransactionViewModel(this)))
-                .AddTo(CompositeDisposable);
-            NonInsertedConvertToParentTransaction = new RxRelayCommand(
-                    () => Owner.ReplaceNewTrans(
-                        this,
-                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)))
-                .AddTo(CompositeDisposable);
+                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)));
         }
 
         public override ISumEditViewModel SumEdit { get; }

@@ -6,14 +6,15 @@ using System.Windows.Input;
 using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -48,21 +49,25 @@ namespace BFF.ViewModel.ViewModels
 
             Brush = new ReactiveProperty<Color>(Color.BlueViolet);
 
-            AddCommand = new AsyncRxRelayCommand(async () =>
-            {
-                if (!ValidateName()) return;
-                IFlag newFlag = createNewModels.CreateFlag();
-                newFlag.Color = Brush.Value;
-                newFlag.Name = Text?.Trim() ?? String.Empty;
-                await newFlag.InsertAsync();
-                if (CurrentOwner is not null)
-                    CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
-                CurrentOwner = null;
-                _text = "";
-                OnPropertyChanged(nameof(Text));
-                ClearErrors(nameof(Text));
-                OnErrorChanged(nameof(Text));
-            }).AddTo(_compositeDisposable);
+            AddCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        if (!ValidateName()) return;
+                        IFlag newFlag = createNewModels.CreateFlag();
+                        newFlag.Color = Brush.Value;
+                        newFlag.Name = Text?.Trim() ?? String.Empty;
+                        await newFlag.InsertAsync();
+                        if (CurrentOwner is not null)
+                            CurrentOwner.Flag = _flagViewModelService.GetViewModel(newFlag);
+                        CurrentOwner = null;
+                        _text = "";
+                        OnPropertyChanged(nameof(Text));
+                        ClearErrors(nameof(Text));
+                        OnErrorChanged(nameof(Text));
+                    });
         }
 
         /// <summary>

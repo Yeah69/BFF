@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using BFF.Model.Repositories;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -60,23 +62,28 @@ namespace BFF.ViewModel.ViewModels
 
             StartingDate = new ReactiveProperty<DateTime>(DateTime.Today, ReactivePropertyMode.None).AddTo(CompositeDisposable);
 
-            AddCommand = new AsyncRxRelayCommand(async () =>
-            {
-                if (!ValidateName()) return;
-                var newAccount = createNewModels.CreateAccount();
-                newAccount.Name = Name?.Trim() ?? String.Empty;
-                newAccount.StartingBalance = StartingBalance.Value;
-                newAccount.StartingDate = StartingDate.Value;
-                await newAccount.InsertAsync();
-                var newAccountViewModel = viewModelService.GetViewModel(newAccount) ?? throw new NullReferenceException("Shouldn't be null");
-                newAccountViewModel.IsOpen = true;
-                summaryAccountViewModel.RefreshStartingBalance();
-                summaryAccountViewModel.RefreshBalance();
-                _name = "";
-                OnPropertyChanged(nameof(Name));
-                ClearErrors(nameof(Name));
-                OnErrorChanged(nameof(Name));
-            }).AddTo(CompositeDisposable);
+            AddCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () =>
+                    {
+                        if (!ValidateName()) return;
+                        var newAccount = createNewModels.CreateAccount();
+                        newAccount.Name = Name?.Trim() ?? String.Empty;
+                        newAccount.StartingBalance = StartingBalance.Value;
+                        newAccount.StartingDate = StartingDate.Value;
+                        await newAccount.InsertAsync();
+                        var newAccountViewModel = viewModelService.GetViewModel(newAccount) ??
+                                                  throw new NullReferenceException("Shouldn't be null");
+                        newAccountViewModel.IsOpen = true;
+                        summaryAccountViewModel.RefreshStartingBalance();
+                        summaryAccountViewModel.RefreshBalance();
+                        _name = "";
+                        OnPropertyChanged(nameof(Name));
+                        ClearErrors(nameof(Name));
+                        OnErrorChanged(nameof(Name));
+                    });
 
             cultureManager.RefreshSignal.Subscribe(message =>
             {

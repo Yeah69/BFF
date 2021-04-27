@@ -1,4 +1,3 @@
-using BFF.Core.IoC;
 using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Windows;
 using System;
@@ -35,7 +34,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         Task<T> Result { get; }
     }
 
-    public abstract class MainWindowDialogContentViewModel<T> : ViewModelBase, IMainWindowDialogContentViewModel<T>, IOncePerApplication
+    public abstract class MainWindowDialogContentViewModel<T> : ViewModelBase, IMainWindowDialogContentViewModel<T>
     {
         protected readonly TaskCompletionSource<T> TaskCompletionSource = new();
         protected readonly CompositeDisposable CompositeDisposable = new();

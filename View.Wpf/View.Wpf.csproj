@@ -25,18 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.0\runtimes\win-arm\native\e_sqlite3.dll">
-        <Link>runtimes\win-arm\native\e_sqlite3.dll</Link>
-      </Content>
-      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.0\runtimes\win-x64\native\e_sqlite3.dll">
-        <Link>runtimes\win-x64\native\e_sqlite3.dll</Link>
-      </Content>
-      <Content Include="..\..\..\..\.nuget\packages\sqlitepclraw.lib.e_sqlite3\2.0.0\runtimes\win-x86\native\e_sqlite3.dll">
-        <Link>runtimes\win-x86\native\e_sqlite3.dll</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <Resource Include="FodyWeavers.xml" />
       <Resource Include="logo_quadratic.ico" />
       <Resource Include="Yeah69Logo.ico" />

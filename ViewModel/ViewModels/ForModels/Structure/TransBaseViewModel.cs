@@ -3,11 +3,13 @@ using System.Reactive.Linq;
 using BFF.Core.Helper;
 using BFF.Model.Helper;
 using BFF.Model.Models.Structure;
-using BFF.ViewModel.Helper;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -17,7 +19,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
         IFlagViewModel? Flag { get; set; }
 
-        IRxRelayCommand RemoveFlag { get; }
+        ICommand RemoveFlag { get; }
 
         string CheckNumber { get; set; }
 
@@ -52,7 +54,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             set => _transBase.Flag = _flagViewModelService.GetModel(value);
         }
 
-        public IRxRelayCommand RemoveFlag { get; }
+        public ICommand RemoveFlag { get; }
 
         public string CheckNumber
         {
@@ -110,8 +112,12 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                     OnPropertyChanged(nameof(Flag));
                 })
                 .AddTo(CompositeDisposable);
-
-            RemoveFlag = new RxRelayCommand(() => Flag = null).AddTo(CompositeDisposable);
+            
+            RemoveFlag = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => Flag = null);
 
             transBase
                 .ObservePropertyChanged(nameof(transBase.CheckNumber))

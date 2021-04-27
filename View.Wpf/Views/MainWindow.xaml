@@ -7,7 +7,6 @@
                       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:view="clr-namespace:BFF.View"
                       xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
                       xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
                       xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
@@ -255,18 +254,18 @@
                              Position="Left">
                 <StackPanel Margin="10"
                             Orientation="Vertical">
-                    <Button Margin="10,5,10,5"
+                    <Button Margin="10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding NewBudgetPlanCommand}"
                             Content="{lex:Loc MainWindow_File_New}" />
-                    <Button Margin="10,5,10,5"
+                    <Button Margin="10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding OpenBudgetPlanCommand}"
                             Content="{lex:Loc MainWindow_File_Open}" />
-                    <Button Margin="10,5,10,5"
+                    <Button Margin="10,5"
                             Click="Open_ImportDialog"
                             Content="{lex:Loc MainWindow_File_Import}" />
-                    <Button Margin="10,5,10,5"
+                    <Button Margin="10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding CloseBudgetPlanCommand}"
                             Content="{lex:Loc MainWindow_File_Close}" />

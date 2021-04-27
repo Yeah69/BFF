@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -122,27 +124,41 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     await budgetEntry.GetAssociatedTransIncludingSubCategoriesAsync(), null))
                 .CompositeDisposalWith(CompositeDisposable);
 
-            BudgetLastMonth = new RxRelayCommand(
-                    async () => await SetBudgetToAverageBudgetOfLastMonths(1).ConfigureAwait(false))
-                .CompositeDisposalWith(CompositeDisposable);
+            BudgetLastMonth = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () => await SetBudgetToAverageBudgetOfLastMonths(1).ConfigureAwait(false));
 
-            OutflowsLastMonth = new RxRelayCommand(
-                    async () => await SetBudgetToAverageOutflowOfLastMonths(1).ConfigureAwait(false))
-                .CompositeDisposalWith(CompositeDisposable);
+            OutflowsLastMonth = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () => await SetBudgetToAverageOutflowOfLastMonths(1).ConfigureAwait(false));
 
-            AvgOutflowsLastThreeMonths = new RxRelayCommand(
-                    async () => await SetBudgetToAverageOutflowOfLastMonths(3).ConfigureAwait(false))
-                .CompositeDisposalWith(CompositeDisposable);
+            AvgOutflowsLastThreeMonths = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () => await SetBudgetToAverageOutflowOfLastMonths(3).ConfigureAwait(false));
 
-            AvgOutflowsLastYear = new RxRelayCommand(
-                    async () => await SetBudgetToAverageOutflowOfLastMonths(12).ConfigureAwait(false))
-                .CompositeDisposalWith(CompositeDisposable);
+            AvgOutflowsLastYear = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () => await SetBudgetToAverageOutflowOfLastMonths(12).ConfigureAwait(false));
 
-            BalanceToZero = new RxRelayCommand(() => Budget -= Balance)
-                .CompositeDisposalWith(CompositeDisposable);
+            BalanceToZero = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => Budget -= Balance);
 
-            Zero = new RxRelayCommand(() => Budget = 0)
-            .CompositeDisposalWith(CompositeDisposable);
+            Zero = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => Budget = 0);
         }
     }
 }

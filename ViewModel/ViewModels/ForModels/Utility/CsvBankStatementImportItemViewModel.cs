@@ -1,11 +1,14 @@
-﻿using System;
+﻿using BFF.ViewModel.Extensions;
+using System;
 using System.Linq;
 using System.Reactive.Disposables;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {
@@ -15,9 +18,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
         bool HasDate { get; }
 
-        IRxRelayCommand AdmitDate { get; }
+        ICommand AdmitDate { get; }
 
-        IRxRelayCommand DismissDate { get; }
+        ICommand DismissDate { get; }
 
         bool ShowLongDate { get; }
 
@@ -27,9 +30,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
         bool CreatePayeeIfNotExisting { get; }
 
-        IRxRelayCommand AdmitPayee { get; }
+        ICommand AdmitPayee { get; }
 
-        IRxRelayCommand DismissPayee { get; }
+        ICommand DismissPayee { get; }
 
         bool PayeeExists { get; }
 
@@ -39,9 +42,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
         bool HasMemo { get; }
 
-        IRxRelayCommand AdmitMemo { get; }
+        ICommand AdmitMemo { get; }
 
-        IRxRelayCommand DismissMemo { get; }
+        ICommand DismissMemo { get; }
 
         IReactiveProperty<long> Sum { get; }
 
@@ -49,9 +52,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
         IReactiveProperty<bool> HasSum { get; }
 
-        IRxRelayCommand AdmitSum { get; }
+        ICommand AdmitSum { get; }
 
-        IRxRelayCommand DismissSum { get; }
+        ICommand DismissSum { get; }
     }
 
     public class CsvBankStatementImportItemViewModel : ViewModelBase, ICsvBankStatementImportItemViewModel
@@ -82,12 +85,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
             SumEdit = createSumEdit(Sum).CompositeDisposalWith(_compositeDisposable);
 
-            AdmitDate = new RxRelayCommand(() => HasDate = true)
-                .CompositeDisposalWith(_compositeDisposable);
-
-            AdmitPayee = new RxRelayCommand(() => HasPayee = true)
-                .CompositeDisposalWith(_compositeDisposable);
-
             this
                 .ObservePropertyChanged(nameof(Payee))
                 .Subscribe(_ => PayeeExists = payeeService.All?.Any(payee => payee.Name == Payee) ?? false)
@@ -97,23 +94,53 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
             ExistingPayees = payeeService.All;
 
-            AdmitMemo = new RxRelayCommand(() => HasMemo = true)
-                .CompositeDisposalWith(_compositeDisposable);
-
-            AdmitSum = new RxRelayCommand(() => HasSum.Value = true)
-                .CompositeDisposalWith(_compositeDisposable);
-
-            DismissDate = new RxRelayCommand(() => HasDate = false)
-                .CompositeDisposalWith(_compositeDisposable);
-
-            DismissPayee = new RxRelayCommand(() => HasPayee = false)
-                .CompositeDisposalWith(_compositeDisposable);
-
-            DismissMemo = new RxRelayCommand(() => HasMemo = false)
-                .CompositeDisposalWith(_compositeDisposable);
-
-            DismissSum = new RxRelayCommand(() => HasSum.Value = false)
-                .CompositeDisposalWith(_compositeDisposable);
+            AdmitDate = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasDate = true);
+            
+            AdmitPayee = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasPayee = true);
+            
+            AdmitMemo = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasMemo = true);
+            
+            AdmitSum = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasSum.Value = true);
+            
+            DismissDate = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasDate = false);
+            
+            DismissPayee = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasPayee = false);
+            
+            DismissMemo = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasMemo = false);
+            
+            DismissSum = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => HasSum.Value = false);
         }
 
         public DateTime Date { get; set; }
@@ -129,8 +156,8 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             }
         }
 
-        public IRxRelayCommand AdmitDate { get; }
-        public IRxRelayCommand DismissDate { get; }
+        public ICommand AdmitDate { get; }
+        public ICommand DismissDate { get; }
 
         public string? Payee
         {
@@ -155,8 +182,8 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         }
 
         public bool CreatePayeeIfNotExisting { get; }
-        public IRxRelayCommand AdmitPayee { get; }
-        public IRxRelayCommand DismissPayee { get; }
+        public ICommand AdmitPayee { get; }
+        public ICommand DismissPayee { get; }
 
         public bool PayeeExists
         {
@@ -184,14 +211,14 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             }
         }
 
-        public IRxRelayCommand AdmitMemo { get; }
-        public IRxRelayCommand DismissMemo { get; }
+        public ICommand AdmitMemo { get; }
+        public ICommand DismissMemo { get; }
 
         public IReactiveProperty<long> Sum { get; set; }
         public ISumEditViewModel SumEdit { get; }
         public IReactiveProperty<bool> HasSum { get; }
-        public IRxRelayCommand AdmitSum { get; }
-        public IRxRelayCommand DismissSum { get; }
+        public ICommand AdmitSum { get; }
+        public ICommand DismissSum { get; }
 
         public bool ShowLongDate => _bffSettings.Culture_DefaultDateLong;
 

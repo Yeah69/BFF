@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using BFF.Model.ImportExport;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Windows;
@@ -96,18 +97,21 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 passwordProtectedFileAccessViewModelFactory,
                 createFileAccessConfiguration)
         {
-
-            BrowseCommand = new RxRelayCommand(() =>
-            {
-                var bffSaveFileDialog = bffSaveFileDialogFactory();
-                bffSaveFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleNew");
-                bffSaveFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
-                bffSaveFileDialog.DefaultExt = "*.realm";
-                if (bffSaveFileDialog.ShowDialog() == true)
-                {
-                    Path = bffSaveFileDialog.FileName;
-                }
-            });
+            BrowseCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
+                    {
+                        var bffSaveFileDialog = bffSaveFileDialogFactory();
+                        bffSaveFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleNew");
+                        bffSaveFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
+                        bffSaveFileDialog.DefaultExt = "*.realm";
+                        if (bffSaveFileDialog.ShowDialog() == true)
+                        {
+                            Path = bffSaveFileDialog.FileName;
+                        }
+                    });
         }
 
         public override ICommand BrowseCommand { get; }
@@ -129,18 +133,21 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 passwordProtectedFileAccessViewModelFactory, 
                 createFileAccessConfiguration)
         {
-
-            BrowseCommand = new RxRelayCommand(() =>
-            {
-                var bffOpenFileDialog = bffOpenFileDialogFactory();
-                bffOpenFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleOpen");
-                bffOpenFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
-                bffOpenFileDialog.DefaultExt = "*.realm";
-                if (bffOpenFileDialog.ShowDialog() == true)
-                {
-                    Path = bffOpenFileDialog.FileName;
-                }
-            });
+            BrowseCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable, 
+                    () =>
+                    {
+                        var bffOpenFileDialog = bffOpenFileDialogFactory();
+                        bffOpenFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleOpen");
+                        bffOpenFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
+                        bffOpenFileDialog.DefaultExt = "*.realm";
+                        if (bffOpenFileDialog.ShowDialog() == true)
+                        {
+                            Path = bffOpenFileDialog.FileName;
+                        }
+                    });
         }
 
         public override ICommand BrowseCommand { get; }

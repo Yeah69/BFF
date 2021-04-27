@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models.Structure;
 using BFF.ViewModel.Extensions;
-using BFF.ViewModel.Helper;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -20,7 +21,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         
         Task DeleteAsync();
 
-        IRxRelayCommand? DeleteCommand { get; }
+        ICommand? DeleteCommand { get; }
 
         bool IsInserted { get; }
     }
@@ -45,7 +46,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .Subscribe(_ => OnPropertyChanged(nameof(IsInserted)))
                 .AddTo(CompositeDisposable);
 
-            DeleteCommand = new AsyncRxRelayCommand(DeleteAsync).AddTo(CompositeDisposable);
+            DeleteCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(CompositeDisposable, DeleteAsync);
         }
         
         public virtual Task InsertAsync()
@@ -60,7 +63,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             return _dataModel.DeleteAsync();
         }
 
-        public IRxRelayCommand DeleteCommand { get; }
+        public ICommand DeleteCommand { get; }
         public bool IsInserted => _dataModel.IsInserted;
 
         public void Dispose() =>

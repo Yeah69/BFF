@@ -18,6 +18,7 @@ using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
 using MrMeeseeks.Windows;
 using MuVaViMo;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -26,9 +27,9 @@ namespace BFF.ViewModel.ViewModels
     {
         public long AvailableToBudgetInCurrentMonth { get; }
 
-        IRxRelayCommand IncreaseMonthStartIndex { get; }
+        ICommand IncreaseMonthStartIndex { get; }
 
-        IRxRelayCommand DecreaseMonthStartIndex { get; }
+        ICommand DecreaseMonthStartIndex { get; }
         
         bool ShowAggregates { get; set; }
         
@@ -104,16 +105,22 @@ namespace BFF.ViewModel.ViewModels
                 .AsyncIndexAccess(
                      (pageKey, pageIndex) => 
                          new BudgetMonthViewModelPlaceholder(DateTimeExtensions.FromMonthIndex(pageKey * 12 + pageIndex)));
-            
-            IncreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset), nameof(ColumnCount))
-                .Select(_ => MonthIndexOffset < LastMonthIndex - ColumnCount + 1)
-                .ToRxRelayCommand(() => MonthIndexOffset++)
-                .CompositeDisposalWith(_compositeDisposable);
-            
-            DecreaseMonthStartIndex = this.ObservePropertyChanged(nameof(MonthIndexOffset))
-                .Select(_ => MonthIndexOffset > 0)
-                .ToRxRelayCommand(() => MonthIndexOffset--)
-                .CompositeDisposalWith(_compositeDisposable);
+
+            IncreaseMonthStartIndex = RxCommand
+                .CallerDeterminedCanExecute(
+                    this.ObservePropertyChanged(nameof(MonthIndexOffset), nameof(ColumnCount))
+                        .Select(_ => MonthIndexOffset < LastMonthIndex - ColumnCount + 1))
+                .StandardCase(
+                    _compositeDisposable,
+                    () => MonthIndexOffset++);
+
+            DecreaseMonthStartIndex = RxCommand
+                .CallerDeterminedCanExecute(
+                    this.ObservePropertyChanged(nameof(MonthIndexOffset))
+                        .Select(_ => MonthIndexOffset > 0))
+                .StandardCase(
+                    _compositeDisposable,
+                    () => MonthIndexOffset--);
 
             budgetRefreshes
                 .ObserveHeadersRefreshes
@@ -224,9 +231,9 @@ namespace BFF.ViewModel.ViewModels
             private set => SetIfChangedAndRaise(ref _availableToBudgetInCurrentMonth, value); 
         }
 
-        public IRxRelayCommand IncreaseMonthStartIndex { get; }
+        public ICommand IncreaseMonthStartIndex { get; }
         
-        public IRxRelayCommand DecreaseMonthStartIndex { get; }
+        public ICommand DecreaseMonthStartIndex { get; }
 
         public bool ShowAggregates
         {

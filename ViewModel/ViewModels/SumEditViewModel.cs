@@ -2,10 +2,12 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BFF.Core.Helper;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Extensions;
-using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -17,7 +19,7 @@ namespace BFF.ViewModel.ViewModels
 
         IReactiveProperty<long> Sum { get; }
 
-        IRxRelayCommand ToggleSign { get; }
+        ICommand ToggleSign { get; }
     }
 
     internal class SumEditViewModel : ViewModelBase, ISumEditViewModel
@@ -39,8 +41,12 @@ namespace BFF.ViewModel.ViewModels
                     OnPropertyChanged(nameof(SumSign));
                 })
                 .AddTo(_compositeDisposable);
-            ToggleSign = new RxRelayCommand(() => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus)
-                .CompositeDisposalWith(_compositeDisposable);
+
+            ToggleSign = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
         }
 
         public Sign SumSign
@@ -67,7 +73,7 @@ namespace BFF.ViewModel.ViewModels
 
         public IReactiveProperty<long> Sum { get; }
 
-        public IRxRelayCommand ToggleSign { get; }
+        public ICommand ToggleSign { get; }
 
         public void Dispose()
         {

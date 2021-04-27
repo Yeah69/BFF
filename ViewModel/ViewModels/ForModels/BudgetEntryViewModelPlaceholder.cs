@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Windows;
 
@@ -29,7 +28,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             return Task.CompletedTask;
         }
 
-        public IRxRelayCommand? DeleteCommand => null;
+        public ICommand? DeleteCommand => null;
         public bool IsInserted => false;
         public ICategoryViewModel? Category => null;
         public DateTime Month => DateTime.MinValue;

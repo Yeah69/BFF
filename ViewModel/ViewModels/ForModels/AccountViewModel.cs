@@ -13,8 +13,10 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -27,7 +29,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
     public interface IImportCsvBankStatement
     {
-        IRxRelayCommand ImportCsvBankStatement { get; }
+        ICommand ImportCsvBankStatement { get; }
     }
 
     /// <summary>
@@ -125,71 +127,92 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .Subscribe(_ => OnPropertyChanged(nameof(StartingBalance)))
                 .AddTo(CompositeDisposable);
 
-            NewTransactionCommand = new RxRelayCommand(() =>
-            {
-                var transactionViewModel = transactionViewModelFactory(this);
-                if (MissingSum is not null) transactionViewModel.Sum.Value = (long)MissingSum;
-                NewTransList.Add(transactionViewModel);
-            }).AddTo(CompositeDisposable);
-
-            NewTransferCommand = new RxRelayCommand(() => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
-
-            NewParentTransactionCommand = new RxRelayCommand(() =>
-            {
-                var parentTransactionViewModel = parentTransactionViewModelFactory(this);
-                NewTransList.Add(parentTransactionViewModel);
-                if (MissingSum is not null)
-                {
-                    parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
-                    parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
-                }
-            }).AddTo(CompositeDisposable);
-
-            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTrans(), 
-                NewTransList
-                    .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
-                    .Select(count => count > 0),
-                NewTransList.Count > 0);
-
-            ImportCsvBankStatement = new AsyncRxRelayCommand(async () =>
-            {
-                var importCsvBankStatementViewModel = importCsvBankStatementFactory();
-                try
-                {
-                    await mainWindowDialogManager.ShowDialogFor(importCsvBankStatementViewModel);
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-                foreach (var item in importCsvBankStatementViewModel.Items)
-                {
-                    var transactionViewModel = transactionViewModelFactory(this);
-
-                    if (item.HasDate)
-                        transactionViewModel.Date = item.Date;
-                    if (item.HasPayee)
+            NewTransactionCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
                     {
-                        if (payeeService.Value.All?.Any(p => p.Name == item.Payee) ?? false)
-                            transactionViewModel.Payee =
-                                payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee);
-                        else if (item.CreatePayeeIfNotExisting)
+                        var transactionViewModel = transactionViewModelFactory(this);
+                        if (MissingSum is not null) transactionViewModel.Sum.Value = (long)MissingSum;
+                        NewTransList.Add(transactionViewModel);
+                    });
+
+            NewTransferCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => NewTransList.Add(transferViewModelFactory(this)));
+
+            NewParentTransactionCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
+                    {
+                        var parentTransactionViewModel = parentTransactionViewModelFactory(this);
+                        NewTransList.Add(parentTransactionViewModel);
+                        if (MissingSum is not null)
                         {
-                            IPayee newPayee = payeeFactory();
-                            newPayee.Name = item.Payee?.Trim() ?? String.Empty;
-                            await newPayee.InsertAsync();
-                            transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
+                            parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
+                            parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
                         }
-                    }
+                    });
 
-                    if (item.HasMemo)
-                        transactionViewModel.Memo = item.Memo;
-                    if (item.HasSum.Value)
-                        transactionViewModel.Sum.Value = item.Sum.Value;
+            ApplyCommand = RxCommand
+                .CallerDeterminedCanExecute(
+                    NewTransList
+                        .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                        .Select(count => count > 0),
+                    NewTransList.Count > 0)
+                .StandardCase(
+                    CompositeDisposable,
+                    async () => await ApplyTrans());
 
-                    NewTransList.Add(transactionViewModel);
-                }
-            });
+            ImportCsvBankStatement = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () =>
+                    {
+                        var importCsvBankStatementViewModel = importCsvBankStatementFactory();
+                        try
+                        {
+                            await mainWindowDialogManager.ShowDialogFor(importCsvBankStatementViewModel);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            return;
+                        }
+
+                        foreach (var item in importCsvBankStatementViewModel.Items)
+                        {
+                            var transactionViewModel = transactionViewModelFactory(this);
+
+                            if (item.HasDate)
+                                transactionViewModel.Date = item.Date;
+                            if (item.HasPayee)
+                            {
+                                if (payeeService.Value.All?.Any(p => p.Name == item.Payee) ?? false)
+                                    transactionViewModel.Payee =
+                                        payeeService.Value.All.FirstOrDefault(p => p.Name == item.Payee);
+                                else if (item.CreatePayeeIfNotExisting)
+                                {
+                                    IPayee newPayee = payeeFactory();
+                                    newPayee.Name = item.Payee?.Trim() ?? String.Empty;
+                                    await newPayee.InsertAsync();
+                                    transactionViewModel.Payee = payeeService.Value.GetViewModel(newPayee);
+                                }
+                            }
+
+                            if (item.HasMemo)
+                                transactionViewModel.Memo = item.Memo;
+                            if (item.HasSum.Value)
+                                transactionViewModel.Sum.Value = item.Sum.Value;
+
+                            NewTransList.Add(transactionViewModel);
+                        }
+                    });
 
             if (BffSettings.OpenAccountTab == Name)
                 IsOpen = true;
@@ -246,14 +269,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
             return source.Task;
         }
         
-        public sealed override IRxRelayCommand NewTransactionCommand { get; }
+        public sealed override ICommand NewTransactionCommand { get; }
         
-        public sealed override IRxRelayCommand NewTransferCommand { get; }
+        public sealed override ICommand NewTransferCommand { get; }
         
-        public sealed override IRxRelayCommand NewParentTransactionCommand { get; }
+        public sealed override ICommand NewParentTransactionCommand { get; }
         
-        public sealed override IRxRelayCommand ApplyCommand { get; }
+        public sealed override ICommand ApplyCommand { get; }
 
-        public override IRxRelayCommand ImportCsvBankStatement { get; }
+        public override ICommand ImportCsvBankStatement { get; }
     }
 }

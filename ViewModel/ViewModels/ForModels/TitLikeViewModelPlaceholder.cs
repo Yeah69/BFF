@@ -4,7 +4,9 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -25,11 +27,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public ISumEditViewModel SumEdit { get; }
         public long SumAbsolute => 0L;
 
-        public IRxRelayCommand DeleteCommand { get; }
+        public ICommand DeleteCommand { get; }
         public bool IsInserted { get; }
-        public IRxRelayCommand ToggleSign { get; }
+        public ICommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => Observable.Never<Unit>();
-        public IRxRelayCommand RemoveCommand { get; }
+        public ICommand RemoveCommand { get; }
         public IAccountBaseViewModel? Owner => null;
         public void NotifyErrorsIfAny()
         {
@@ -48,9 +50,10 @@ namespace BFF.ViewModel.ViewModels.ForModels
             Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
             SumEdit = sumEditFactory(new ReactiveProperty<long>());
             Cleared = false;
-            ToggleSign = new RxRelayCommand(() => { });
-            DeleteCommand = new RxRelayCommand(() => { });
-            RemoveCommand = new RxRelayCommand(() => { });
+            var canNeverExecute = RxCommand.CanNeverExecute();
+            ToggleSign = canNeverExecute;
+            DeleteCommand = canNeverExecute;
+            RemoveCommand = canNeverExecute;
             IsInserted = false;
         }
 

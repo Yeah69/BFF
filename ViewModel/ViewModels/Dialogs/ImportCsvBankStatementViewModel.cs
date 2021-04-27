@@ -10,6 +10,7 @@ using System.Reactive.Linq;
 using System.Text;
 using BFF.Core.Helper;
 using BFF.Model.Models.Utility;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
@@ -159,23 +160,29 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                 .CompositeDisposalWith(CompositeDisposable);
 
 
-            BrowseCsvBankStatementFileCommand = new RxRelayCommand(() =>
-                {
-                    var bffOpenFileDialog = openFileDialogFactory();
-                    bffOpenFileDialog.Multiselect = false;
-                    bffOpenFileDialog.DefaultExt = "csv";
-                    bffOpenFileDialog.Filter = $"{localizer.Localize("Domain_BankStatement")} (*.csv)|*.csv";
-                    bffOpenFileDialog.FileName = "";
-                    bffOpenFileDialog.Title = localizer.Localize("Domain_OpenBankStatement");
-                    if (bffOpenFileDialog.ShowDialog() == true)
+            BrowseCsvBankStatementFileCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
                     {
-                        FilePath.Value = bffOpenFileDialog.FileName;
-                    }
-                })
-                .CompositeDisposalWith(CompositeDisposable);
-
-            DeselectProfileCommand = new RxRelayCommand(() => SelectedProfile.Value = null)
-                .CompositeDisposalWith(CompositeDisposable);
+                        var bffOpenFileDialog = openFileDialogFactory();
+                        bffOpenFileDialog.Multiselect = false;
+                        bffOpenFileDialog.DefaultExt = "csv";
+                        bffOpenFileDialog.Filter = $"{localizer.Localize("Domain_BankStatement")} (*.csv)|*.csv";
+                        bffOpenFileDialog.FileName = "";
+                        bffOpenFileDialog.Title = localizer.Localize("Domain_OpenBankStatement");
+                        if (bffOpenFileDialog.ShowDialog() == true)
+                        {
+                            FilePath.Value = bffOpenFileDialog.FileName;
+                        }
+                    });
+            
+            DeselectProfileCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => SelectedProfile.Value = null);
             
             var okCommand = RxCommand.CanAlwaysExecute().CompositeDisposalWith(CompositeDisposable);
 
@@ -244,7 +251,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                                     ? null 
                                     : memoString,
                                 sumString.IsWhitespace()
-                                    ? (long?) null
+                                    ? null
                                     : (int)new Expression(sumString).calculate()) );
                         }).ToList();
                     }

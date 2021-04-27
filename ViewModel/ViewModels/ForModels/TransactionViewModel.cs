@@ -10,16 +10,18 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
     public interface ITransactionViewModel : ITransactionBaseViewModel, IHaveCategoryViewModel
     {
-        IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
-        IRxRelayCommand NonInsertedConvertToTransfer { get; }
-        IRxRelayCommand InsertedConvertToParentTransaction { get; }
+        ICommand NonInsertedConvertToParentTransaction { get; }
+        ICommand NonInsertedConvertToTransfer { get; }
+        ICommand InsertedConvertToParentTransaction { get; }
     }
 
     /// <summary>
@@ -98,34 +100,41 @@ namespace BFF.ViewModel.ViewModels.ForModels
             transaction
                 .ObservePropertyChanged(nameof(transaction.Sum))
                 .Where(_ => transaction.IsInserted)
-                .Subscribe(sum => NotifyRelevantAccountsToRefreshBalance())
+                .Subscribe(_ => NotifyRelevantAccountsToRefreshBalance())
                 .AddTo(CompositeDisposable);
 
             SumEdit = createSumEdit(Sum);
 
             NewCategoryViewModel = newCategoryViewModel;
 
-            NonInsertedConvertToParentTransaction = new RxRelayCommand(
+            NonInsertedConvertToParentTransaction = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
                     () => Owner.ReplaceNewTrans(
                         this,
-                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)))
-                .AddTo(CompositeDisposable);
+                        transTransformingManager.NotInsertedToParentTransactionViewModel(this)));
 
-            NonInsertedConvertToTransfer = new RxRelayCommand(
+            NonInsertedConvertToTransfer = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
                     () => Owner.ReplaceNewTrans(
                         this,
-                        transTransformingManager.NotInsertedToTransferViewModel(this)))
-                .AddTo(CompositeDisposable);
+                        transTransformingManager.NotInsertedToTransferViewModel(this)));
 
-            InsertedConvertToParentTransaction = new AsyncRxRelayCommand(
+            InsertedConvertToParentTransaction = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
                     async () =>
                     {
-                        var parentTransactionViewModel = transTransformingManager.InsertedToParentTransactionViewModel(this);
+                        var parentTransactionViewModel =
+                            transTransformingManager.InsertedToParentTransactionViewModel(this);
                         await transaction.DeleteAsync();
                         await parentTransactionViewModel.InsertAsync();
                         NotifyRelevantAccountsToRefreshTrans();
-                    })
-                .AddTo(CompositeDisposable);
+                    });
         }
         
         public ICategoryBaseViewModel? Category
@@ -141,9 +150,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
         public INewCategoryViewModel NewCategoryViewModel { get; }
 
         public override bool IsInsertable() => base.IsInsertable() && Category.IsNotNull();
-        public IRxRelayCommand NonInsertedConvertToParentTransaction { get; }
-        public IRxRelayCommand NonInsertedConvertToTransfer { get; }
-        public IRxRelayCommand InsertedConvertToParentTransaction { get; }
+        public ICommand NonInsertedConvertToParentTransaction { get; }
+        public ICommand NonInsertedConvertToTransfer { get; }
+        public ICommand InsertedConvertToParentTransaction { get; }
 
         public override void NotifyErrorsIfAny()
         {

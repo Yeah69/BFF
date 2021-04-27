@@ -9,8 +9,10 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -70,34 +72,50 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
 
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
-            
-            NewTransactionCommand = new RxRelayCommand(() =>
-            {
-                var transactionViewModel = transactionViewModelFactory(this);
-                if (MissingSum is not null) transactionViewModel.Sum.Value = (long)MissingSum;
-                NewTransList.Add(transactionViewModel);
-            }).AddTo(CompositeDisposable);
 
-            NewTransferCommand = new RxRelayCommand(() => NewTransList.Add(transferViewModelFactory(this))).AddTo(CompositeDisposable);
+            NewTransactionCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
+                    {
+                        var transactionViewModel = transactionViewModelFactory(this);
+                        if (MissingSum is not null) transactionViewModel.Sum.Value = (long)MissingSum;
+                        NewTransList.Add(transactionViewModel);
+                    });
 
-            NewParentTransactionCommand = new RxRelayCommand(() =>
-            {
-                var parentTransactionViewModel = parentTransactionViewModelFactory(this);
-                NewTransList.Add(parentTransactionViewModel);
-                if (MissingSum is not null)
-                {
-                    parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
-                    parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
-                }
-            }).AddTo(CompositeDisposable);
+            NewTransferCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => NewTransList.Add(transferViewModelFactory(this)));
 
-            ApplyCommand = new AsyncRxRelayCommand(async () => await ApplyTrans(),
-                NewTransList
-                    .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
-                    .Select(count => count > 0),
-                NewTransList.Count > 0);
+            NewParentTransactionCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
+                    {
+                        var parentTransactionViewModel = parentTransactionViewModelFactory(this);
+                        NewTransList.Add(parentTransactionViewModel);
+                        if (MissingSum is not null)
+                        {
+                            parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
+                            parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
+                        }
+                    });
 
-            ImportCsvBankStatement = new RxRelayCommand(() => {}).AddTo(CompositeDisposable);
+            ApplyCommand = RxCommand
+                .CallerDeterminedCanExecute(
+                    NewTransList
+                        .ToReadOnlyReactivePropertyAsSynchronized(collection => collection.Count)
+                        .Select(count => count > 0),
+                    NewTransList.Count > 0)
+                .StandardCase(
+                    CompositeDisposable,
+                    async () => await ApplyTrans());
+
+            ImportCsvBankStatement = RxCommand.CanNeverExecute();
 
             RefreshStartingBalance();
             RefreshBalance();
@@ -129,24 +147,24 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public sealed override IRxRelayCommand NewTransactionCommand { get; }
+        public sealed override ICommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public sealed override IRxRelayCommand NewTransferCommand { get; }
+        public sealed override ICommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public sealed override IRxRelayCommand NewParentTransactionCommand { get; }
+        public sealed override ICommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
-        public sealed override IRxRelayCommand ApplyCommand { get; }
+        public sealed override ICommand ApplyCommand { get; }
 
-        public override IRxRelayCommand ImportCsvBankStatement { get; }
+        public override ICommand ImportCsvBankStatement { get; }
 
         #endregion
 

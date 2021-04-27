@@ -10,11 +10,12 @@ using System.Text;
 using BFF.Core.Helper;
 using BFF.Model.Models.Utility;
 using BFF.ViewModel.Extensions;
-using BFF.ViewModel.Helper;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {
@@ -33,13 +34,13 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
         IReadOnlyReactiveProperty<string[]?> Segments { get; }
 
-        IRxRelayCommand SaveNewProfile { get; }
+        ICommand SaveNewProfile { get; }
 
-        IRxRelayCommand ResetProfile { get; }
+        ICommand ResetProfile { get; }
 
-        IRxRelayCommand? SaveToProfile { get; }
+        ICommand? SaveToProfile { get; }
 
-        IRxRelayCommand? RemoveProfile { get; }
+        ICommand? RemoveProfile { get; }
     }
 
     public interface ICsvBankStatementImportProfileViewModel : ICsvBankStatementImportNonProfileViewModel
@@ -93,55 +94,72 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             MemoFormat = new ReactivePropertySlim<string>(profile.MemoFormat, ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
             SumFormula = new ReactivePropertySlim<string>(profile.SumFormat, ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
 
-            SaveToProfile = new RxRelayCommand(() =>
-            {
-                profile.Header = Header.Value;
-                profile.Delimiter = Delimiter.Value;
-                profile.DateSegment = DateSegment.Value;
-                profile.DateLocalization = DateLocalization.Value?.Name ?? String.Empty;
-                profile.PayeeFormat = PayeeFormat.Value;
-                profile.ShouldCreateNewPayeeIfNotExisting = ShouldCreateNewPayeeIfNotExisting.Value;
-                profile.MemoFormat = MemoFormat.Value;
-                profile.SumFormat = SumFormula.Value;
-                profile.SumLocalization = SumLocalization.Value?.Name ?? String.Empty;
-                profileManager.Save();
-            }).CompositeDisposalWith(_compositeDisposable);
+            SaveToProfile = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () =>
+                    {
+                        profile.Header = Header.Value;
+                        profile.Delimiter = Delimiter.Value;
+                        profile.DateSegment = DateSegment.Value;
+                        profile.DateLocalization = DateLocalization.Value?.Name ?? String.Empty;
+                        profile.PayeeFormat = PayeeFormat.Value;
+                        profile.ShouldCreateNewPayeeIfNotExisting = ShouldCreateNewPayeeIfNotExisting.Value;
+                        profile.MemoFormat = MemoFormat.Value;
+                        profile.SumFormat = SumFormula.Value;
+                        profile.SumLocalization = SumLocalization.Value?.Name ?? String.Empty;
+                        profileManager.Save();
+                    });
+
+            SaveNewProfile = RxCommand
+                .CallerDeterminedCanExecute(
+                    NewProfileName
+                        .Merge(profileManager.Profiles.CollectionChangedAsObservable()
+                            .Select(_ => NewProfileName.Value))
+                        .Select(NewProfileCondition),
+                    NewProfileCondition(NewProfileName.Value))
+                .StandardCase(
+                    _compositeDisposable,
+                    () =>
+                    {
+                        if (!NewProfileCondition(NewProfileName.Value)) return;
+                        profile = createProfile.Create(
+                            Header.Value,
+                            Delimiter.Value,
+                            DateSegment.Value,
+                            DateLocalization.Value?.Name ?? String.Empty,
+                            PayeeFormat.Value,
+                            ShouldCreateNewPayeeIfNotExisting.Value,
+                            MemoFormat.Value,
+                            SumFormula.Value,
+                            SumLocalization.Value?.Name ?? String.Empty,
+                            NewProfileName.Value);
+                        NewProfileName.Value = "";
+                    });
+
+            RemoveProfile = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => profileManager.Remove(profile.Name));
             
-            SaveNewProfile = NewProfileName
-                .Merge(profileManager.Profiles.CollectionChangedAsObservable().Select(_ => NewProfileName.Value))
-                .Select(NewProfileCondition)
-                .ToRxRelayCommand(() =>
-                {
-                    if (!NewProfileCondition(NewProfileName.Value)) return;
-                    profile = createProfile.Create(
-                        Header.Value,
-                        Delimiter.Value,
-                        DateSegment.Value,
-                        DateLocalization.Value?.Name ?? String.Empty,
-                        PayeeFormat.Value,
-                        ShouldCreateNewPayeeIfNotExisting.Value,
-                        MemoFormat.Value,
-                        SumFormula.Value,
-                        SumLocalization.Value?.Name ?? String.Empty,
-                        NewProfileName.Value);
-                    NewProfileName.Value = "";
-                }, NewProfileCondition(NewProfileName.Value)).CompositeDisposalWith(_compositeDisposable);
-
-            RemoveProfile = new RxRelayCommand(() =>
-                profileManager.Remove(profile.Name)).CompositeDisposalWith(_compositeDisposable);
-
-            ResetProfile = new RxRelayCommand(() =>
-            {
-                Header.Value = profile.Header;
-                Delimiter.Value = profile.Delimiter;
-                DateSegment.Value = profile.DateSegment;
-                DateLocalization.Value = CultureInfo.GetCultureInfo(profile.DateLocalization);
-                PayeeFormat.Value = profile.PayeeFormat;
-                ShouldCreateNewPayeeIfNotExisting.Value = profile.ShouldCreateNewPayeeIfNotExisting;
-                MemoFormat.Value = profile.MemoFormat;
-                SumFormula.Value = profile.SumFormat;
-                SumLocalization.Value = CultureInfo.GetCultureInfo(profile.SumLocalization);
-            }).CompositeDisposalWith(_compositeDisposable);
+            ResetProfile = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () =>
+                    {
+                        Header.Value = profile.Header;
+                        Delimiter.Value = profile.Delimiter;
+                        DateSegment.Value = profile.DateSegment;
+                        DateLocalization.Value = CultureInfo.GetCultureInfo(profile.DateLocalization);
+                        PayeeFormat.Value = profile.PayeeFormat;
+                        ShouldCreateNewPayeeIfNotExisting.Value = profile.ShouldCreateNewPayeeIfNotExisting;
+                        MemoFormat.Value = profile.MemoFormat;
+                        SumFormula.Value = profile.SumFormat;
+                        SumLocalization.Value = CultureInfo.GetCultureInfo(profile.SumLocalization);
+                    });
         }
 
         public IReadOnlyReactiveProperty<string> Name { get; }
@@ -157,10 +175,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         public IReactiveProperty<string> NewProfileName { get; }
         public IReadOnlyReactiveProperty<string[]> Segments { get; }
         public IReactiveProperty<string> SumFormula { get; }
-        public IRxRelayCommand SaveToProfile { get; }
-        public IRxRelayCommand RemoveProfile { get; }
-        public IRxRelayCommand SaveNewProfile { get; }
-        public IRxRelayCommand ResetProfile { get; }
+        public ICommand SaveToProfile { get; }
+        public ICommand RemoveProfile { get; }
+        public ICommand SaveNewProfile { get; }
+        public ICommand ResetProfile { get; }
 
         public void Dispose()
         {
@@ -234,38 +252,48 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             MemoFormat = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
             SumFormula = new ReactivePropertySlim<string>("", ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
 
-            SaveNewProfile = NewProfileName
-                .Merge(profileManager.Profiles.CollectionChangedAsObservable().Select(_ => NewProfileName.Value))
-                .Select(NewProfileCondition)
-                .ToRxRelayCommand(() =>
-                {
-                    if (!NewProfileCondition(NewProfileName.Value)) return;
-                    createProfile.Create(
-                        Header.Value,
-                        Delimiter.Value,
-                        DateSegment.Value,
-                        DateLocalization.Value?.Name ?? String.Empty,
-                        PayeeFormat.Value,
-                        ShouldCreateNewPayeeIfNotExisting.Value,
-                        MemoFormat.Value,
-                        SumFormula.Value,
-                        SumLocalization.Value?.Name ?? String.Empty,
-                        NewProfileName.Value);
-                    NewProfileName.Value = "";
-                }, NewProfileCondition(NewProfileName.Value)).CompositeDisposalWith(_compositeDisposable);
+            SaveNewProfile = RxCommand
+                .CallerDeterminedCanExecute(
+                    NewProfileName
+                        .Merge(profileManager.Profiles.CollectionChangedAsObservable()
+                            .Select(_ => NewProfileName.Value))
+                        .Select(NewProfileCondition),
+                    NewProfileCondition(NewProfileName.Value))
+                .StandardCase(
+                    _compositeDisposable,
+                    () =>
+                    {
+                        if (!NewProfileCondition(NewProfileName.Value)) return;
+                        createProfile.Create(
+                            Header.Value,
+                            Delimiter.Value,
+                            DateSegment.Value,
+                            DateLocalization.Value?.Name ?? String.Empty,
+                            PayeeFormat.Value,
+                            ShouldCreateNewPayeeIfNotExisting.Value,
+                            MemoFormat.Value,
+                            SumFormula.Value,
+                            SumLocalization.Value?.Name ?? String.Empty,
+                            NewProfileName.Value);
+                        NewProfileName.Value = "";
+                    });
 
-            ResetProfile = new RxRelayCommand(() =>
-            {
-                Header.Value = "";
-                Delimiter.Value = ',';
-                DateSegment.Value = "";
-                DateLocalization.Value = CultureInfo.InvariantCulture;
-                PayeeFormat.Value = "";
-                ShouldCreateNewPayeeIfNotExisting.Value = false;
-                MemoFormat.Value = "";
-                SumFormula.Value = "";
-                SumLocalization.Value = CultureInfo.InvariantCulture;
-            }).CompositeDisposalWith(_compositeDisposable);
+            ResetProfile = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () =>
+                    {
+                        Header.Value = "";
+                        Delimiter.Value = ',';
+                        DateSegment.Value = "";
+                        DateLocalization.Value = CultureInfo.InvariantCulture;
+                        PayeeFormat.Value = "";
+                        ShouldCreateNewPayeeIfNotExisting.Value = false;
+                        MemoFormat.Value = "";
+                        SumFormula.Value = "";
+                        SumLocalization.Value = CultureInfo.InvariantCulture;
+                    });
         }
         public IReactiveProperty<string> Header { get; }
         public IReactiveProperty<char>? Delimiter { get; }
@@ -278,10 +306,10 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         public IReactiveProperty<string> NewProfileName { get; }
         public IReadOnlyReactiveProperty<string[]?> Segments { get; }
         public IReactiveProperty<string> SumFormula { get; }
-        public IRxRelayCommand SaveNewProfile { get; }
-        public IRxRelayCommand ResetProfile { get; }
-        public IRxRelayCommand? SaveToProfile { get; } = null;
-        public IRxRelayCommand? RemoveProfile { get; } = null;
+        public ICommand SaveNewProfile { get; }
+        public ICommand ResetProfile { get; }
+        public ICommand? SaveToProfile { get; } = null;
+        public ICommand? RemoveProfile { get; } = null;
 
         public void Dispose()
         {

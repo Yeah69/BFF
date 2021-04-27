@@ -19,8 +19,4 @@
     public interface IRealmProjectFileAccessConfiguration : IEncryptedProjectFileAccessConfiguration, IExportConfiguration
     {
     }
-
-    public interface ISqliteProjectFileAccessConfiguration : IProjectFileAccessConfiguration, IImportConfiguration
-    {
-    }
 }

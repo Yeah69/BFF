@@ -10,13 +10,16 @@ using BFF.Core.Helper;
 using BFF.Model.Helper;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -33,19 +36,19 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        IRxRelayCommand NewSubTransactionCommand { get; }
+        ICommand NewSubTransactionCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        IRxRelayCommand ApplyCommand { get; }
+        ICommand ApplyCommand { get; }
 
         bool IsDateLong { get; }
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        IRxRelayCommand<IAccountViewModel> OpenParentTransactionView { get; }
+        ICommand OpenParentTransactionView { get; }
 
         IReactiveProperty<long> SumDuringEdit { get; }
 
@@ -54,9 +57,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
         IReadOnlyReactiveProperty<long> IntermediateSum { get; }
 
         IReadOnlyReactiveProperty<long> TotalSum { get; }
-        IRxRelayCommand NonInsertedConvertToTransaction { get; }
-        IRxRelayCommand NonInsertedConvertToTransfer { get; }
-        IRxRelayCommand InsertedConvertToTransaction { get; }
+        ICommand NonInsertedConvertToTransaction { get; }
+        ICommand NonInsertedConvertToTransfer { get; }
+        ICommand InsertedConvertToTransaction { get; }
     }
 
     /// <summary>
@@ -120,8 +123,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             Sum = new ReactiveProperty<long>(
                     EmitOnSumRelatedChanges(SubTransactions)
                     .ObserveOn(rxSchedulerProvider.Task)
-                    .Select(_ => SubTransactions.Sum(st => st.Sum.Value)), // todo: Write an SQL query for that
-                SubTransactions.Sum(st => st.Sum.Value),  // todo: Write an SQL query for that
+                    .Select(_ => SubTransactions.Sum(st => st.Sum.Value)), // todo: Write an query for that
+                SubTransactions.Sum(st => st.Sum.Value),  // todo: Write an query for that
                 ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(CompositeDisposable);
 
@@ -161,34 +164,53 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     SubTransactions.Sum(st => st.Sum.Value) + NewSubTransactions.Sum(st => st.Sum.Value),
                     ReactivePropertyMode.DistinctUntilChanged);
 
-            NewSubTransactionCommand = new RxRelayCommand(() =>
-            {
-                var newSubTransaction = createNewModels.CreateSubTransaction();
-                newSubTransaction.Parent = parentTransaction;
-                var newSubTransactionViewModel = subTransactionViewModelFactory(newSubTransaction, owner);
-                newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value - (Sum.Value + NewSubTransactions.Sum(ns => ns.Sum.Value));
-                _newTransactions.Add(newSubTransactionViewModel);
-            }).AddTo(CompositeDisposable);
-
-            ApplyCommand = new AsyncRxRelayCommand(async () =>
-            {
-                if (_newTransactions.All(st => st.IsInsertable()))
-                {
-                    _currentRemoveRequestSubscriptions = new CompositeDisposable();
-                    _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
-                    foreach (ISubTransactionViewModel subTransaction in _newTransactions)
+            NewSubTransactionCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
                     {
-                        if (parentTransaction.IsInserted)
-                            await subTransaction.InsertAsync();
-                    }
-                    _newTransactions.Clear();
-                    OnPropertyChanged(nameof(Sum));
-                    summaryAccountViewModel.RefreshBalance();
-                    Account?.RefreshBalance();
-                }
-            }).AddTo(CompositeDisposable);
+                        var newSubTransaction = createNewModels.CreateSubTransaction();
+                        newSubTransaction.Parent = parentTransaction;
+                        var newSubTransactionViewModel = subTransactionViewModelFactory(newSubTransaction, owner);
+                        newSubTransactionViewModel.Sum.Value = SumDuringEdit.Value -
+                                                               (Sum.Value + NewSubTransactions.Sum(ns => ns.Sum.Value));
+                        _newTransactions.Add(newSubTransactionViewModel);
+                    });
 
-            OpenParentTransactionView = new RxRelayCommand<IAccountViewModel>(avm => parentTransactionFlyoutManager.OpenFor(this)).AddTo(CompositeDisposable);
+            ApplyCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () =>
+                    {
+                        if (_newTransactions.All(st => st.IsInsertable()))
+                        {
+                            _currentRemoveRequestSubscriptions = new CompositeDisposable();
+                            _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
+                            foreach (ISubTransactionViewModel subTransaction in _newTransactions)
+                            {
+                                if (parentTransaction.IsInserted)
+                                    await subTransaction.InsertAsync();
+                            }
+
+                            _newTransactions.Clear();
+                            OnPropertyChanged(nameof(Sum));
+                            summaryAccountViewModel.RefreshBalance();
+                            Account?.RefreshBalance();
+                        }
+                    });
+
+            var openParentTransactionViewCommand = RxCommand
+                .CanAlwaysExecute()
+                .CompositeDisposalWith(CompositeDisposable);
+
+            OpenParentTransactionView = openParentTransactionViewCommand;
+
+            openParentTransactionViewCommand
+                .ObserveOfType<IAccountViewModel>()
+                .Subscribe(avm => parentTransactionFlyoutManager.OpenFor(this))
+                .CompositeDisposalWith(CompositeDisposable);
             
             _removeRequestSubscriptions.AddTo(CompositeDisposable);
             _removeRequestSubscriptions.Disposable = _currentRemoveRequestSubscriptions;
@@ -200,30 +222,39 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     .AddTo(_currentRemoveRequestSubscriptions);
             });
 
-            NonInsertedConvertToTransaction = new RxRelayCommand(
+            NonInsertedConvertToTransaction = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
                     () => Owner.ReplaceNewTrans(
                         this,
-                        transTransformingManager.NotInsertedToTransactionViewModel(this)))
-                .AddTo(CompositeDisposable);
+                        transTransformingManager.NotInsertedToTransactionViewModel(this)));
 
-            NonInsertedConvertToTransfer = new RxRelayCommand(
+            NonInsertedConvertToTransfer = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
                     () => Owner.ReplaceNewTrans(
                         this,
-                        transTransformingManager.NotInsertedToTransferViewModel(this)))
-                .AddTo(CompositeDisposable);
+                        transTransformingManager.NotInsertedToTransferViewModel(this)));
 
-            InsertedConvertToTransaction = new AsyncRxRelayCommand(
+            InsertedConvertToTransaction = RxCommand
+                .CallerDeterminedCanExecute(
+                    SubTransactions
+                        .ObservePropertyChanged(nameof(SubTransactions.Count))
+                        .Select(_ => SubTransactions.Count >= 1),
+                    SubTransactions.Count >= 1)
+                .StandardCase(
+                    CompositeDisposable,
                     async () =>
                     {
-                        var transactionViewModel = transTransformingManager.InsertedToTransactionViewModel(this, SubTransactions.First().Category);
+                        var transactionViewModel =
+                            transTransformingManager.InsertedToTransactionViewModel(this,
+                                SubTransactions.First().Category);
                         await parentTransaction.DeleteAsync();
                         await transactionViewModel.InsertAsync();
                         NotifyRelevantAccountsToRefreshTrans();
-                    },
-                    SubTransactions
-                        .ObservePropertyChanged(nameof(SubTransactions.Count))
-                        .Select(_ => SubTransactions.Count >= 1))
-                .AddTo(CompositeDisposable);
+                    });
 
             IObservable<Unit> EmitOnSumRelatedChanges(ReadOnlyObservableCollection<ISubTransactionViewModel> collection)
                 => Observable
@@ -266,27 +297,27 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// Creates a new SubElement for this ParentElement.
         /// </summary>
-        public IRxRelayCommand NewSubTransactionCommand { get; }
+        public ICommand NewSubTransactionCommand { get; }
 
         /// <summary>
         /// All new SubElement, which are not inserted into the database yet, will be flushed to the database with this command.
         /// </summary>
-        public IRxRelayCommand ApplyCommand { get; }
+        public ICommand ApplyCommand { get; }
 
         public bool IsDateLong => _bffSettings.Culture_DefaultDateLong;
 
         /// <summary>
         /// Opens the Parent master page for this ParentElement.
         /// </summary>
-        public IRxRelayCommand<IAccountViewModel> OpenParentTransactionView { get; }
+        public ICommand OpenParentTransactionView { get; }
 
         public IReactiveProperty<long> SumDuringEdit { get; }
         public IReadOnlyReactiveProperty<long> MissingSum { get; }
         public IReadOnlyReactiveProperty<long> IntermediateSum { get; }
         public IReadOnlyReactiveProperty<long> TotalSum { get; }
-        public IRxRelayCommand NonInsertedConvertToTransaction { get; }
-        public IRxRelayCommand NonInsertedConvertToTransfer { get; }
-        public IRxRelayCommand InsertedConvertToTransaction { get; }
+        public ICommand NonInsertedConvertToTransaction { get; }
+        public ICommand NonInsertedConvertToTransfer { get; }
+        public ICommand InsertedConvertToTransaction { get; }
 
         public override async Task InsertAsync()
         {

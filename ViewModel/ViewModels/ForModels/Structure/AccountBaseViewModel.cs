@@ -19,10 +19,12 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using MoreLinq;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Threading;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -68,28 +70,28 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        IRxRelayCommand NewTransactionCommand { get; }
+        ICommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        IRxRelayCommand NewTransferCommand { get; }
+        ICommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        IRxRelayCommand NewParentTransactionCommand { get; }
+        ICommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
-        IRxRelayCommand ApplyCommand { get; }
+        ICommand ApplyCommand { get; }
 
-        IRxRelayCommand ImportCsvBankStatement { get; }
+        ICommand ImportCsvBankStatement { get; }
 
-        IRxRelayCommand StartTargetingBalance { get; }
+        ICommand StartTargetingBalance { get; }
 
-        IRxRelayCommand AbortTargetingBalance { get; }
+        ICommand AbortTargetingBalance { get; }
 
         bool ShowLongDate { get; }
 
@@ -195,26 +197,26 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         /// <summary>
         /// Creates a new Transaction.
         /// </summary>
-        public abstract IRxRelayCommand NewTransactionCommand { get; }
+        public abstract ICommand NewTransactionCommand { get; }
 
         /// <summary>
         /// Creates a new Transfer.
         /// </summary>
-        public abstract IRxRelayCommand NewTransferCommand { get; }
+        public abstract ICommand NewTransferCommand { get; }
 
         /// <summary>
         /// Creates a new ParentTransaction.
         /// </summary>
-        public abstract IRxRelayCommand NewParentTransactionCommand { get; }
+        public abstract ICommand NewParentTransactionCommand { get; }
 
         /// <summary>
         /// Flushes all valid and not yet inserted Trans' to the database.
         /// </summary>
-        public abstract IRxRelayCommand ApplyCommand { get; }
+        public abstract ICommand ApplyCommand { get; }
 
-        public abstract IRxRelayCommand ImportCsvBankStatement { get; }
-        public IRxRelayCommand StartTargetingBalance { get; }
-        public IRxRelayCommand AbortTargetingBalance { get; }
+        public abstract ICommand ImportCsvBankStatement { get; }
+        public ICommand StartTargetingBalance { get; }
+        public ICommand AbortTargetingBalance { get; }
 
         /// <summary>
         /// Indicates if the date format should be display in short or long fashion.
@@ -363,7 +365,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                         .OfType<ParentTransactionViewModel>()
                         .Select(ptvm => ptvm.TotalSum.ObservePropertyChanged(nameof(IReactiveProperty<long>.Value)))
                         .Merge()
-                        .Select(__ => CalculateNewPartOfIntermediateBalance())
+                        .Select(_ => CalculateNewPartOfIntermediateBalance())
                         .Subscribe(DoTargetBalanceSystem))
                 .CompositeDisposalWith(CompositeDisposable);
 
@@ -372,10 +374,18 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .Merge(TransDataGridColumnManager.ObservePropertyChanged(nameof(TransDataGridColumnManager.NeverShowEditHeaders)))
                 .Subscribe(_ => ShowEditHeaders = NewTransList.Count > 0 && !TransDataGridColumnManager.NeverShowEditHeaders)
                 .CompositeDisposalWith(CompositeDisposable);
-
-            StartTargetingBalance = new RxRelayCommand(() => TargetBalance = TotalBalance);
-
-            AbortTargetingBalance = new RxRelayCommand(() => TargetBalance = null);
+            
+            StartTargetingBalance = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => TargetBalance = TotalBalance);
+            
+            AbortTargetingBalance = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => TargetBalance = null);
 
             static IObservable<Unit> EmitOnSumRelatedChanges(ObservableCollection<ITransLikeViewModel> collection) =>
                 collection
@@ -458,7 +468,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .NonPreloading()
                 .LeastRecentlyUsed(10, 5)
                 .TaskBasedFetchers(PageFetcher, CountFetcher)
-                .AsyncIndexAccess((_, __) => _placeholderFactory());
+                .AsyncIndexAccess((_, _) => _placeholderFactory());
 
         private readonly int PageSize = 100;
         private bool _isOpen;

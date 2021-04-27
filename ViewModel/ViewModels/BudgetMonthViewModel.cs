@@ -8,11 +8,13 @@ using System.Windows.Input;
 using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Models.Structure;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -49,7 +51,7 @@ namespace BFF.ViewModel.ViewModels
     
     
 
-    public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, IDisposable, ITransient
+    public sealed class BudgetMonthViewModel : ViewModelBase, IBudgetMonthViewModel, ITransient
     {
         private readonly IBudgetMonth _budgetMonth;
         private readonly IBffSettings _bffSettings;
@@ -78,47 +80,65 @@ namespace BFF.ViewModel.ViewModels
                         null))
                 .CompositeDisposalWith(_compositeDisposable);
 
-            EmptyCellsBudgetLastMonth = new RxRelayCommand(async () =>
-                {
-                    await budgetMonth.EmptyBudgetEntriesToAvgBudget(1);
-                    budgetRefreshes.RefreshCompletely();
-                })
-                .CompositeDisposalWith(_compositeDisposable);
+            EmptyCellsBudgetLastMonth = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        await budgetMonth.EmptyBudgetEntriesToAvgBudget(1);
+                        budgetRefreshes.RefreshCompletely();
+                    });
 
-            EmptyCellsOutflowsLastMonth = new RxRelayCommand(async () =>
-                {
-                    await budgetMonth.EmptyBudgetEntriesToAvgOutflow(1);
-                    budgetRefreshes.RefreshCompletely();
-                })
-                .CompositeDisposalWith(_compositeDisposable);
+            EmptyCellsOutflowsLastMonth = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        await budgetMonth.EmptyBudgetEntriesToAvgOutflow(1);
+                        budgetRefreshes.RefreshCompletely();
+                    });
 
-            EmptyCellsAvgOutflowsLastThreeMonths = new RxRelayCommand(async () =>
-                {
-                    await budgetMonth.EmptyBudgetEntriesToAvgOutflow(3);
-                    budgetRefreshes.RefreshCompletely();
-                })
-                .CompositeDisposalWith(_compositeDisposable);
+            EmptyCellsAvgOutflowsLastThreeMonths = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        await budgetMonth.EmptyBudgetEntriesToAvgOutflow(3);
+                        budgetRefreshes.RefreshCompletely();
+                    });
 
-            EmptyCellsAvgOutflowsLastYear = new RxRelayCommand(async () =>
-                {
-                    await budgetMonth.EmptyBudgetEntriesToAvgOutflow(12);
-                    budgetRefreshes.RefreshCompletely();
-                })
-                .CompositeDisposalWith(_compositeDisposable);
+            EmptyCellsAvgOutflowsLastYear = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        await budgetMonth.EmptyBudgetEntriesToAvgOutflow(12);
+                        budgetRefreshes.RefreshCompletely();
+                    });
 
-            EmptyCellsBalanceToZero = new RxRelayCommand(async () =>
-                {
-                    await budgetMonth.EmptyBudgetEntriesToBalanceZero();
-                    budgetRefreshes.RefreshCompletely();
-                })
-                .CompositeDisposalWith(_compositeDisposable);
+            EmptyCellsBalanceToZero = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        await budgetMonth.EmptyBudgetEntriesToBalanceZero();
+                        budgetRefreshes.RefreshCompletely();
+                    });
 
-            AllCellsZero = new RxRelayCommand(async () =>
-                {
-                    await budgetMonth.AllBudgetEntriesToZero();
-                    budgetRefreshes.RefreshCompletely();
-                })
-                .CompositeDisposalWith(_compositeDisposable);
+            AllCellsZero = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        await budgetMonth.AllBudgetEntriesToZero();
+                        budgetRefreshes.RefreshCompletely();
+                    });
         }
         
         public DateTime Month => _budgetMonth.Month;

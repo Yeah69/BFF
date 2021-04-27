@@ -1,13 +1,14 @@
-﻿using System;
+﻿using BFF.ViewModel.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
-using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {
@@ -17,9 +18,9 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
         bool OpenFlag { get; set; }
 
-        IRxRelayCommand LoadLazyElements { get; }
+        ICommand LoadLazyElements { get; }
 
-        IRxRelayCommand ClearLazyElements { get; }
+        ICommand ClearLazyElements { get; }
     }
 
     internal class LazyElementsViewModelBase<T> : ViewModelBase, ILazyElementsViewModelBase<T>
@@ -31,21 +32,27 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         {
             LazyElements = Enumerable.Empty<T>();
 
-            LoadLazyElements = new AsyncRxRelayCommand(async () =>
-                {
-                    LazyElements = await elementsFactoryAsync();
-                    OnPropertyChanged(nameof(LazyElements));
-                    if (LazyElements.Any().Not())
-                        OpenFlag = false;
-                })
-                .CompositeDisposalWith(CompositeDisposable);
+            LoadLazyElements = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    async () =>
+                    {
+                        LazyElements = await elementsFactoryAsync();
+                        OnPropertyChanged(nameof(LazyElements));
+                        if (LazyElements.Any().Not())
+                            OpenFlag = false;
+                    });
 
-            ClearLazyElements = new RxRelayCommand(() =>
-                {
-                    LazyElements = Enumerable.Empty<T>();
-                    OnPropertyChanged(nameof(LazyElements));
-                })
-                .CompositeDisposalWith(CompositeDisposable);
+            ClearLazyElements = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () =>
+                    {
+                        LazyElements = Enumerable.Empty<T>();
+                        OnPropertyChanged(nameof(LazyElements));
+                    });
         }
 
         public IEnumerable<T> LazyElements { get; private set; }
@@ -61,8 +68,8 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             }
         }
 
-        public IRxRelayCommand LoadLazyElements { get; }
-        public IRxRelayCommand ClearLazyElements { get; }
+        public ICommand LoadLazyElements { get; }
+        public ICommand ClearLazyElements { get; }
 
         public void Dispose()
         {

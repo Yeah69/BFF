@@ -29,14 +29,15 @@ namespace BFF.ViewModel.ViewModels
             IBudgetEntryViewModelService budgetEntryViewModelService,
             IRxSchedulerProvider rxSchedulerProvider)
         {
+            (int entryCount, int monthOffset) = initial;
             BudgetEntries = SlidingWindowBuilder
                 .Build<IBudgetEntryViewModel>(
-                    initial.EntryCount, 
-                    initial.MonthOffset, 
+                    entryCount, 
+                    monthOffset, 
                     12,
                     rxSchedulerProvider.UI,
                     rxSchedulerProvider.Task)
-                .Preloading((_, __) => BudgetEntryViewModelPlaceholder.Instance)
+                .Preloading((_, _) => BudgetEntryViewModelPlaceholder.Instance)
                 .LeastRecentlyUsed(4)
                 .TaskBasedFetchers(
                     async (page, _, _) =>
@@ -51,12 +52,14 @@ namespace BFF.ViewModel.ViewModels
                             (DateTime.MaxValue.Year - DateTime.MinValue.Year - 2) * 12
                             + 12 - DateTime.MinValue.Month - 1 +
                             DateTime.MaxValue.Month))
-                .AsyncIndexAccess((_, __) => BudgetEntryViewModelPlaceholder.Instance);
+                .AsyncIndexAccess((_, _) => BudgetEntryViewModelPlaceholder.Instance);
             _disposable = BudgetEntries;
         }
         
         public ISlidingWindow<IBudgetEntryViewModel> BudgetEntries { get; }
 
         public ValueTask DisposeAsync() => _disposable.DisposeAsync();
+
+        public void Dispose() => _disposable.DisposeAsync();
     }
 }

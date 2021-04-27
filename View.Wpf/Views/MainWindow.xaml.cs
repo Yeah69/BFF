@@ -123,11 +123,20 @@ namespace BFF.View.Wpf.Views
 
             IImportDialogViewModel importDialogViewModel = _importDialogViewModelFactory();
             var importDialog = new ImportDialog{ DataContext = importDialogViewModel };
-            importDialog.ButtCancel.Click += (_, _) => this.HideMetroDialogAsync(importDialog);
+            importDialog.ButtCancel.Click += (_, _) =>
+            {
+                this.HideMetroDialogAsync(importDialog);
+                importDialogViewModel.Dispose();
+            };
             importDialog.ButtImport.Click += (_, _) =>
             {
                 this.HideMetroDialogAsync(importDialog);
-                Dispatcher.Invoke(() => importDialogViewModel.Import(), DispatcherPriority.Background);
+                Dispatcher.Invoke(() =>
+                {
+                    var ret = importDialogViewModel.Import();
+                    importDialogViewModel.Dispose();
+                    return ret;
+                }, DispatcherPriority.Background);
             };
             this.ShowMetroDialogAsync(importDialog);
         }

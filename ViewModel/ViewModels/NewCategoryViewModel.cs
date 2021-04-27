@@ -5,12 +5,14 @@ using System.Windows.Input;
 using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -85,43 +87,53 @@ namespace BFF.ViewModel.ViewModels
             MonthOffset = new ReactiveProperty<int>(mode: ReactivePropertyMode.DistinctUntilChanged)
                 .AddTo(_compositeDisposable);
 
-            AddCommand = new AsyncRxRelayCommand(async () =>
-                {
-                    (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
-                    if(Parent.HasErrors || !ValidateName()) return;
-
-                    if (IsIncomeRelevant.Value)
+            AddCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
                     {
-                        IIncomeCategory newCategory = createNewModels.CreateIncomeCategory();
-                        newCategory.Name = Name?.Trim() ?? String.Empty;
-                        newCategory.MonthOffset = MonthOffset.Value;
-                        await newCategory.InsertAsync();
-                        if (CurrentCategoryOwner is not null)
-                            CurrentCategoryOwner.Category = incomeCategoryViewModelService.GetViewModel(newCategory);
-                        CurrentCategoryOwner = null;
-                    }
-                    else
-                    {
-                        ICategory newCategory = createNewModels.CreateCategory();
-                        newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
-                        newCategory.Name = Name?.Trim() ?? String.Empty;
-                        newCategory.Parent?.AddCategory(newCategory);
-                        await newCategory.InsertAsync();
-                        OnPropertyChanged(nameof(AllPotentialParents));
-                        var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory) ?? throw new NullReferenceException("Shouldn't be null");
-                        categoryViewModelInitializer.Initialize(categoryViewModel);
-                        if (CurrentCategoryOwner is not null)
-                            CurrentCategoryOwner.Category = categoryViewModel;
-                        CurrentCategoryOwner = null;
-                    }
-                    _name = "";
-                    OnPropertyChanged(nameof(Name));
-                    ClearErrors(nameof(Name));
-                    OnErrorChanged(nameof(Name));
-                })
-                .AddTo(_compositeDisposable);
+                        (Parent as ReactiveProperty<ICategoryViewModel>)?.ForceValidate();
+                        if (Parent.HasErrors || !ValidateName()) return;
 
-            DeselectParentCommand = new RxRelayCommand(() => Parent.Value = null);
+                        if (IsIncomeRelevant.Value)
+                        {
+                            IIncomeCategory newCategory = createNewModels.CreateIncomeCategory();
+                            newCategory.Name = Name?.Trim() ?? String.Empty;
+                            newCategory.MonthOffset = MonthOffset.Value;
+                            await newCategory.InsertAsync();
+                            if (CurrentCategoryOwner is not null)
+                                CurrentCategoryOwner.Category =
+                                    incomeCategoryViewModelService.GetViewModel(newCategory);
+                            CurrentCategoryOwner = null;
+                        }
+                        else
+                        {
+                            ICategory newCategory = createNewModels.CreateCategory();
+                            newCategory.Parent = _categoryViewModelService.GetModel(Parent.Value);
+                            newCategory.Name = Name?.Trim() ?? String.Empty;
+                            newCategory.Parent?.AddCategory(newCategory);
+                            await newCategory.InsertAsync();
+                            OnPropertyChanged(nameof(AllPotentialParents));
+                            var categoryViewModel = _categoryViewModelService.GetViewModel(newCategory) ??
+                                                    throw new NullReferenceException("Shouldn't be null");
+                            categoryViewModelInitializer.Initialize(categoryViewModel);
+                            if (CurrentCategoryOwner is not null)
+                                CurrentCategoryOwner.Category = categoryViewModel;
+                            CurrentCategoryOwner = null;
+                        }
+
+                        _name = "";
+                        OnPropertyChanged(nameof(Name));
+                        ClearErrors(nameof(Name));
+                        OnErrorChanged(nameof(Name));
+                    });
+
+            DeselectParentCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    () => Parent.Value = null);
 
             IsIncomeRelevant.Subscribe(_ =>
             {

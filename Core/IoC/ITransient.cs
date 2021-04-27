@@ -1,6 +1,8 @@
-﻿namespace BFF.Core.IoC
+﻿using System;
+
+namespace BFF.Core.IoC
 {
-    public interface ITransient
+    public interface ITransient : IDisposable
     {
     }
 }

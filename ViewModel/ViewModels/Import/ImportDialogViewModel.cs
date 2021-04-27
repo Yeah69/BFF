@@ -1,11 +1,14 @@
-﻿using BFF.Model.Contexts;
+﻿using BFF.Core.IoC;
+using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
+using MrMeeseeks.Reactive.Extensions;
 using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 
 namespace BFF.ViewModel.ViewModels.Import
 {
-    public interface IImportDialogViewModel : IViewModel
+    public interface IImportDialogViewModel : IViewModel, ITransient
     {
         ImportOption ImportOption { get; set; }
         ExportOption ExportOption { get; set; }
@@ -18,8 +21,9 @@ namespace BFF.ViewModel.ViewModels.Import
     {
         private readonly Func<IImportConfiguration, IImportContext> _importContextFactory;
         private readonly Func<IExportConfiguration, IExportContext> _exportContextFactory;
+        private readonly SerialDisposable _importDisposable = new();
+        private readonly SerialDisposable _exportDisposable = new();
         private readonly Func<Ynab4CsvImportViewModel> _ynab4CsvImportViewModelFactory;
-        private readonly Func<SqliteProjectImportViewModel> _sqliteProjectImportViewModelFactory;
         private readonly Func<RealmFileExportViewModel> _realmFileExportViewModel;
         private ImportOption _importOption;
         private ExportOption _exportOption;
@@ -86,13 +90,11 @@ namespace BFF.ViewModel.ViewModels.Import
             Func<IImportConfiguration, IImportContext> importContextFactory,
             Func<IExportConfiguration, IExportContext> exportContextFactory,
             Func<Ynab4CsvImportViewModel> ynab4CsvImportViewModelFactory,
-            Func<SqliteProjectImportViewModel> sqliteProjectImportViewModelFactory,
             Func<RealmFileExportViewModel> realmFileExportViewModel)
         {
             _importContextFactory = importContextFactory;
             _exportContextFactory = exportContextFactory;
             _ynab4CsvImportViewModelFactory = ynab4CsvImportViewModelFactory;
-            _sqliteProjectImportViewModelFactory = sqliteProjectImportViewModelFactory;
             _realmFileExportViewModel = realmFileExportViewModel;
 
             _importViewModel = UpdateImportViewModel();
@@ -103,8 +105,7 @@ namespace BFF.ViewModel.ViewModels.Import
         {
             return ImportOption switch
                 {
-                    ImportOption.Ynab4Csv => _ynab4CsvImportViewModelFactory(),
-                    ImportOption.SqliteProject => _sqliteProjectImportViewModelFactory(),
+                    ImportOption.Ynab4Csv => _ynab4CsvImportViewModelFactory().SerializeDisposalWith(_importDisposable),
                     _ => throw new ArgumentException("Unexpected import option!")
                 };
         }
@@ -113,9 +114,15 @@ namespace BFF.ViewModel.ViewModels.Import
         {
             return ExportOption switch
                 {
-                ExportOption.RealmFile => _realmFileExportViewModel(),
+                ExportOption.RealmFile => _realmFileExportViewModel().SerializeDisposalWith(_exportDisposable),
                 _ => throw new ArgumentException("Unexpected export option!")
                 };
+        }
+
+        public void Dispose()
+        {
+            _importDisposable.Dispose();
+            _exportDisposable.Dispose();
         }
     }
 }

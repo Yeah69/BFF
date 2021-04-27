@@ -3,28 +3,32 @@ using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
 using System.Threading;
-using System.Threading.Tasks;
 using BFF.Core.IoC;
 using BFF.Model.Contexts;
 using BFF.Model.ImportExport;
 using BFF.Model.IoC;
 using BFF.ViewModel.Contexts;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using NLog;
 using Reactive.Bindings;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels
 {
     public interface IMainWindowViewModel : IViewModel
     {
-        IRxRelayCommand NewBudgetPlanCommand { get; }
-        IRxRelayCommand OpenBudgetPlanCommand { get; }
-        IRxRelayCommand CloseBudgetPlanCommand { get; }
-        IRxRelayCommand ParentTransactionOnClose { get; }
+        ICommand NewBudgetPlanCommand { get; }
+        ICommand OpenBudgetPlanCommand { get; }
+        ICommand CloseBudgetPlanCommand { get; }
+        ICommand ParentTransactionOnClose { get; }
         TopLevelViewModelCompositionBase? TopLevelViewModelComposition { get; }
         ICultureManager? CultureManager { get; }
         bool IsEmpty { get; }
@@ -53,13 +57,13 @@ namespace BFF.ViewModel.ViewModels
             private set => SetIfChangedAndRaise(ref _title, value);
         }
 
-        public IRxRelayCommand NewBudgetPlanCommand { get; }
+        public ICommand NewBudgetPlanCommand { get; }
 
-        public IRxRelayCommand OpenBudgetPlanCommand { get; }
+        public ICommand OpenBudgetPlanCommand { get; }
 
-        public IRxRelayCommand CloseBudgetPlanCommand { get; }
+        public ICommand CloseBudgetPlanCommand { get; }
 
-        public IRxRelayCommand ParentTransactionOnClose { get; }
+        public ICommand ParentTransactionOnClose { get; }
         public TopLevelViewModelCompositionBase? TopLevelViewModelComposition
         {
             get => _topLevelViewModelComposition;
@@ -139,38 +143,33 @@ namespace BFF.ViewModel.ViewModels
 
             OpenParentTransaction = parentTransactionFlyoutManager.OpenParentTransaction;
 
-            NewBudgetPlanCommand = new RxRelayCommand(() =>
-            {
-#pragma warning disable 4014
-                InnerAsync();
-#pragma warning restore 4014
-
-                async Task InnerAsync()
-                {
-                    var newFileAccessViewModel = newFileAccessViewModelFactory();
-                    try
+            NewBudgetPlanCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    compositeDisposable,
+                    async () =>
                     {
-                        var configuration = await mainWindowDialogManager.Value.ShowDialogFor(newFileAccessViewModel);
-                        Reset(configuration);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // cancellation ignored
-                    }
-                    catch (FileNotFoundException e)
-                    {
-                        Console.WriteLine(e); // todo error handling
-                    }
-                }
-            });
+                        var newFileAccessViewModel = newFileAccessViewModelFactory();
+                        try
+                        {
+                            var configuration =
+                                await mainWindowDialogManager.Value.ShowDialogFor(newFileAccessViewModel);
+                            Reset(configuration);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            // cancellation ignored
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            Console.WriteLine(e); // todo error handling
+                        }
+                    });
 
-            OpenBudgetPlanCommand = new RxRelayCommand(() =>
-            {
-#pragma warning disable 4014
-                InnerAsync();
-#pragma warning restore 4014
-
-                async Task InnerAsync()
+            var openBudgetPlanCommand = RxCommand.CanAlwaysExecute().CompositeDisposalWith(compositeDisposable);
+            openBudgetPlanCommand
+                .Observe
+                .SelectMany(async _ =>
                 {
                     var openFileAccessViewModel = openFileAccessDialogFactory();
                     try
@@ -186,12 +185,26 @@ namespace BFF.ViewModel.ViewModels
                     {
                         Console.WriteLine(e); // todo error handling
                     }
-                }
-            });
 
-            CloseBudgetPlanCommand = new RxRelayCommand(currentProject.Close);
+                    return Unit.Default;
+                })
+                .Subscribe(_ => {})
+                .CompositeDisposalWith(compositeDisposable);
+            
 
-            ParentTransactionOnClose = new RxRelayCommand(parentTransactionFlyoutManager.Close);
+            OpenBudgetPlanCommand = openBudgetPlanCommand;
+
+            CloseBudgetPlanCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    compositeDisposable,
+                    currentProject.Close);
+
+            ParentTransactionOnClose = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    compositeDisposable,
+                    parentTransactionFlyoutManager.Close);
 
             currentProject
                 .Current

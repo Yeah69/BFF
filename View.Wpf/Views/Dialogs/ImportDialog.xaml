@@ -77,42 +77,6 @@
                             Content="{lex:Loc ImportView_Browse}" />
                 </Grid>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type import:SqliteProjectImportViewModel}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"
-                           Content="{lex:Loc ImportView_YNAB4_Transaction}" />
-                    <TextBox x:Name="TransactionTextBox"
-                             Grid.Row="1"
-                             Grid.Column="0"
-                             Margin="5">
-                        <TextBox.Text>
-                            <Binding Mode="TwoWay"
-                                     Path="Path">
-                                <Binding.ValidationRules>
-                                    <x:Static Member="helper:Rules.NotExistingFilePath" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <Button Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5"
-                            Command="{Binding BrowseCommand}"
-                            Content="{lex:Loc ImportView_Browse}" />
-                </Grid>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type import:RealmFileExportViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>

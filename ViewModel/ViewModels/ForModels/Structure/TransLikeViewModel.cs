@@ -5,10 +5,13 @@ using System.Reactive.Subjects;
 using BFF.Core.Helper;
 using BFF.Core.IoC;
 using BFF.Model.Models.Structure;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
 {
@@ -24,11 +27,11 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
         long SumAbsolute { get; }
         
-        IRxRelayCommand ToggleSign { get; }
+        ICommand ToggleSign { get; }
 
         IObservable<Unit> RemoveRequests { get; }
 
-        IRxRelayCommand RemoveCommand { get; }
+        ICommand RemoveCommand { get; }
 
         IAccountBaseViewModel? Owner { get; }
 
@@ -91,15 +94,22 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
                 .Subscribe(_ => OnPropertyChanged(nameof(Memo)))
                 .AddTo(CompositeDisposable);
 
-
-            ToggleSign = new RxRelayCommand(() => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus).AddTo(CompositeDisposable);
-
-            RemoveCommand = new RxRelayCommand(() => _removeRequestSubject.OnNext(Unit.Default)).AddTo(CompositeDisposable);
+            ToggleSign = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => SumSign = SumSign == Sign.Plus ? Sign.Minus : Sign.Plus);
+            
+            RemoveCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    CompositeDisposable,
+                    () => _removeRequestSubject.OnNext(Unit.Default));
         }
 
-        public IRxRelayCommand ToggleSign { get; }
+        public ICommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => _removeRequestSubject.AsObservable();
-        public IRxRelayCommand RemoveCommand { get; }
+        public ICommand RemoveCommand { get; }
         public IAccountBaseViewModel Owner { get; }
 
         public abstract void NotifyErrorsIfAny();

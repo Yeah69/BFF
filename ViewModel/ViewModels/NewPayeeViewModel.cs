@@ -4,13 +4,14 @@ using System.Reactive.Disposables;
 using System.Windows.Input;
 using BFF.Core.IoC;
 using BFF.Model.Repositories;
+using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.Windows;
 using MuVaViMo;
-using Reactive.Bindings.Extensions;
 
 namespace BFF.ViewModel.ViewModels
 {
@@ -50,21 +51,25 @@ namespace BFF.ViewModel.ViewModels
             _localizer = localizer;
             _payeeViewModelService = payeeViewModelService;
 
-            AddPayeeCommand = new AsyncRxRelayCommand(async () =>
-            {
-                if (!ValidatePayeeName())
-                    return;
-                var newPayee = createNewModels.CreatePayee();
-                newPayee.Name = PayeeText?.Trim() ?? String.Empty;
-                await newPayee.InsertAsync();
-                if (CurrentOwner is not null)
-                    CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
-                CurrentOwner = null;
-                _payeeText = "";
-                OnPropertyChanged(nameof(PayeeText));
-                ClearErrors(nameof(PayeeText));
-                OnErrorChanged(nameof(PayeeText));
-            }).AddTo(_compositeDisposable);
+            AddPayeeCommand = RxCommand
+                .CanAlwaysExecute()
+                .StandardCase(
+                    _compositeDisposable,
+                    async () =>
+                    {
+                        if (!ValidatePayeeName())
+                            return;
+                        var newPayee = createNewModels.CreatePayee();
+                        newPayee.Name = PayeeText?.Trim() ?? String.Empty;
+                        await newPayee.InsertAsync();
+                        if (CurrentOwner is not null)
+                            CurrentOwner.Payee = _payeeViewModelService.GetViewModel(newPayee);
+                        CurrentOwner = null;
+                        _payeeText = "";
+                        OnPropertyChanged(nameof(PayeeText));
+                        ClearErrors(nameof(PayeeText));
+                        OnErrorChanged(nameof(PayeeText));
+                    });
         }
 
         /// <summary>
