@@ -1625,9 +1625,9 @@ namespace BFF.View.Wpf.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Und noch ein Mal. So viel Spaß..
         /// </summary>
-        internal static string Test3 {
+        internal static string Test4 {
             get {
-                return ResourceManager.GetString("Test3", resourceCulture);
+                return ResourceManager.GetString("Test4", resourceCulture);
             }
         }
         
