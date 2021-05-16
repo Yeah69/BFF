@@ -53,82 +53,312 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>El nombre de un nuevo beneficiario no debe estar en blanco ni existir ya.</value>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Eliminar</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Acentos</value>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Hay que seleccionar una cuenta de origen.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Símbolo</value>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Crea una nueva transferencia</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Crear un nuevo plan financiero</value>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Hay que seleccionar un beneficiario.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Asunto</value>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Convertir en</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Fecha</value>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Subtotal</value>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Nombre del nuevo beneficiario</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Gasto medio en los últimos tres meses</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>La nota pretende dar a la entrada cualquier descripción.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Vale</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Si se marca, se crea una categoría de ingresos.
-Sólo se interpretarán como ingresos las operaciones adscritas a dicha categoría.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Crear</value>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Ruta de acceso al CSV de transacciones de YNAB:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
     <value>Crea una nueva salida dividida</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Editar cuentas</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Transferencia</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Abrir</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>¿Está seguro de que la categoría "{0}" debe fusionarse con la categoría "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Se ha producido un error al crear las entradas. Comprueba la configuración.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Editar marcadores</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Cantidad que falta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>La cantidad de dinero entregada este mes pero que aún no se ha registrado en ninguna categoría.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>¿Ingresos relevantes?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Idioma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Importar la configuración</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Contraseña</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Formato de la cantidad</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Saldo inicial de la cuenta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>No se ha podido encontrar el archivo "{0}".</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>La fecha en la que la entrada es efectiva.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Publicado</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Categoría</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Cuenta de la fuente</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Completado</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>No asignado</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Mostrar números de cheques</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Total</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Acentos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Crear un nuevo plan financiero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguración</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>La suma de todas las transacciones que no tienen una categoría asignada.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transacción</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Formato de moneda</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Total de todos los fondos asignados a las categorías este mes.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Fecha de inicio</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>No</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Cuentas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Abrir un plan financiero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Beneficiario</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Número de Scheck</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Crear el primer asiento de la cuenta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Beneficiario</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Hay que seleccionar una cuenta.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Para fusionar una categoría con otra, se debe arrastrar el icono de esta columna desde la fila de origen y soltarlo en la fila de destino.
+La categoría de destino heredará todas las entradas de cuentas y subcategorías de la categoría de origen.
+Si un par de subcategorías tienen el mismo nombre, la subcategoría de origen será renombrada automáticamente (se le añadirá un número).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Ruta del archivo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Guardar el nuevo plan presupuestario:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_SetTargetBalance" xml:space="preserve">
     <value>Establecer el saldo de la cuenta objetivo</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Ajustes</value>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Subtotal</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Crea una nueva emisión</value>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>La fijación del saldo de la cuenta de destino permite el cálculo automático del importe que falta.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Cancelar el objetivo</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Avanzar un mes</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>El marcador destaca visualmente la entrada por el color y es completamente opcional.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Editar cuentas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Gasto medio en los últimos tres meses</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Crear una nueva categoría</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Crear un nuevo marcador</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Símbolo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Eliminar el perfil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>¿Está seguro de que quiere eliminar la categoría de ingresos "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Fecha</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Esta marca se puede utilizar para distinguir las entradas completadas de las que aún necesitan revisión.
+Los totales se pueden ver en el tooltip del saldo de la cuenta.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Rebasamiento</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Crear una nueva cuenta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>¿Está seguro de que el beneficiario "{0}" debe fusionarse con el beneficiario "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Separador</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Nombre del nuevo marcador</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
@@ -136,76 +366,250 @@ Sólo se interpretarán como ingresos las operaciones adscritas a dicha categor�
 Por ejemplo, un desfase de un mes traslada los ingresos al mes siguiente y uno menos al mes anterior.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Haga clic para ver y editar las transacciones parciales.</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>¿Está seguro de que la categoría de ingresos "{0}" debe fusionarse con la categoría de ingresos "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Categoría de ingresos</value>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>Plan financiero BFF (*.realm)|*.realm|Plan financiero BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Número de Scheck</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Extracto bancario</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>La cantidad de dinero que faltó el mes pasado para cumplir con todas las categorías.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Cuentas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Eliminar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Total</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>¿Ingresos relevantes?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Mostrar números de cheques</value>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
     <value>Importe actual</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>La fijación del saldo de la cuenta de destino permite el cálculo automático del importe que falta.</value>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Una transacción permite que el dinero salga o entre en una cuenta.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Crear una nueva categoría</value>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Archivo</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>Cantidad que falta</value>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>El nombre del archivo de esta ruta de memoria está vacío.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Crear una nueva cuenta</value>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>El subtotal incluye las entradas que aún deben guardarse.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Esta ruta de archivo no existe.</value>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo a cero</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Crear el primer asiento de la cuenta</value>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Borrar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Saldo de la cuenta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>No se permite que el nombre de la cuenta esté vacío o que se parezca al nombre de una cuenta existente.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>No se contabiliza</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Rellene todas las casillas del presupuesto:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>El nombre de un nuevo beneficiario no debe estar en blanco ni existir ya.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Categoría de ingresos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Editar el beneficiario</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Disponible</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Cuenta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Mostrar los totales</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>El saldo de la cuenta en la fecha de inicio establecida.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>¿Está seguro?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Marcadores</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Hay que seleccionar una cuenta de destino</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Valor del presupuesto del último mes</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Ocultar siempre los títulos de las columnas en la tabla de edición</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Este nombre ya existe para el nivel de categoría seleccionado.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Cancelar el objetivo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Las transferencias unilaterales pueden aparecer después de la eliminación de una cuenta. Hay que tenerlos en cuenta porque no son neutrales a efectos contables.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Datos de la cabecera</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value>Guarda los elementos editados actualmente en la cuenta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Utilice este selector de fecha para saltar a cualquier mes (el día es irrelevante).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>La cuenta a la que pertenece el asiento.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Formato del beneficiario</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>El nombre de una nueva categoría no debe estar vacío.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>La diferencia entre el saldo de la cuenta de destino y el subtotal.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Si se marca, se crea una categoría de ingresos.
+Sólo se interpretarán como ingresos las operaciones adscritas a dicha categoría.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Guardar el nuevo perfil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>En este nivel de categoría, ¡ya existe una categoría con el nombre elegido!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Transferencia</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Debe seleccionarse una cuenta antes de añadir la entrada.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Todas las cuentas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Guardar perfil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>El total de los excesos presupuestarios sumados en todas las categorías el mes pasado.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Gastos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>El saldo total de la cuenta considerando las entradas con fecha futura.
+Consulte la información sobre herramientas para distinguir mejor.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Crear un nuevo beneficiario</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Los símbolos indican de qué tipo es la anotación en cuenta.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Vale</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Formato de la fecha</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Un asiento de ingresos marca una transacción que se considera un ingreso.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Presupuesto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Crear</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Si los totales están activados, los valores de las subcategorías se suman al valor propio.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Entradas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Objetivo de exportación</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -215,413 +619,28 @@ Dado que las categorías pueden ser jerárquicas, la ruta jerárquica completa s
 Si la entrada es una transferencia, entonces la cuenta de destino se introduce aquí.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Para fusionar una categoría de ingresos con otra, se debe arrastrar el símbolo de esta columna desde la fila de origen y soltarlo en la fila de destino.
-La categoría de ingresos de destino heredará todas las entradas de cuenta de la categoría de ingresos de origen y mantendrá la compensación mensual.</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Asunto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Datos de la cabecera</value>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Subtotal</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Esta marca se puede utilizar para distinguir las entradas completadas de las que aún necesitan revisión.
-Los totales se pueden ver en el tooltip del saldo de la cuenta.</value>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Categorías</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>¿Está seguro de que la categoría "{0}" debe fusionarse con la categoría "{1}"?</value>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>¡El valor está fuera del rango de validez: [ {0} .. {1} ]!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Un asiento de ingresos marca una transacción que se considera un ingreso.</value>
+  <data name="General_Name" xml:space="preserve">
+    <value>Nombre</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>La cuenta a la que pertenece el asiento.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Transferencia</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Cero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Mostrar los totales</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Beneficiario</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Completado</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Cuenta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Abrir un plan financiero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Categorías de ingresos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Completado</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Formato de la nota</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>Retroceder un mes</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Crear un nuevo pago</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Guardar el nuevo plan presupuestario:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Publicado</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Separador</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Cerrar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>El subtotal incluye las entradas que aún deben guardarse.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>¿Crear un nuevo beneficiario si no existe?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Categoría</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Eliminar el perfil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>La cantidad de dinero que falta este mes para cumplir con todas las categorías.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Rellena todas las celdas de presupuesto vacías con:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Crear un nuevo beneficiario</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>Archivo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>El directorio de la ruta de guardado no existe.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Editar el beneficiario</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Crear un nuevo marcador</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Hay que seleccionar una categoría.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>¿Está seguro de que quiere que el marcador "{0}" se fusione con el marcador "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Perfil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Brevemente</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Navegue por</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>¿Está seguro de que el beneficiario "{0}" debe fusionarse con el beneficiario "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>¿Está seguro de que quiere eliminar la categoría de ingresos "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Empty" xml:space="preserve">
-    <value>Todavía no se ha cargado ningún proyecto contable.
-Para crear, abrir o importar un proyecto
-abrir el menú de archivos en la esquina superior izquierda.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>Plan financiero BFF (*.realm)|*.realm|Plan financiero BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Formato de la cantidad</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Cantidad</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Utilice este selector de fecha para saltar a cualquier mes (el día es irrelevante).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Ruta de acceso a YNAB Budget CSV:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Cuenta de la fuente</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>¿Está seguro de que la categoría de ingresos "{0}" debe fusionarse con la categoría de ingresos "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>La fecha en la que la entrada es efectiva.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>No</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Si se selecciona una categoría principal, la nueva categoría se adjuntará a ella como subcategoría.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Balance</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>Esto eliminará la cuenta y todas sus transacciones, las transferencias completas se convertirán en unilaterales y el problema específico de la cuenta con el presupuesto desaparecerá.
-
-¿Está realmente seguro? (Se realizará una copia de seguridad automática para poder restaurar el estado anterior a la eliminación).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Saldo a cero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>Se ha producido un error al crear las entradas. Comprueba la configuración.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Este campo de entrada no debe quedar vacío.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Las transferencias unilaterales pueden aparecer después de la eliminación de una cuenta. Hay que tenerlos en cuenta porque no son neutrales a efectos contables.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Hay que seleccionar una cuenta de origen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Nombre del nuevo marcador</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Pulse el botón de esta columna para eliminar el elemento de la fila correspondiente.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Todo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Color</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Categoría superpuesta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>El nombre de una nueva categoría no debe estar vacío.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Formato del beneficiario</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Saldo inicial de la cuenta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Operación de ingresos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>Hay que seleccionar un beneficiario.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Ingresos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Borrar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Guardar el nuevo perfil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>La diferencia entre el saldo de la cuenta de destino y el subtotal.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Valor del presupuesto del último mes</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Presupuesto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>No asignado</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Hay que seleccionar una cuenta.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Overbooking</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Ocultar siempre los títulos de las columnas en la tabla de edición</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Este texto no pudo ser analizado como moneda.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Actual</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Para fusionar un beneficiario con otro, el símbolo de esta columna debe arrastrarse desde la fila de origen y soltarse en la fila de destino.
-El beneficiario de destino asumirá todas las entradas de la cuenta del beneficiario de origen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>No se contabiliza</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>La suma de la entrada.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>Nombre de la nueva categoría</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Una transacción permite que el dinero salga o entre en una cuenta.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>El marcador destaca visualmente la entrada por el color y es completamente opcional.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Saldo de la cuenta objetivo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Si es necesario, se puede introducir aquí el número de cheque.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Importieren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Aquí se introduce el pagado o la persona que paga.
-
-Si la entrada es una transferencia, entonces la cuenta de origen se introduce aquí.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Gasto medio en el último año</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Todas las cuentas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Importar la configuración</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Formato de la fecha</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongFlagName" xml:space="preserve">
@@ -632,138 +651,24 @@ Si la entrada es una transferencia, entonces la cuenta de origen se introduce aq
     <value>Cantidad que falta</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Importa y guarda en la siguiente ruta:</value>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Importar</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Transferencias unilaterales</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Ruta de acceso al CSV de transacciones de YNAB:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Ruta del archivo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Nombre</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>El saldo de la cuenta en la fecha de inicio establecida.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negativo</value>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Categoría superpuesta</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
     <value>La cantidad de dinero que se entregó el mes pasado, pero que no se registró en ninguna categoría.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>Gastos</value>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>¿Está seguro de que quiere eliminar el beneficiario "{0}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>La suma de todas las transacciones que no tienen una categoría asignada.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Para fusionar una categoría con otra, se debe arrastrar el icono de esta columna desde la fila de origen y soltarlo en la fila de destino.
-La categoría de destino heredará todas las entradas de cuentas y subcategorías de la categoría de origen.
-Si un par de subcategorías tienen el mismo nombre, la subcategoría de origen será renombrada automáticamente (se le añadirá un número).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Avanzar un mes</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Idioma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>No se ha podido encontrar el archivo "{0}".</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Formato de la fecha</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Formato de la fecha</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Saldo de la cuenta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Abrir</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Transacción</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Fecha de inicio</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>¿Está seguro de que quiere eliminar la categoría "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Subtotal</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>A través de</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Guardar perfil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Rellene todas las casillas del presupuesto:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Si los totales están activados, los valores de las subcategorías se suman al valor propio.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>En este nivel de categoría, ¡ya existe una categoría con el nombre elegido!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Cancelar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Total de todos los fondos asignados a las categorías este mes.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>¿Está seguro?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>¿Estás seguro de que quieres borrar el marcador "{0}"?</value>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Mostrar marcadores</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_MonthOffset" xml:space="preserve">
@@ -774,141 +679,157 @@ Si un par de subcategorías tienen el mismo nombre, la subcategoría de origen s
     <value>Cantidad de dinero asignada para los gastos de este mes.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Categorías</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>A través de</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>El saldo total de la cuenta considerando las entradas con fecha futura.
-Consulte la información sobre herramientas para distinguir mejor.</value>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>¡El valor está fuera del rango de validez: [ {0} .. {1} ]!</value>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Este campo de entrada no debe quedar vacío.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Crear un nuevo pago</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Konfiguración</value>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Haga clic para ver y editar las transacciones parciales.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Marcadores</value>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Este texto no pudo ser analizado como moneda.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>restablecer el perfil</value>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Rellena todas las celdas de presupuesto vacías con:</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Editar marcadores</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Los símbolos indican de qué tipo es la anotación en cuenta.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>No asignado</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Entradas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Crear un nuevo marcador</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Contraseña</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>El total de los excesos presupuestarios sumados en todas las categorías el mes pasado.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>No se permite que el nombre de la cuenta esté vacío o que se parezca al nombre de una cuenta existente.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>¿Está seguro de que quiere eliminar el beneficiario "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Transferencia</value>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Nombre de la nueva categoría</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
     <value>Notiz</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>El nombre del archivo de esta ruta de memoria está vacío.</value>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Actual</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Debe seleccionarse una cuenta antes de añadir la entrada.</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Formato de la nota</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>La cantidad de dinero entregada este mes pero que aún no se ha registrado en ninguna categoría.</value>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>restablecer el perfil</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Importar</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Navegue por</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Perfil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Todavía no se ha cargado ningún proyecto contable.
+Para crear, abrir o importar un proyecto
+abrir el menú de archivos en la esquina superior izquierda.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>¿Está seguro de que quiere eliminar la categoría "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Crear un nuevo marcador</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>El directorio de la ruta de guardado no existe.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Saldo de la cuenta objetivo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Para fusionar un beneficiario con otro, el símbolo de esta columna debe arrastrarse desde la fila de origen y soltarse en la fila de destino.
+El beneficiario de destino asumirá todas las entradas de la cuenta del beneficiario de origen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>La suma de la entrada.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>La cantidad de dinero que falta este mes para cumplir con todas las categorías.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Hay que seleccionar una categoría.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Transferencias unilaterales</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Pulse el botón de esta columna para eliminar el elemento de la fila correspondiente.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>¿Está seguro de que quiere que el marcador "{0}" se fusione con el marcador "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbooking</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Brevemente</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Operación de ingresos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Ajustes</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Cerrar</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
     <value>Importe que falta, excluyendo las entradas no presentadas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Crear una nueva categoría</value>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Todo</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Mostrar marcadores</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Retroceder un mes</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>Rebasamiento</value>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Cancelar</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Hay que seleccionar una cuenta de destino</value>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Cero</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Abrir el extracto bancario</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Gastos del último mes</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Objetivo de exportación</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Test4" xml:space="preserve">
-    <value>Y una vez más. Muy divertido.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Convertir en</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Disponible</value>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Esto eliminará la cuenta y todas sus transacciones, las transferencias completas se convertirán en unilaterales y el problema específico de la cuenta con el presupuesto desaparecerá.
+
+¿Está realmente seguro? (Se realizará una copia de seguridad automática para poder restaurar el estado anterior a la eliminación).</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
@@ -916,32 +837,103 @@ Consulte la información sobre herramientas para distinguir mejor.</value>
 El marcador de destino toma todas las entradas de la cuenta del marcador de origen y mantiene su propio color.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Nombre del nuevo beneficiario</value>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Crea una nueva emisión</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Formato de moneda</value>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>La nota pretende dar a la entrada cualquier descripción.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
-    <value>Prueba rápida</value>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Si es necesario, se puede introducir aquí el número de cheque.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Ingresos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>La cantidad de dinero que faltó el mes pasado para cumplir con todas las categorías.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Aquí se introduce el pagado o la persona que paga.
+
+Si la entrada es una transferencia, entonces la cuenta de origen se introduce aquí.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Crear una nueva categoría</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Ruta de acceso a YNAB Budget CSV:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
     <value>Una transferencia traslada dinero de una cuenta a otra.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>Este nombre ya existe para el nivel de categoría seleccionado.</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Categorías de ingresos</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Beneficiario</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Esta ruta de archivo no existe.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Crea una nueva transferencia</value>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Completado</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importa y guarda en la siguiente ruta:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Gastos del último mes</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Cantidad</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Si se selecciona una categoría principal, la nueva categoría se adjuntará a ella como subcategoría.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>¿Crear un nuevo beneficiario si no existe?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>No asignado</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Gasto medio en el último año</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Para fusionar una categoría de ingresos con otra, se debe arrastrar el símbolo de esta columna desde la fila de origen y soltarlo en la fila de destino.
+La categoría de ingresos de destino heredará todas las entradas de cuenta de la categoría de ingresos de origen y mantendrá la compensación mensual.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Extracto bancario</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>¿Estás seguro de que quieres borrar el marcador "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Abrir el extracto bancario</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>

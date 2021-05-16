@@ -53,82 +53,312 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Jméno nového příjemce nesmí být prázdné nebo již existovat.</value>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Odstranění stránky</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Akcenty</value>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Je třeba vybrat zdrojový účet.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Symbol</value>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Vytvoří nový přenos</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Vytvoření nového finančního plánu</value>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Je třeba vybrat příjemce.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Předmět</value>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Převést na</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Datum</value>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Mezisoučet</value>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Jméno nového příjemce</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Průměrné výdaje za poslední tři měsíce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>Poznámka je určena k jakémukoli popisu záznamu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Dobře</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Pokud je tato možnost zaškrtnuta, vytvoří se kategorie příjmů.
-Pouze transakce přiřazené k takové kategorii budou interpretovány jako příjem.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Vytvořit</value>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Cesta k CSV transakcí YNAB:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
     <value>Vytvoří nový dělený výstup</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Úpravy účtů</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Přenos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Otevřít</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Jste si jisti, že kategorie "{0}" má být sloučena do kategorie "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Při vytváření záznamů došlo k chybě. Zkontrolujte konfiguraci.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Upravit značky</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Chybějící částka</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Částka, která byla tento měsíc darována, ale ještě nebyla zaznamenána v žádné kategorii.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Příjmy jsou relevantní?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Jazyk</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Konfigurace importu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Passwort</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Formát částky</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Počáteční zůstatek účtu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Soubor "{0}" se nepodařilo najít.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Datum účinnosti záznamu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Posted</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Zdrojový účet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Dokončeno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nepřidělené</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Zobrazit kontrolní čísla</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Celkem</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Akcenty</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Vytvoření nového finančního plánu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfigurace</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Součet všech transakcí, které nemají přiřazenou kategorii.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transakce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Formát měny</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Součet všech prostředků přidělených kategoriím v tomto měsíci.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Datum zahájení</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Ne</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Účty</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Otevření finančního plánu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Příjemce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Číslo Scheck</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Vytvoření prvního záznamu na účtu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Příjemce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Je třeba vybrat účet.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Chcete-li sloučit jednu kategorii s jinou, přetáhněte ikonu z tohoto sloupce ze zdrojového řádku a pusťte ji na cílový řádek.
+Cílová kategorie zdědí všechny položky účtu a podkategorie ze zdrojové kategorie.
+Pokud má dvojice podkategorií stejný název, zdrojová podkategorie se automaticky přejmenuje (doplní se číslo).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Cesta k souboru</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Uložit nový rozpočtový plán:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_SetTargetBalance" xml:space="preserve">
     <value>Nastavení cílového zůstatku na účtu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Nastavení</value>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Mezisoučet</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Vytvoří nové vydání</value>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Nastavení cílového zůstatku účtu umožňuje automatický výpočet chybějící částky.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Zrušit cílení</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Posun o měsíc dopředu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Značka vizuálně zvýrazňuje položku barvou a je zcela volitelná.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Úpravy účtů</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Zrušit</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Průměrné výdaje za poslední tři měsíce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Vytvoření nové kategorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Vytvoření nové značky</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Odstranění profilu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Opravdu chcete odstranit kategorii příjmů "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Datum</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Toto zaškrtnutí lze použít k rozlišení dokončených záznamů od těch, které ještě vyžadují revizi.
+Celkové částky lze zobrazit v nápovědě k zůstatku účtu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Překročení</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Vytvořit nový účet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Jste si jisti, že příjemce "{0}" má být sloučen s příjemcem "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Oddělovač</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Název nové značky</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
@@ -136,76 +366,250 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
 Například měsíční zápočet jedničky přesune příjem do následujícího měsíce a mínus jednička do předchozího měsíce.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Kliknutím zobrazíte a upravíte dílčí transakce.</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Jste si jisti, že příjmová kategorie "{0}" má být sloučena s příjmovou kategorií "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Kategorie příjmů</value>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>Finanční plán BFF (*.realm)|*.realm|Finanční plán BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Číslo Scheck</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Bankovní výpis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Částka, která minulý měsíc chyběla ke splnění všech kategorií.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Účty</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Odstranění stránky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Celkem</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Příjmy jsou relevantní?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Zobrazit kontrolní čísla</value>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
     <value>Aktuální částka</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Nastavení cílového zůstatku účtu umožňuje automatický výpočet chybějící částky.</value>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Transakce umožňuje tok peněz z účtu nebo na účet.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Vytvoření nové kategorie</value>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Soubor</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>Chybějící částka</value>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Název souboru této paměťové cesty je prázdný!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Vytvořit nový účet</value>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Mezisoučet zahrnuje položky, které je třeba ještě uložit.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Tato cesta k souboru neexistuje!</value>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Zůstatek na nule</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Vytvoření prvního záznamu na účtu</value>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Odstranit</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Zůstatek na účtu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Název účtu nesmí být prázdný nebo se podobat názvu existujícího účtu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Nezohledněno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Vyplňte všechny kolonky rozpočtu:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Jméno nového příjemce nesmí být prázdné nebo již existovat.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Kategorie příjmů</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Bilance</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Upravit příjemce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Dostupné na</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Účet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Zobrazení celkových hodnot</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Zůstatek na účtu ke stanovenému počátečnímu datu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Jste si jistý?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Značky</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Je třeba vybrat cílový účet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Hodnota rozpočtu za poslední měsíc</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Vždy skrýt názvy sloupců v tabulce úprav</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Tento název již pro vybranou úroveň kategorie existuje!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Zrušit cílení</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Jednostranné převody se mohou objevit po vymazání účtu. Je třeba je zohlednit, protože pro účely účetnictví nejsou neutrální.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Údaje v záhlaví</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value>Uloží aktuálně upravované prvky do účtu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Pomocí tohoto voliče data můžete přejít na libovolný měsíc (na dni nezáleží).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Účet, ke kterému záznam patří.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Formát příjemce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Název nové kategorie nesmí být prázdný!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Rozdíl mezi cílovým zůstatkem účtu a mezisoučtem.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Pokud je tato možnost zaškrtnuta, vytvoří se kategorie příjmů.
+Pouze transakce přiřazené k takové kategorii budou interpretovány jako příjem.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Uložit nový profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Na této úrovni kategorie již existuje kategorie se zvoleným názvem!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Přenos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Před přidáním záznamu musí být vybrán účet.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Všechny účty</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Uložit profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Celkový součet překročení rozpočtu za všechny kategorie v minulém měsíci.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Výdaje</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Celkový zůstatek účtu s ohledem na záznamy s budoucím datem.
+Lepší rozlišení najdete v nápovědě k nástroji.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Vytvoření nového příjemce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Symboly ukazují, o jaký typ účetního záznamu se jedná.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Dobře</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Formát data</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Příjmový záznam označuje transakci, která je považována za příjem.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Rozpočet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Vytvořit</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Pokud jsou aktivovány součty, hodnoty podkategorií se přičtou k vlastní hodnotě.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Záznamy</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Cíl exportu</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -215,413 +619,28 @@ Vzhledem k tomu, že kategorie mohou být hierarchické, zobrazuje se v nápově
 Pokud se jedná o převod, zadává se zde cílový účet.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Chcete-li sloučit jednu kategorii příjmů s jinou, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
-Cílová kategorie příjmů zdědí všechny účetní položky ze zdrojové kategorie příjmů a zachová si měsíční zápočet.</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Předmět</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Údaje v záhlaví</value>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Mezisoučet</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Toto zaškrtnutí lze použít k rozlišení dokončených záznamů od těch, které ještě vyžadují revizi.
-Celkové částky lze zobrazit v nápovědě k zůstatku účtu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Jste si jisti, že kategorie "{0}" má být sloučena do kategorie "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Příjmový záznam označuje transakci, která je považována za příjem.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>Účet, ke kterému záznam patří.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Přenos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Zobrazení celkových hodnot</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Příjemce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Dokončeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Účet</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Otevření finančního plánu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Kategorie příjmů</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Dokončeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Formát poznámky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>Přesun o měsíc zpět</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Vytvoření nového placeného</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Uložit nový rozpočtový plán:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Posted</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Oddělovač</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Zavřít</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>Mezisoučet zahrnuje položky, které je třeba ještě uložit.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Vytvořit nového příjemce, pokud neexistuje?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
+  <data name="Domain_Categories" xml:space="preserve">
     <value>Kategorie</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Odstranění profilu</value>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Hodnota je mimo rozsah platnosti: [ {0} .. {1} ]!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>Částka, která tento měsíc chybí ke splnění všech kategorií.</value>
+  <data name="General_Name" xml:space="preserve">
+    <value>Název</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Vyplňte všechny prázdné buňky rozpočtu:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Vytvoření nového příjemce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>Soubor</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Adresář z cesty k uložení neexistuje!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Upravit příjemce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Vytvoření nové značky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Je třeba vybrat kategorii.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Určitě chcete, aby se značka "{0}" sloučila se značkou "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Stručně</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Procházet</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Jste si jisti, že příjemce "{0}" má být sloučen s příjemcem "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Opravdu chcete odstranit kategorii příjmů "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Empty" xml:space="preserve">
-    <value>Zatím nebyl načten žádný účetní projekt.
-Vytvoření, otevření nebo import projektu
-otevřete nabídku souborů v levém horním rohu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>Finanční plán BFF (*.realm)|*.realm|Finanční plán BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Formát částky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Částka</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Pomocí tohoto voliče data můžete přejít na libovolný měsíc (na dni nezáleží).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Cesta k CSV rozpočtu YNAB:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Zdrojový účet</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Jste si jisti, že příjmová kategorie "{0}" má být sloučena s příjmovou kategorií "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>Datum účinnosti záznamu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Ne</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Pokud je vybrána nadřazená kategorie, bude k ní nová kategorie připojena jako podkategorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Bilance</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>Tím dojde ke smazání účtu a všech jeho transakcí, úplné převody se stanou jednostrannými a problém s rozpočtem specifický pro daný účet zmizí.
-
-Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnovit stav před smazáním).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Zůstatek na nule</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>Při vytváření záznamů došlo k chybě. Zkontrolujte konfiguraci.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Toto vstupní pole nesmí zůstat prázdné!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Jednostranné převody se mohou objevit po vymazání účtu. Je třeba je zohlednit, protože pro účely účetnictví nejsou neutrální.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Je třeba vybrat zdrojový účet.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Název nové značky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Stisknutím tlačítka v tomto sloupci odstraníte prvek příslušného řádku.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Barva</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Superponovaná kategorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>Název nové kategorie nesmí být prázdný!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Formát příjemce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Počáteční zůstatek účtu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Příjmová transakce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>Je třeba vybrat příjemce.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Příjmy</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Odstranit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Uložit nový profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Rozdíl mezi cílovým zůstatkem účtu a mezisoučtem.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Hodnota rozpočtu za poslední měsíc</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Rozpočet</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Nepřidělené</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Je třeba vybrat účet.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Přeplněné stránky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Vždy skrýt názvy sloupců v tabulce úprav</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Tento text nelze analyzovat jako měnu!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Aktuální</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Chcete-li sloučit jednoho příjemce s jiným, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a přenést jej na cílový řádek.
-Cílový příjemce převezme všechny záznamy na účtu od zdrojového příjemce.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Nezohledněno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>Součet položky.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>Název nové kategorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Transakce umožňuje tok peněz z účtu nebo na účet.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>Značka vizuálně zvýrazňuje položku barvou a je zcela volitelná.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Cílový zůstatek na účtu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>V případě potřeby zde můžete zadat číslo kontroly.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Importieren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Zde se zadává vyplácená nebo platící osoba.
-
-Pokud se jedná o převod, zadává se zde zdrojový účet.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Průměrné výdaje za poslední rok</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Všechny účty</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Zrušit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Konfigurace importu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Formát data</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongFlagName" xml:space="preserve">
@@ -632,138 +651,24 @@ Pokud se jedná o převod, zadává se zde zdrojový účet.</value>
     <value>Chybějící částka</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Import a uložení pod následující cestou:</value>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Jednostranné převody</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Cesta k CSV transakcí YNAB:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Cesta k souboru</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Název</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Zůstatek na účtu ke stanovenému počátečnímu datu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negativ</value>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superponovaná kategorie</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
     <value>Částka, která byla poskytnuta minulý měsíc, ale nebyla zaznamenána v žádné kategorii.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>Výdaje</value>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Opravdu chcete odstranit příjemce "{0}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Součet všech transakcí, které nemají přiřazenou kategorii.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Chcete-li sloučit jednu kategorii s jinou, přetáhněte ikonu z tohoto sloupce ze zdrojového řádku a pusťte ji na cílový řádek.
-Cílová kategorie zdědí všechny položky účtu a podkategorie ze zdrojové kategorie.
-Pokud má dvojice podkategorií stejný název, zdrojová podkategorie se automaticky přejmenuje (doplní se číslo).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Posun o měsíc dopředu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Jazyk</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>Soubor "{0}" se nepodařilo najít.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Formát data</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Formát data</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Zůstatek na účtu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Otevřít</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Transakce</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Datum zahájení</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Opravdu chcete odstranit kategorii "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Mezisoučet</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Prostřednictvím</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Uložit profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Vyplňte všechny kolonky rozpočtu:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Pokud jsou aktivovány součty, hodnoty podkategorií se přičtou k vlastní hodnotě.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>Na této úrovni kategorie již existuje kategorie se zvoleným názvem!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Zrušit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Součet všech prostředků přidělených kategoriím v tomto měsíci.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Jste si jistý?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Opravdu chcete odstranit značku "{0}"?</value>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Zobrazit značky</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_MonthOffset" xml:space="preserve">
@@ -774,141 +679,157 @@ Pokud má dvojice podkategorií stejný název, zdrojová podkategorie se automa
     <value>Vydělaná částka přidělená na výdaje v tomto měsíci.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Kategorie</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Prostřednictvím</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Celkový zůstatek účtu s ohledem na záznamy s budoucím datem.
-Lepší rozlišení najdete v nápovědě k nástroji.</value>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Hodnota je mimo rozsah platnosti: [ {0} .. {1} ]!</value>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Toto vstupní pole nesmí zůstat prázdné!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Vytvoření nového placeného</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Konfigurace</value>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Kliknutím zobrazíte a upravíte dílčí transakce.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Značky</value>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Tento text nelze analyzovat jako měnu!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>obnovení profilu</value>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Vyplňte všechny prázdné buňky rozpočtu:</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Upravit značky</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Symboly ukazují, o jaký typ účetního záznamu se jedná.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Nepřidělené</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Záznamy</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Vytvořit novou značku</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Passwort</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Celkový součet překročení rozpočtu za všechny kategorie v minulém měsíci.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>Název účtu nesmí být prázdný nebo se podobat názvu existujícího účtu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Opravdu chcete odstranit příjemce "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Přenos</value>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Název nové kategorie</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
     <value>Notiz</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Název souboru této paměťové cesty je prázdný!</value>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Aktuální</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Před přidáním záznamu musí být vybrán účet.</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Formát poznámky</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Částka, která byla tento měsíc darována, ale ještě nebyla zaznamenána v žádné kategorii.</value>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>obnovení profilu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Import</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Procházet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Zatím nebyl načten žádný účetní projekt.
+Vytvoření, otevření nebo import projektu
+otevřete nabídku souborů v levém horním rohu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Opravdu chcete odstranit kategorii "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Vytvořit novou značku</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Adresář z cesty k uložení neexistuje!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Cílový zůstatek na účtu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Chcete-li sloučit jednoho příjemce s jiným, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a přenést jej na cílový řádek.
+Cílový příjemce převezme všechny záznamy na účtu od zdrojového příjemce.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Součet položky.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Částka, která tento měsíc chybí ke splnění všech kategorií.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Je třeba vybrat kategorii.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Jednostranné převody</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Stisknutím tlačítka v tomto sloupci odstraníte prvek příslušného řádku.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Určitě chcete, aby se značka "{0}" sloučila se značkou "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Přeplněné stránky</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Stručně</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Příjmová transakce</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Nastavení</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Zavřít</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
     <value>Chybějící částka s výjimkou nepředložených záznamů</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Vytvořit novou kategorii</value>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Zobrazit značky</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Přesun o měsíc zpět</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>Překročení</value>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Zrušit</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Je třeba vybrat cílový účet</value>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Otevřený bankovní výpis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Výdaje za poslední měsíc</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Cíl exportu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Test4" xml:space="preserve">
-    <value>A ještě jednou. Tolik zábavy.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Převést na</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Dostupné na</value>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Tím dojde ke smazání účtu a všech jeho transakcí, úplné převody se stanou jednostrannými a problém s rozpočtem specifický pro daný účet zmizí.
+
+Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnovit stav před smazáním).</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
@@ -916,32 +837,103 @@ Lepší rozlišení najdete v nápovědě k nástroji.</value>
 Cílová značka přebírá všechny položky účtu ze zdrojové značky a zachovává si svou vlastní barvu.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Jméno nového příjemce</value>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Vytvoří nové vydání</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Formát měny</value>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Poznámka je určena k jakémukoli popisu záznamu.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
-    <value>Rychlý test</value>
+  <data name="Color" xml:space="preserve">
+    <value>Barva</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>V případě potřeby zde můžete zadat číslo kontroly.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Příjmy</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Částka, která minulý měsíc chyběla ke splnění všech kategorií.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Zde se zadává vyplácená nebo platící osoba.
+
+Pokud se jedná o převod, zadává se zde zdrojový účet.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Vytvořit novou kategorii</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Cesta k CSV rozpočtu YNAB:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
     <value>Převodem se převádějí peníze z jednoho účtu na druhý.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>Tento název již pro vybranou úroveň kategorie existuje!</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Kategorie příjmů</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Příjemce</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Tato cesta k souboru neexistuje!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Vytvoří nový přenos</value>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Dokončeno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Import a uložení pod následující cestou:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Výdaje za poslední měsíc</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Částka</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Pokud je vybrána nadřazená kategorie, bude k ní nová kategorie připojena jako podkategorie.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Vytvořit nového příjemce, pokud neexistuje?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nepřidělené</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Průměrné výdaje za poslední rok</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Chcete-li sloučit jednu kategorii příjmů s jinou, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
+Cílová kategorie příjmů zdědí všechny účetní položky ze zdrojové kategorie příjmů a zachová si měsíční zápočet.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bankovní výpis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Opravdu chcete odstranit značku "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Otevřený bankovní výpis</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>
