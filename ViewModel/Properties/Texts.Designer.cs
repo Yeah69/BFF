@@ -1623,20 +1623,11 @@ namespace BFF.View.Wpf.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gut gut. Dies ist ein Test..
+        ///   Looks up a localized string similar to Und noch ein Mal. So viel Spaß..
         /// </summary>
-        internal static string Test {
+        internal static string Test3 {
             get {
-                return ResourceManager.GetString("Test", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dies ist schon der zweite Test..
-        /// </summary>
-        internal static string Test2 {
-            get {
-                return ResourceManager.GetString("Test2", resourceCulture);
+                return ResourceManager.GetString("Test3", resourceCulture);
             }
         }
         
