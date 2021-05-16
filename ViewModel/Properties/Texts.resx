@@ -783,4 +783,7 @@ Wenn der Eintrag ein Transfer ist, dann wird hier das Quellkonto eingetragen.</v
   <data name="Test4" xml:space="preserve">
     <value>Und noch ein Mal. So viel Spaß.</value>
   </data>
+  <data name="Test 5" xml:space="preserve">
+    <value>Schnelltest</value>
+  </data>
 </root>
