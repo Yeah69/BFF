@@ -35,7 +35,7 @@ jobs:
           auth: ${{ secrets.DEEPL_API_AUTH_KEY }}
 
       - name: create-pull-request
-        uses: peter-evans/create-pull-request@v3.4.1
+        uses: peter-evans/create-pull-request@v3.9.2
         if: ${{ steps.translator.outputs.has-new-translations }} == 'true'
         with:
           title: '${{ steps.translator.outputs.summary-title }}'
