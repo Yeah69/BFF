@@ -42,7 +42,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
-        private readonly ILocalizer _localizer;
 
         /// <summary>
         /// Starting balance of the Account
@@ -80,7 +79,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
-            ILocalizer localizer,
             IMainWindowDialogManager mainWindowDialogManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
@@ -104,7 +102,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
-            _localizer = localizer;
 
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
@@ -245,8 +242,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    _localizer.Localize("Account_Delete_ConfirmationMessage"),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    "", // ToDo _localizer.Localize("Account_Delete_ConfirmationMessage"),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)

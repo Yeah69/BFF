@@ -5,6 +5,7 @@ using BFF.ViewModel.ViewModels.Import;
 using ControlzEx.Theming;
 using MahApps.Metro.Controls.Dialogs;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -12,7 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using WPFLocalizeExtension.Providers;
 
 namespace BFF.View.Wpf.Views
 {
@@ -40,8 +40,8 @@ namespace BFF.View.Wpf.Views
 
             void InitializeCultureComboBoxes()
             {
-                LanguageCombo.ItemsSource = ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !Equals(culture, CultureInfo.InvariantCulture));
-                LanguageCombo.SelectedItem = Settings.Default.Culture_DefaultLanguage;
+                //LanguageCombo.ItemsSource = currentTextsViewModel.AvailableOptions; //ResxLocalizationProvider.Instance.AvailableCultures.Where(culture => !Equals(culture, CultureInfo.InvariantCulture));
+                //LanguageCombo.SelectedItem = Settings.Default.Culture_DefaultLanguage;
                 
                 foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.AllCultures).ToList().OrderBy(x => x.Name))
                 {

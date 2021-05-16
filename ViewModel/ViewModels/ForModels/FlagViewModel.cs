@@ -24,7 +24,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     internal class FlagViewModel : CommonPropertyViewModel, IFlagViewModel
     {
         private readonly IFlag _flag;
-        private readonly ILocalizer _localizer;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
@@ -32,14 +31,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public FlagViewModel(
             IFlag flag,
-            ILocalizer localizer,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
             ISummaryAccountViewModel summaryAccountViewModel,
             IRxSchedulerProvider rxSchedulerProvider) : base(flag, rxSchedulerProvider)
         {
             _flag = flag;
-            _localizer = localizer;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
             _summaryAccountViewModel = summaryAccountViewModel;
@@ -57,8 +54,10 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    string.Format(_localizer.Localize("ConfirmationDialog_ConfirmFlagDeletion"), Name),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    string.Format(
+                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmFlagDeletion"), 
+                        Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)
@@ -85,8 +84,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    string.Format(_localizer.Localize("ConfirmationDialog_ConfirmFlagMerge"), Name, target.Name),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    string.Format(
+                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmFlagMerge"),
+                        Name, 
+                        target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)

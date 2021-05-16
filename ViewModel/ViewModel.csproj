@@ -4,6 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>BFF.ViewModel</RootNamespace>
     <AssemblyName>BFF.ViewModel</AssemblyName>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +19,10 @@
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MrMeeseeks" Version="69.0.24" />
     <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.24" />
+    <PackageReference Include="MrMeeseeks.ResXToViewModelGenerator" Version="69.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MrMeeseeks.Windows" Version="69.0.24" />
     <PackageReference Include="MuVaViMo" Version="0.4.0" />
     <PackageReference Include="NLog" Version="4.7.9" />
@@ -25,6 +31,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Texts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -90,10 +90,9 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         public NewFileAccessViewModel(
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
             Func<IBffSaveFileDialog> bffSaveFileDialogFactory,
-            ICreateFileAccessConfiguration createFileAccessConfiguration,
-            ILocalizer localizer) 
+            ICreateFileAccessConfiguration createFileAccessConfiguration) 
             : base(
-                localizer.Localize("OpenSaveDialog_TitleNew"),
+                "", // ToDo currentTextsViewModel.CurrentTexts.OpenSaveDialog_TitleNew,
                 passwordProtectedFileAccessViewModelFactory,
                 createFileAccessConfiguration)
         {
@@ -104,8 +103,8 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                     () =>
                     {
                         var bffSaveFileDialog = bffSaveFileDialogFactory();
-                        bffSaveFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleNew");
-                        bffSaveFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
+                        bffSaveFileDialog.Title = ""; // ToDo currentTextsViewModel.CurrentTexts.OpenSaveDialog_TitleNew;
+                        bffSaveFileDialog.Filter = ""; // ToDo currentTextsViewModel.CurrentTexts.OpenSaveDialog_Filter;
                         bffSaveFileDialog.DefaultExt = "*.realm";
                         if (bffSaveFileDialog.ShowDialog() == true)
                         {
@@ -126,10 +125,9 @@ namespace BFF.ViewModel.ViewModels.Dialogs
         public OpenFileAccessViewModel(
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
             Func<IBffOpenFileDialog> bffOpenFileDialogFactory,
-            ICreateFileAccessConfiguration createFileAccessConfiguration,
-            ILocalizer localizer)
+            ICreateFileAccessConfiguration createFileAccessConfiguration)
             : base(
-                localizer.Localize("OpenSaveDialog_TitleOpen"),
+                "", // ToDo localizer.Localize("OpenSaveDialog_TitleOpen"),
                 passwordProtectedFileAccessViewModelFactory, 
                 createFileAccessConfiguration)
         {
@@ -140,8 +138,8 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                     () =>
                     {
                         var bffOpenFileDialog = bffOpenFileDialogFactory();
-                        bffOpenFileDialog.Title = localizer.Localize("OpenSaveDialog_TitleOpen");
-                        bffOpenFileDialog.Filter = localizer.Localize("OpenSaveDialog_Filter");
+                        bffOpenFileDialog.Title = ""; // ToDo localizer.Localize("OpenSaveDialog_TitleOpen");
+                        bffOpenFileDialog.Filter = ""; // ToDo localizer.Localize("OpenSaveDialog_Filter");
                         bffOpenFileDialog.DefaultExt = "*.realm";
                         if (bffOpenFileDialog.ShowDialog() == true)
                         {

@@ -55,11 +55,10 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             Func<IBffOpenFileDialog> openFileDialogFactory,
             IRxSchedulerProvider schedulerProvider,
             IBffSettings bffSettings,
-            ILocalizer localizer,
             Func<(DateTime? Date, string? Payee, bool CreatePayeeIfNotExisting, string? Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory) 
-            : base(localizer.Localize(""))
+            : base("") // ToDo localizer.Localize(""))
         {
             Profiles = csvBankStatementProfileManger.Profiles.Transform(profileViewModelFactory);
             
@@ -169,9 +168,9 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         var bffOpenFileDialog = openFileDialogFactory();
                         bffOpenFileDialog.Multiselect = false;
                         bffOpenFileDialog.DefaultExt = "csv";
-                        bffOpenFileDialog.Filter = $"{localizer.Localize("Domain_BankStatement")} (*.csv)|*.csv";
+                        bffOpenFileDialog.Filter = $"{""} (*.csv)|*.csv"; // ToDo localizer.Localize("Domain_BankStatement")
                         bffOpenFileDialog.FileName = "";
-                        bffOpenFileDialog.Title = localizer.Localize("Domain_OpenBankStatement");
+                        bffOpenFileDialog.Title = ""; // ToDo localizer.Localize("Domain_OpenBankStatement");
                         if (bffOpenFileDialog.ShowDialog() == true)
                         {
                             FilePath.Value = bffOpenFileDialog.FileName;

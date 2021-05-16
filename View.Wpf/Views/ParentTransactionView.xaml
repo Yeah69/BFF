@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
              x:Name="Root"
@@ -48,7 +47,7 @@
             <DataGrid.Columns>
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
-                                        Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource TextsHolder}}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource TransactionBrush}"
@@ -59,51 +58,51 @@
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}"
-                                       ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                                       ToolTip="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr_Tooltip, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
                                         CellTemplate="{StaticResource AccountEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Account}"
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                         Visibility="{Binding Data, Source={StaticResource ParentAccountColumnVisibility}}" />
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellTemplate="{StaticResource DateEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Date}" />
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
                                         CellTemplate="{StaticResource FlagEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Flag}"
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                         Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}" />
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
                                         CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_CheckNumber}"
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                         Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellTemplate="{StaticResource PayeeEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Payee}" />
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <!--  Category  -->
                 <DataGridTemplateColumn x:Name="CategoryColumn"
                                         CellTemplate="{StaticResource ParentCategoryEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Category}" />
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         CellTemplate="{StaticResource MemoEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Memo}" />
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn x:Name="SumColumn"
                                         CellTemplate="{StaticResource ParentSumEditingColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Sum}"
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                         IsReadOnly="False" />
                 <!--  Cleared  -->
                 <DataGridTemplateColumn x:Name="ClearedColumn"
                                         CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                        Header="{lex:Loc AccountView_Header_Cleared}"
+                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                         IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
@@ -201,20 +200,20 @@
                             <TextBlock Grid.Row="0"
                                        Grid.Column="0"
                                        Margin="2.5">
-                                <Run Text="{lex:Loc ParentTransEditingView_CurrentSum}" />
+                                <Run Text="{Binding Value.CurrentTexts.ParentTransEditingView_CurrentSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                 <Run Text=":" />
                             </TextBlock>
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        Margin="2.5"
                                        Visibility="{Binding NewSubTransactions.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}">
-                                <Run Text="{lex:Loc ParentTransEditingView_IntermediateSum}" />
+                                <Run Text="{Binding Value.CurrentTexts.ParentTransEditingView_IntermediateSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                 <Run Text=":" />
                             </TextBlock>
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
                                        Margin="2.5">
-                                <Run Text="{lex:Loc AccountView_MissingSum}" />
+                                <Run Text="{Binding Value.CurrentTexts.AccountView_MissingSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                 <Run Text=":" />
                             </TextBlock>
                             <TextBlock Grid.Row="0"

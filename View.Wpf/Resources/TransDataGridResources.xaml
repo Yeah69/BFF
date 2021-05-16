@@ -1,13 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                    xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension">
+                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.DataGrid.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ContextMenu x:Key="RowMenu">
-        <MenuItem Command="{Binding DeleteCommand}" Header="{lex:Loc AccountView_ConMenu_Delete}">
+        <MenuItem Command="{Binding DeleteCommand}" Header="{Binding Value.CurrentTexts.AccountView_ConMenu_Delete, Mode=OneWay, Source={StaticResource TextsHolder}}">
             <MenuItem.Icon>
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
@@ -18,7 +17,7 @@
     </ContextMenu>
 
     <ContextMenu x:Key="NewRowMenu">
-        <MenuItem Command="{Binding RemoveCommand}" Header="{lex:Loc AccountView_ConMenu_Remove}">
+        <MenuItem Command="{Binding RemoveCommand}" Header="{Binding Value.CurrentTexts.AccountView_ConMenu_Remove, Mode=OneWay, Source={StaticResource TextsHolder}}">
             <MenuItem.Icon>
                 <iconPacks:PackIconOcticons Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"

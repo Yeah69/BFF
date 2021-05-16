@@ -33,7 +33,6 @@ namespace BFF.ViewModel.ViewModels
 
     internal class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
     {
-        private readonly ILocalizer _localizer;
         private readonly IFlagViewModelService _flagViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new();
@@ -41,10 +40,8 @@ namespace BFF.ViewModel.ViewModels
 
         public NewFlagViewModel(
             ICreateNewModels createNewModels,
-            ILocalizer localizer,
             IFlagViewModelService flagViewModelService)
         {
-            _localizer = localizer;
             _flagViewModelService = flagViewModelService;
 
             Brush = new ReactiveProperty<Color>(Color.BlueViolet);
@@ -115,7 +112,8 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                SetErrors(_localizer.Localize("ErrorMessageWrongFlagName").ToEnumerable(), nameof(Text));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongFlagName")
+                    .ToEnumerable(), nameof(Text));
                 ret = false;
             }
             OnErrorChanged(nameof(Text));

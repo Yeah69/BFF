@@ -11,7 +11,9 @@
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
              xmlns:views="clr-namespace:BFF.View.Wpf.Views"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
+             xmlns:wpf="clr-namespace:BFF.View.Wpf"
              Startup="Application_Startup"
+             x:Name="This"
              mc:Ignorable="d">
     <!--  DispatcherUnhandledException="Application_DispatcherUnhandledException">  -->
     <Application.Resources>
@@ -25,6 +27,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml" />
                 <ResourceDictionary Source="/BFF.View.Wpf;component/Resources/HamburgerMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <wpf:TextsHolder x:Key="TextsHolder" />
 
             <DataTemplate x:Key="EmptyDataTemplate" />
 

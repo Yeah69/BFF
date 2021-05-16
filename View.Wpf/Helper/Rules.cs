@@ -1,5 +1,4 @@
 ﻿using BFF.Properties;
-using BFF.View.Wpf.Extensions;
 using BFF.ViewModel.ViewModels.ForModels;
 using System;
 using System.Globalization;
@@ -14,20 +13,20 @@ namespace BFF.View.Wpf.Helper
             LambdaConverters.Validator.Create<IPayeeViewModel>(
                 e => e.Value is not null
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ErrorMessageEmptyPayee".Localize()));
+                    : new ValidationResult(false, "ErrorMessageEmptyPayee")); // ToDo Localization
 
         public static ValidationRule EmptyCategory =
             LambdaConverters.Validator.Create<ICategoryBaseViewModel>(
                 e => e.Value is not null
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ErrorMessageEmptyCategory".Localize()));
+                    : new ValidationResult(false, "ErrorMessageEmptyCategory")); // ToDo Localization
 
         public static ValidationRule Currency =
             LambdaConverters.Validator.Create<string>(
                 e => decimal.TryParse(e.Value, NumberStyles.Currency,
                     Settings.Default.Culture_SessionCurrency.NumberFormat, out decimal _)
                     ? ValidationResult.ValidResult 
-                    : new ValidationResult(false, "ValidationRule_Currency".Localize()));
+                    : new ValidationResult(false, "ValidationRule_Currency")); // ToDo Localization
 
         public static ValidationRule CurrencyLongRange =
             LambdaConverters.Validator.Create<string>(
@@ -35,7 +34,7 @@ namespace BFF.View.Wpf.Helper
                 {
                     CultureInfo currencyCulture = Settings.Default.Culture_SessionCurrency;
                     decimal factor = (decimal) Math.Pow(10, currencyCulture.NumberFormat.CurrencyDecimalDigits);
-                    string message = "ValidationRule_CurrencyLongRange".Localize();
+                    string message = "ValidationRule_CurrencyLongRange"; // ToDo Localization
                     message = string.Format(message,
                         (long.MinValue / factor).ToString("C", currencyCulture.NumberFormat),
                         (long.MaxValue / factor).ToString("C", currencyCulture.NumberFormat));
@@ -57,18 +56,18 @@ namespace BFF.View.Wpf.Helper
             LambdaConverters.Validator.Create<string>(
                 e => e.Value is not null && !string.IsNullOrEmpty(new FileInfo(e.Value).Name)
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath_EmptyName".Localize()));
+                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath_EmptyName")); // ToDo Localization
 
         public static ValidationRule NotExistingFilePath =
             LambdaConverters.Validator.Create<string>(
                 e => File.Exists(e.Value)
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ValidationRule_NotExistingFilePath".Localize()));
+                    : new ValidationResult(false, "ValidationRule_NotExistingFilePath")); // ToDo Localization
 
         public static ValidationRule NotExistingSavePath =
             LambdaConverters.Validator.Create<string>(
                 e => e.Value is not null && Directory.Exists(new FileInfo(e.Value).DirectoryName)
                     ? ValidationResult.ValidResult
-                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath".Localize()));
+                    : new ValidationResult(false, "ValidationRule_NotExistingSavePath")); // ToDo Localization
     }
 }

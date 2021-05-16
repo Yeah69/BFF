@@ -37,7 +37,6 @@ namespace BFF.ViewModel.ViewModels
 
     internal class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
     {
-        private readonly ILocalizer _localizer;
         private readonly IPayeeViewModelService _payeeViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new();
@@ -45,10 +44,8 @@ namespace BFF.ViewModel.ViewModels
 
         public NewPayeeViewModel(
             ICreateNewModels createNewModels,
-            ILocalizer localizer,
             IPayeeViewModelService payeeViewModelService)
         {
-            _localizer = localizer;
             _payeeViewModelService = payeeViewModelService;
 
             AddPayeeCommand = RxCommand
@@ -115,7 +112,8 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                SetErrors(_localizer.Localize("ErrorMessageWrongPayeeName").ToEnumerable(), nameof(PayeeText));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongPayeeName")
+                    .ToEnumerable(), nameof(PayeeText));
                 ret = false;
             }
             OnErrorChanged(nameof(PayeeText));

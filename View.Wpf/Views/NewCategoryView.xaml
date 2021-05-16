@@ -4,7 +4,6 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
@@ -29,7 +28,7 @@
                        Grid.Column="0"
                        Margin="5,0,5,0"
                        VerticalAlignment="Center">
-                <Run Text="{lex:Loc NameOfNewCategory}" />
+                <Run Text="{Binding Value.CurrentTexts.NameOfNewCategory, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <Run Text=":" />
             </TextBlock>
             <TextBox x:Name="FocusMe"
@@ -42,8 +41,8 @@
                        Grid.Column="0"
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
-                       Text="{lex:Loc NewCategory_IsIncomeRelevant}"
-                       ToolTip="{lex:Loc NewCategory_IncomeRelevantExplanation}" />
+                       Text="{Binding Value.CurrentTexts.NewCategory_IsIncomeRelevant, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                       ToolTip="{Binding Value.CurrentTexts.NewCategory_IncomeRelevantExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <CheckBox x:Name="IsIncomeRelevant"
                       Grid.Row="1"
                       Grid.Column="1"
@@ -54,7 +53,7 @@
                        Grid.Column="0"
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
-                       ToolTip="{lex:Loc ToolTip_Category_MonthOffset}">
+                       ToolTip="{Binding Value.CurrentTexts.ToolTip_Category_MonthOffset, Mode=OneWay, Source={StaticResource TextsHolder}}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                            TargetType="{x:Type TextBlock}">
@@ -66,7 +65,7 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-                <Run Text="{lex:Loc NewCategory_MonthOffset}" />
+                <Run Text="{Binding Value.CurrentTexts.NewCategory_MonthOffset, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <Run Text=":" />
             </TextBlock>
             <controls:NumericUpDown Grid.Row="2"
@@ -88,7 +87,7 @@
                        Grid.Column="0"
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
-                       ToolTip="{lex:Loc ToolTip_Category_SuperiorCategory}">
+                       ToolTip="{Binding Value.CurrentTexts.ToolTip_Category_SuperiorCategory, Mode=OneWay, Source={StaticResource TextsHolder}}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}"
                            TargetType="{x:Type TextBlock}">
@@ -100,7 +99,7 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-                <Run Text="{lex:Loc SuperiorCategory}" />
+                <Run Text="{Binding Value.CurrentTexts.SuperiorCategory, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <Run Text=":" />
             </TextBlock>
             <DockPanel Grid.Row="2"
@@ -149,7 +148,7 @@
                     HorizontalAlignment="Right"
                     Click="AddButton_OnClick"
                     Command="{Binding AddCommand}"
-                    ToolTip="{lex:Loc CreateNewCategory}">
+                    ToolTip="{Binding Value.CurrentTexts.CreateNewCategory, Mode=OneWay, Source={StaticResource TextsHolder}}">
                 <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                             Kind="{StaticResource AddIcon}"
                                             Style="{StaticResource CellIconMaterial}" />

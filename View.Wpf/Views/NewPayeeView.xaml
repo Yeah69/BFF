@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              d:DataContext="{d:DesignInstance viewModels:INewPayeeViewModel}"
@@ -16,7 +15,7 @@
             <TextBlock Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        DockPanel.Dock="Left">
-                <Run Text="{lex:Loc NameOfNewPayee}" />
+                <Run Text="{Binding Value.CurrentTexts.NameOfNewPayee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <Run Text=":" />
             </TextBlock>
             <TextBox x:Name="FocusMe"
@@ -29,7 +28,7 @@
         <Button HorizontalAlignment="Right"
                 Click="AddButton_OnClick"
                 Command="{Binding AddPayeeCommand}"
-                ToolTip="{lex:Loc CreateNewPayee}">
+                ToolTip="{Binding Value.CurrentTexts.CreateNewPayee, Mode=OneWay, Source={StaticResource TextsHolder}}">
             <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                         Kind="{StaticResource AddIcon}"
                                         Style="{StaticResource CellIconMaterial}" />

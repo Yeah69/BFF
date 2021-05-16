@@ -3,7 +3,6 @@
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:dialogs="clr-namespace:BFF.ViewModel.ViewModels.Dialogs;assembly=BFF.ViewModel"
-                               xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
                                d:DataContext="{d:DesignInstance dialogs:IOpenFileAccessViewModel}"
@@ -30,7 +29,7 @@
             <Label Grid.Row="0"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
-                   Content="{lex:Loc SaveNewBudgetPlanTo}" />
+                   Content="{Binding Value.CurrentTexts.SaveNewBudgetPlanTo, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <TextBox x:Name="PathTextBox"
                      Grid.Row="1"
                      Grid.Column="0"
@@ -50,11 +49,11 @@
                     Grid.Column="1"
                     Margin="5"
                     Command="{Binding BrowseCommand}"
-                    Content="{lex:Loc ImportView_Browse}" />
+                    Content="{Binding Value.CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <Label Grid.Row="2"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
-                   Content="{lex:Loc ImportView_Password}"
+                   Content="{Binding Value.CurrentTexts.ImportView_Password, Mode=OneWay, Source={StaticResource TextsHolder}}"
                    Visibility="{Binding PasswordConfiguration, Converter={x:Static helper:Converters.NullToCollapsed}}" />
             <ContentControl Grid.Row="3"
                             Grid.Column="0"
@@ -65,10 +64,10 @@
             <Button Margin="5"
                     HorizontalAlignment="Right"
                     Command="{Binding CancelCommand}"
-                    Content="{lex:Loc General_Cancel}" />
+                    Content="{Binding Value.CurrentTexts.General_Cancel, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <Button Margin="5"
                     Command="{Binding OkCommand}"
-                    Content="{lex:Loc General_Okay}">
+                    Content="{Binding Value.CurrentTexts.General_Okay, Mode=OneWay, Source={StaticResource TextsHolder}}">
                 <Button.Style>
                     <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
                            TargetType="{x:Type Button}">

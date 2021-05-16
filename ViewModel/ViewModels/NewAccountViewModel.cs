@@ -38,7 +38,6 @@ namespace BFF.ViewModel.ViewModels
 
     internal class NewAccountViewModel : NotifyingErrorViewModelBase, INewAccountViewModel, IDisposable
     {
-        private readonly ILocalizer _localizer;
         private readonly IBffSettings _bffSettings;
         private readonly IAccountViewModelService _viewModelService;
 
@@ -48,13 +47,11 @@ namespace BFF.ViewModel.ViewModels
 
         public NewAccountViewModel(
             ICreateNewModels createNewModels,
-            ILocalizer localizer,
             IBffSettings bffSettings,
             IBackendCultureManager cultureManager,
             ISummaryAccountViewModel summaryAccountViewModel,
             IAccountViewModelService viewModelService)
         {
-            _localizer = localizer;
             _bffSettings = bffSettings;
             _viewModelService = viewModelService;
 
@@ -152,7 +149,8 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                SetErrors(_localizer.Localize("ErrorMessageWrongAccountName").ToEnumerable(), nameof(Name));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongAccountName")
+                    .ToEnumerable(), nameof(Name));
                 ret = false;
             }
             OnErrorChanged(nameof(Name));

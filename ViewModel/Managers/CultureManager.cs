@@ -30,17 +30,14 @@ namespace BFF.ViewModel.Managers
     internal abstract class CultureManagerBase : ObservableObject, ICultureManager, IDisposable
     {
         private readonly IBffSettings _bffSettings;
-        private readonly ISetupLocalizationFramework _setupLocalizationFramework;
         private readonly Subject<CultureMessage> _refreshSignal = new();
 
         protected readonly CompositeDisposable CompositeDisposable = new();
 
         protected CultureManagerBase(
-            IBffSettings bffSettings,
-            ISetupLocalizationFramework setupLocalizationFramework)
+            IBffSettings bffSettings)
         {
             _bffSettings = bffSettings;
-            _setupLocalizationFramework = setupLocalizationFramework;
             _refreshSignal.CompositeDisposalWith(CompositeDisposable);
         }
 
@@ -105,7 +102,6 @@ namespace BFF.ViewModel.Managers
         protected void ManageCultures()
         {
             CultureInfo customCulture = CreateCustomCulture();
-            _setupLocalizationFramework.With(customCulture);
             Thread.CurrentThread.CurrentCulture = customCulture;
             Thread.CurrentThread.CurrentUICulture = customCulture;
             SaveCultures();
@@ -128,9 +124,8 @@ namespace BFF.ViewModel.Managers
         public BackendCultureManager(
             IDbSettingRepository dbSettingRepository,
             IBffSettings bffSettings,
-            ISetupLocalizationFramework setupLocalizationFramework,
             IRxSchedulerProvider schedulerProvider)
-            : base(bffSettings, setupLocalizationFramework)
+            : base(bffSettings)
         {
             _bffSettings = bffSettings;
             _saveDbSettingsSubject.CompositeDisposalWith(CompositeDisposable);
@@ -176,9 +171,8 @@ namespace BFF.ViewModel.Managers
         private readonly IBffSettings _bffSettings;
 
         public EmptyCultureManager(
-            IBffSettings bffSettings,
-            ISetupLocalizationFramework setupLocalizationFramework)
-            : base(bffSettings, setupLocalizationFramework)
+            IBffSettings bffSettings)
+            : base(bffSettings)
         {
             _bffSettings = bffSettings;
             _bffSettings.Culture_SessionCurrency = _bffSettings.Culture_DefaultCurrency;

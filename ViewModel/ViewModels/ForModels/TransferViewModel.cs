@@ -44,7 +44,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly ITransfer _transfer;
         private readonly IAccountViewModelService _accountViewModelService;
-        private readonly ILocalizer _localizer;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private IAccountViewModel? _fromAccount;
         private IAccountViewModel? _toAccount;
@@ -82,7 +81,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IAccountViewModelService accountViewModelService,
             INewFlagViewModel newFlagViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            ILocalizer localizer,
             ILastSetDate lastSetDate,
             IRxSchedulerProvider rxSchedulerProvider,
             ITransTransformingManager transTransformingManager,
@@ -99,7 +97,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _transfer = transfer;
             _accountViewModelService = accountViewModelService;
-            _localizer = localizer;
             _summaryAccountViewModel = summaryAccountViewModel;
 
             _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
@@ -215,13 +212,15 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             if (FromAccount is null)
             {
-                SetErrors(_localizer.Localize("ErrorMessageEmptyFromAccount").ToEnumerable(), nameof(FromAccount));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyFromAccount")
+                    .ToEnumerable(), nameof(FromAccount));
                 OnErrorChanged(nameof(FromAccount));
             }
 
             if (!(ToAccount is null)) return;
 
-            SetErrors(_localizer.Localize("ErrorMessageEmptyToAccount").ToEnumerable(), nameof(ToAccount));
+            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyToAccount")
+                .ToEnumerable(), nameof(ToAccount));
             OnErrorChanged(nameof(ToAccount));
         }
 

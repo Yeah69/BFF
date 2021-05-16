@@ -1,0 +1,943 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Hiányzó összeg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importforrás</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nem</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Beállítások</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguráció</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Kezdeti számlaegyenleg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Kedvezményezett</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategória</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Transzfer</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Az ebben az oszlopban található gomb megnyomásával törölheti a megfelelő sor elemét.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Ez a jelölőnégyzet arra használható, hogy megkülönböztesse a befejezett bejegyzéseket azoktól, amelyek még átdolgozásra szorulnak.
+Az összegek a számlaegyenleg tooltipjében tekinthetők meg.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Hónap Offset</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Törölje a  címet.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Biztos, hogy a "{0}" jövedelemkategóriát össze kell vonni a "{1}" jövedelemkategóriával?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>A megjegyzés célja, hogy a bejegyzésnek bármilyen leírást adjon.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Kedvezményezett formátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Szimbólum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Pénznem formátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Számlaegyenleg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Profil eltávolítása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>A kifizetett vagy a kifizető személyt kell itt beírni.
+
+Ha a bejegyzés átutalás, akkor a forrásszámlát kell itt megadni.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Szükség esetén a csekk száma itt adható meg.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Dátum formátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Egy hónappal hátrébb lépni</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>profil visszaállítása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>A kategória határozza meg a bejegyzés személyes célját.
+Mivel a kategóriák hierarchikusak lehetnek, a teljes hierarchikus útvonal megjelenik az eszköztipben.
+
+Ha a bejegyzés átutalás, akkor a célszámlát kell itt megadni.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Új kedvezményezett létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Minden számla</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Az új jelölő neve nem lehet üres vagy már létező.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Jövedelemkategóriák</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Biztos, hogy a "{0}" kategóriát össze kell vonni a "{1}" kategóriával?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Jövedelemkategória</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Ennek a memóriaútvonalnak a fájlneve üres!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Ha be van jelölve, ez egy jövedelemkategóriát hoz létre.
+Csak az ilyen kategóriához tartozó tranzakciókat kell jövedelemként értelmezni.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Új kategória létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Ez a mező nem maradhat üresen!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Jövedelem</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Célszámlaegyenleg beállítása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Exportcél</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Ki kell választani a kedvezményezettet.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Célzás megszüntetése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Profil mentése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Nyitott bankszámlakivonat</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Biztos vagy benne?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Elválasztó</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Ez a fájl elérési útja nem létezik!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>A bejegyzés hatálybalépésének időpontja.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Nyelv</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>A részösszeg tartalmazza azokat a bejegyzéseket, amelyeket még el kell menteni.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Egyensúly nulla</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Hiányzó összeg a be nem nyújtott bejegyzések nélkül</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Számlák</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Új átutalást hoz létre</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Notiz</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Egyoldalú transzferek</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Scheck szám</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Átlagos kiadások az elmúlt évben</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Ezzel a dátumválasztóval bármelyik hónapra ugorhat (a nap nem számít).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Új pénzügyi terv létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Transzfer</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Akcentusok</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Fejléc adatok</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Túlfutás</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>A részleges tranzakciók megtekintéséhez és szerkesztéséhez kattintson erre a gombra.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>A havi eltolás hónapról hónapra eltolja azt az időpontot, amikor a jövedelem aktívvá válik.
+Például az egy hónapos eltolás a jövedelmet a következő hónapra, a mínusz egy pedig az előző hónapra helyezi át.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Konfiguráció importálása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>A teljes számlaegyenleg, figyelembe véve a jövőbeni dátumú bejegyzéseket.
+A jobb megkülönböztetés érdekében lásd az eszköztípust.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Részösszeg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>A YNAB Budget CSV elérési útvonala:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>A mentési útvonal könyvtára nem létezik!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Új kedvezményezett létrehozása, ha nem létezik?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategóriák</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Fiókok szerkesztése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Az az összeg, amely a múlt hónapban hiányzott az összes kategória teljesítéséhez.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>A jelölő színnel vizuálisan kiemeli a bejegyzést, és teljesen opcionális.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Bejegyzések</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Megkeresett pénzösszeg, amelyet az e havi kiadásokra különítettek el.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Via</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Biztos, hogy törölni szeretné a "{0}" jövedelemkategóriát?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Ha az összesítés aktiválva van, akkor az alkategóriák értékei hozzáadódnak a saját értékhez.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Törölje</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Hozzon létre</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Az ebben a hónapban a kategóriákhoz rendelt összes pénzeszköz összege.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Ezen a kategóriaszinten már létezik egy kategória a kiválasztott névvel!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Dátum formátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Az aktuálisan szerkesztett elemek mentése a fiókba</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Új osztott kimenetet hoz létre</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>A bejegyzés hozzáadása előtt ki kell választani egy számlát.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Fájl</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Jelenlegi</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Az új kedvezményezett neve nem lehet üres vagy már létező.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Összesen</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negatív</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>A szimbólumok jelzik, hogy milyen típusú a számla bejegyzés.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Böngésszen a  oldalon.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Tárgy:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Új kiadás létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Törölje</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>A költségvetési túllépések összege az összes kategória összesített összege a múlt hónapban.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Csekkszámok megjelenítése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Új jelölő létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Ezáltal a számla és az összes tranzakciója törlődik, a teljes átutalás egyoldalúvá válik, és a számlára vonatkozó költségvetési probléma megszűnik.
+
+Tényleg biztos vagy benne? (Automatikus biztonsági mentés készül, amely lehetővé teszi a törlés előtti állapot visszaállítását).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Az új kategória neve nem lehet üres!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Új fiók létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Pénzügyi terv megnyitása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>A jövedelem releváns?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Az egyoldalú átutalások egy számla törlése után is megjelenhetnek. Ezeket figyelembe kell venni, mert számviteli szempontból nem semlegesek.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Az egyik jövedelemkategória egy másikkal való összevonásához az oszlop szimbólumát a forrássorból kell áthúzni, majd a célsorra engedni.
+A céljövedelem-kategória a forrásjövedelem-kategória összes számlaelírását átveszi, és megtartja a havi beszámítást.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Röviden</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Az új jelölő neve</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Hiányzó összeg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Töltse ki az összes költségvetési cellát:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>A számla, amelyhez a bejegyzés tartozik.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Töltse ki az összes üres költségvetési cellát:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF pénzügyi terv (*.realm)|*.realm|BFF pénzügyi terv (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Nyissa meg a  címet.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Az ebben a hónapban hiányzó pénzösszeg, hogy minden kategóriának megfeleljen.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Biztos, hogy a "{0}" kedvezményezettet össze kell vonni a "{1}" kedvezményezettbe?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Az az összeg, amelyet az elmúlt hónapban adtak, de nem került rögzítésre egyik kategóriában sem.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>A "{0}" fájl nem található.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Ki kell választani egy célszámlát</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Új költségvetési terv mentése:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Név</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Egy kategória egy másikkal való összevonásához az oszlop ikonját a forrássorból kell áthúzni és a célsorra ejteni.
+A célkategória a forráskategória összes fiókbejegyzését és alkategóriáját örökli.
+Ha egy alkategória-párnak ugyanaz a neve, akkor a forrás alkategória automatikusan átneveződik (számmal kiegészítve).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Oké</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Biztos, hogy azt akarja, hogy a "{0}" jelölés összeolvadjon a "{1}" jelöléssel?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Befejezett</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Átváltani</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Új fizetett</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Jelölések szerkesztése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Az első fiókbejegyzés létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Egyensúly</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Hiba történt a bejegyzések létrehozása során. Ellenőrizze a konfigurációt.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zéró</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>A bevételi tétel olyan tranzakciót jelöl, amely bevételnek minősül.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Egy jelölő és egy másik jelölő egyesítéséhez az adott oszlopból származó szimbólumot a forrássorból kell áthúzni, majd a célsorra engedni.
+A céljelölő átveszi a forrásjelölő összes fiókbejegyzését, és megtartja a saját színét.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Bevételi tranzakció</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Az új kedvezményezett neve</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Feladta</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Szuperponált kategória</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nem kijelölt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>A célszámlaegyenleg beállítása lehetővé teszi a hiányzó összeg automatikus kiszámítását.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Az elmúlt hónap kiadásai</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Kezdeti időpont</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Számla</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Kedvezményezett</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Túlfoglalt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importáljon és mentsen a következő elérési útvonalon:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Színes</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Zárja be a</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Még nincs betöltött számviteli projekt.
+Projekt létrehozása, megnyitása vagy importálása
+nyissa meg a bal felső sarokban található fájl menüt.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Forrás számla</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Ki kell választani egy fiókot.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Jelenlegi összeg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>A számla egyenlege a meghatározott kezdőnapon.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Fájl elérési útvonal</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Részösszeg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Biztos, hogy törölni akarja a "{0}" jelölést?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Az érték kívül esik az érvényességi tartományon: [ { {0} .. {1} ]!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Összeg formátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Összesítés megjelenítése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Biztos, hogy törölni szeretné a "{0}" kategóriát?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Ez a név már létezik a kiválasztott kategóriaszinthez!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Markerek megjelenítése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Biztos, hogy törölni akarja a "{0}" kedvezményezettet?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Az összes olyan tranzakció összege, amelyhez nem rendeltek kategóriát.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Ki kell választani egy forrásfiókot.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Dátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Tranzakció</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nem kijelölt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Nem számolták el</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Befejezett</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Elérhető</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Texts.de.o.resx" xml:space="preserve">
+    <value />
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Az új kategória neve</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>A tranzakció lehetővé teszi, hogy pénz áramoljon ki vagy be egy számláról.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Ki kell választani egy kategóriát.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Ha egy szülő kategória van kiválasztva, az új kategória alkategóriaként kapcsolódik hozzá.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Szerkeszti a kedvezményezettet</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Jelszó</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>A célszámla egyenlege és a részösszeg közötti különbség.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Mindig elrejti az oszlopcímeket a szerkesztési táblázatban</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Markerek</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Az az összeg, amelyet ebben a hónapban adnak, de még nem került rögzítésre egyik kategóriában sem.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Új jelölő létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Költségvetés</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Az elmúlt hónap költségvetési értéke</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Új profil mentése</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>A bejegyzés összege.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Pozitív</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Távolítsa el a</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>A YNAB Tranzakció CSV elérési útvonala:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>A fiók neve nem lehet üres, illetve nem hasonlíthat egy meglévő fiók nevére.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Egy kedvezményezett és egy másik kedvezményezett összevonásához az ebben az oszlopban lévő szimbólumot a forrássorból kell áthúzni és a célsorra ejteni.
+A cél kedvezményezett átveszi a forrás kedvezményezettől az összes számla bejegyzést.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Ezt a szöveget nem lehetett valutaként elemezni!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bankszámlakivonat</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Megjegyzés formátum</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Az elmúlt három hónap átlagos kiadásai</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Összeg</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Egy hónappal előrébb lépni</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Az átutalás pénzt utal át egyik számláról a másikra.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Célszámla egyenlege</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Új kategória létrehozása</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Kiadások</value>
+    <comment>Automatically Translated</comment>
+  </data>
+</root>

@@ -29,7 +29,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private readonly ITransactionBase _transactionBase;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly IPayeeViewModelService _payeeViewModelService;
-        private readonly ILocalizer _localizer;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private IAccountViewModel? _account;
         private IPayeeViewModel? _payee;
@@ -63,7 +62,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             ILastSetDate lastSetDate,
-            ILocalizer localizer,
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
@@ -79,7 +77,6 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             _transactionBase = transactionBase;
             _accountViewModelService = accountViewModelService;
             _payeeViewModelService = payeeViewModelService;
-            _localizer = localizer;
             _summaryAccountViewModel = summaryAccountViewModel;
 
             void RefreshAnAccountViewModel(IAccountViewModel? account)
@@ -151,13 +148,15 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         {
             if (Account is null)
             {
-                SetErrors(_localizer.Localize("ErrorMessageEmptyAccount").ToEnumerable(), nameof(Account));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyAccount")
+                    .ToEnumerable(), nameof(Account));
                 OnErrorChanged(nameof(Account));
             }
 
             if (!(Payee is null)) return;
 
-            SetErrors(_localizer.Localize("ErrorMessageEmptyPayee").ToEnumerable(), nameof(Payee));
+            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyPayee")
+                .ToEnumerable(), nameof(Payee));
             OnErrorChanged(nameof(Payee));
         }
 

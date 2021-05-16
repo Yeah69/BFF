@@ -30,7 +30,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     public sealed class TransactionViewModel : TransactionBaseViewModel, ITransactionViewModel
     {
         private readonly ITransaction _transaction;
-        private readonly ILocalizer _localizer;
         private readonly ICategoryBaseViewModelService _categoryViewModelService;
         private ICategoryBaseViewModel? _category;
         private readonly IReactiveProperty<long> _sum;
@@ -43,7 +42,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            ILocalizer localizer,
             ICategoryBaseViewModelService categoryViewModelService,
             ITransTransformingManager transTransformingManager,
             ILastSetDate lastSetDate,
@@ -58,14 +56,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 accountViewModelService,
                 payeeViewModelService,
                 lastSetDate, 
-                localizer,
                 rxSchedulerProvider, 
                 summaryAccountViewModel,
                 flagViewModelService,
                 owner)
         {
             _transaction = transaction;
-            _localizer = localizer;
             _categoryViewModelService = categoryViewModelService;
 
             _category = _categoryViewModelService.GetViewModel(transaction.Category);
@@ -160,7 +156,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             if (!(Category is null)) return;
 
-            SetErrors(_localizer.Localize("ErrorMessageEmptyCategory").ToEnumerable(), nameof(Category));
+            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyCategory")
+                .ToEnumerable(), nameof(Category));
             OnErrorChanged(nameof(Category));
         }
     }

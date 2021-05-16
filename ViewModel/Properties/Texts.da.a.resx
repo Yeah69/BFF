@@ -1,0 +1,943 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </resheader>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Manglende beløb</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nej</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Indstillinger</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguration</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Oprindelig saldo på kontoen</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Betalingsmodtager</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategori</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Overførsel</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Tryk på knappen i denne kolonne for at slette elementet i den tilsvarende række.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Denne markering kan bruges til at skelne mellem afsluttede poster og poster, der stadig skal revideres.
+De samlede beløb kan ses i værktøjstip for kontosaldoen.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Måned Offset</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Slet</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Er du sikker på, at indkomstkategorien "{0}" skal slås sammen med indkomstkategorien "{1}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Bemærkningen har til formål at give posten en beskrivelse af den.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Format for betalingsmodtager</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Valutaformat</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Kontosaldo</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Fjern profil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Den betalte eller den betalende person angives her.
+
+Hvis der er tale om en overførsel, angives kildekontoen her.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Hvis det er nødvendigt, kan checknummeret angives her.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Datoformat</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Flyt en måned tilbage</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>nulstille profil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Kategorien bestemmer dit personlige formål med denne post.
+Da kategorier kan være hierarkiske, vises hele den hierarkiske sti i værktøjstip'en.
+
+Hvis der er tale om en overførsel, angives målkontoen her.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Opret ny betalingsmodtager</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Alle konti</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Navnet på en ny markør må ikke være tomt eller allerede eksistere.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Einkommenskategorien</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Er du sikker på, at kategorien "{0}" skal slås sammen med kategorien "{1}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Einkommenskategory</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Filnavnet for denne hukommelsessti er tomt!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Hvis dette afkrydses, oprettes der en indkomstkategori.
+Kun transaktioner, der er knyttet til en sådan kategori, vil blive fortolket som indkomst.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Opret ny kategori</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Dette indtastningsfelt må ikke forblive tomt!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Indkomst</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Fastsæt målkontosaldo</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Eksportmål</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Der skal vælges en betalingsmodtager.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Annuller målet</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Gem profil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Åbne kontoudtog</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Er du sikker?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Separator</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Denne filsti findes ikke!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Den dato, på hvilken angivelsen træder i kraft.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Sprog</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Deltotalen omfatter de poster, der stadig skal gemmes.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo på nul</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Manglende beløb eksklusive ikke indsendte poster</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Regnskaber</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Opretter en ny overførsel</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Notiz</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Unilaterale overførsler</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Scheck-nummer</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Gennemsnitlige udgifter i det seneste år</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Brug denne datovælger til at springe til en hvilken som helst måned (dagen er irrelevant).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Opret en ny finansiel plan</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Overførsel</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Accenter</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Overskriftsoplysninger</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overskridelse</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Klik for at se og redigere de delvise transaktioner.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Månedsforskydningen forskyder det tidspunkt, hvor indkomsten bliver aktiv, måned for måned.
+F.eks. flytter en månedsforskydning på 1 indkomsten til den næste måned og minus 1 til den foregående måned.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Import af konfiguration</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Den samlede kontosaldo under hensyntagen til posteringer med en fremtidig dato.
+Se værktøjstip for en bedre skelnen.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Subtotal</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Sti til YNAB Budget CSV:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Mappen fra oplagringsstien findes ikke!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Opret en ny betalingsmodtager, hvis den ikke findes?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategorier</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Rediger konti</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Det beløb, der manglede i sidste måned for at opfylde alle kategorier.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Markøren fremhæver visuelt posten ved hjælp af en farve og er helt valgfri.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Indtastninger</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Indtjent beløb, der er afsat til denne måneds udgifter.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Via</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Er du sikker på, at du ønsker at slette indkomstkategorien "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Hvis totaler er aktiveret, lægges værdierne for underkategorierne til den egen værdi.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Annuller</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Opret</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Samlet sum af alle midler, der er tildelt kategorier i denne måned.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>På dette kategoriniveau findes der allerede en kategori med et valgt navn!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Datoformat</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Gemmer de aktuelt redigerede elementer på kontoen</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Opretter et nyt split output</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Der skal vælges en konto, før posten tilføjes.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Fil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Nuværende</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Navnet på en ny betalingsmodtager må ikke være tomt eller allerede eksistere.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>I alt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Symbolerne viser, hvilken type konto postering der er tale om.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Gennemse</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Emneord</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Opretter et nyt nummer</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Annuller</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Samlet summen af budgetoverskridelser for alle kategorier i sidste måned.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Vis kontrolnumre</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Opret et nyt mærke</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Dette vil slette kontoen og alle dens transaktioner, fulde overførsler vil blive ensidige, og det kontospecifikke problem med budgettet vil forsvinde.
+
+Er du virkelig sikker? (Der tages automatisk en sikkerhedskopi for at gøre det muligt at gendanne til tilstanden før sletningen).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Navnet på en ny kategori må ikke være tomt!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Opret en ny konto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Åbn en finansiel plan</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Indkomst relevant?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Ensidige overførsler kan forekomme efter sletning af en konto. De skal tages i betragtning, fordi de ikke er neutrale i regnskabsmæssig henseende.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>For at flette en indkomstkategori med en anden skal symbolet fra denne kolonne trækkes fra kilderækken og frigives til målrækken.
+Målindkomstkategorien arver alle kontoposteringer fra kildeindkomstkategorien og beholder den månedlige modregning.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Kort sagt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Navn på den nye markør</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Manglende beløb</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Udfyld alle budgetcellerne:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Den konto, som posten tilhører.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Udfyld alle tomme budgetceller med:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF-finansplan (*.realm)|*.realm|BFF-finansplan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Åbn</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Det beløb, der mangler i denne måned for at opfylde alle kategorier.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Er du sikker på, at betalingsmodtager "{0}" skal slås sammen med betalingsmodtager "{1}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Det beløb, der blev givet i sidste måned, men som ikke blev registreret i nogen kategori.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Filen "{0}" kunne ikke findes.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Der skal vælges en målkonto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Gem ny budgetplan:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Navn</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Hvis du vil flette en kategori med en anden, skal ikonet fra denne kolonne trækkes fra kilderækken og sættes over på målrækken.
+Målkategorien arver alle kontoposter og underkategorier fra kildekategorien.
+Hvis et par underkategorier har det samme navn, omdøbes kildeunderkategorien automatisk (nummeret tilføjes).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okay</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Er du sikker på, at du ønsker, at "{0}"-markeringen skal gå over i "{1}"-markeringen?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Færdiggjort</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Konverter til</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Opret en ny betalt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Rediger markører</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Opret den første kontopost</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Der opstod en fejl under oprettelsen af posterne. Kontroller konfigurationen.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Nul</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>En indkomstpost markerer en transaktion, der betragtes som en indkomst.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>For at flette en markering med en anden skal symbolet fra denne kolonne trækkes fra kurrerækken og frigives til målrækken.
+Målmarkøren overtager alle kontoposter fra kildemarkøren og beholder sin egen farve.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Indkomsttransaktion</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Navn på den nye betalingsmodtager</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Indsendt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Overlejret kategori</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Ikke tildelt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Ved at indstille målkontosaldoen kan det manglende beløb beregnes automatisk.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Udgifter i den seneste måned</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Startdato</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Konto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Betalingsmodtager</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbooket</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importer og gem under følgende sti:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farve</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Luk</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Der er endnu ikke indlæst noget regnskabsprojekt.
+Sådan opretter, åbner eller importerer du et projekt
+åbner filmenuen i øverste venstre hjørne.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Kilde konto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Der skal vælges en konto.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Nuværende beløb</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Kontoens saldo på den fastsatte startdato.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Filsti</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Subtotal</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette markeringen "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Værdien er uden for gyldighedsområdet: [ {0} .. {1} ]!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Formatet for beløbet</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Visning af totaler</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Er du sikker på, at du ønsker at slette kategorien "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Dette navn findes allerede for det valgte kategoriniveau!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Vis markører</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Er du sikker på, at du ønsker at slette betalingsmodtager "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Summen af alle transaktioner, som ikke har fået tildelt en kategori.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Der skal vælges en kildekonto.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Dato</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaktion</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Ikke tildelt</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Ikke opgjort</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Færdiggjort</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importere</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Tilgængelig</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Texts.de.o.resx" xml:space="preserve">
+    <value />
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Navn på den nye kategori</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>En transaktion lader penge flyde ud af eller ind på en konto.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Der skal vælges en kategori.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Hvis der er valgt en overordnet kategori, vil den nye kategori blive knyttet til den som en underkategori.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Rediger betalingsmodtager</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Kodeord</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Forskellen mellem målkontosaldoen og subtotalen.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Skjul altid kolonnetitler i redigeringstabellen</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Mærker</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Det beløb, der er givet i denne måned, men som endnu ikke er blevet registreret i nogen kategori.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Opret ny markør</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Budgetværdien for den seneste måned</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Gem ny profil</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Summen af posten.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Fjern</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Sti til YNAB Transaction CSV:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Kontonavnet må ikke være tomt eller ligne navnet på en eksisterende konto.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>For at flette en betalingsmodtager med en anden skal symbolet fra denne kolonne trækkes fra kurrerækken og sættes over på målrækken.
+Målbetalingsmodtageren overtager alle kontoposteringer fra kildebetalingsmodtageren.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Denne tekst kunne ikke analyseres som valuta!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Kontoudtog</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Bemærk format</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Gennemsnitlige udgifter i de seneste tre måneder</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Beløb</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Ryk en måned frem</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Ved en overførsel overføres penge fra en konto til en anden.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Målkontosaldo</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Opret en ny kategori</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Udgifter</value>
+    <comment>Automatically Translated</comment>
+  </data>
+</root>

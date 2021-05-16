@@ -2,7 +2,6 @@
 using System.Reactive.Linq;
 using BFF.Core.Helper;
 using BFF.Model.Models;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
@@ -19,7 +18,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     internal sealed class SubTransactionViewModel : TransLikeViewModel, ISubTransactionViewModel
     {
         private readonly ISubTransaction _subTransaction;
-        private readonly ILocalizer _localizer;
         private readonly ICategoryBaseViewModelService _categoryViewModelService;
         private ICategoryBaseViewModel? _category;
 
@@ -27,14 +25,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ISubTransaction subTransaction,
             INewCategoryViewModel newCategoryViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            ILocalizer localizer,
             IRxSchedulerProvider rxSchedulerProvider,
             ICategoryBaseViewModelService categoryViewModelService,
             IAccountBaseViewModel owner)
             : base(subTransaction, rxSchedulerProvider, owner)
         {
             _subTransaction = subTransaction;
-            _localizer = localizer;
             _categoryViewModelService = categoryViewModelService;
 
             _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
@@ -84,7 +80,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             if (!(Category is null)) return;
 
-            SetErrors(_localizer.Localize("ErrorMessageEmptyCategory").ToEnumerable(), nameof(Category));
+            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyCategory")
+                .ToEnumerable(), nameof(Category));
             OnErrorChanged(nameof(Category));
         }
     }

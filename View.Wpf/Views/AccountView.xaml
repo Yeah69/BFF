@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:forModels1="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:structure1="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Structure;assembly=BFF.ViewModel"
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
@@ -14,9 +13,6 @@
              d:DataContext="{d:DesignInstance Type=structure1:IAccountBaseViewModel}"
              d:DesignHeight="700"
              d:DesignWidth="1300"
-             lex:LocalizeDictionary.DesignCulture="en-US"
-             lex:ResxLocalizationProvider.DefaultAssembly="Bff.View.Wpf"
-             lex:ResxLocalizationProvider.DefaultDictionary="Texts"
              mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="BalanceToolTip"
@@ -28,23 +24,23 @@
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0">
                     <TextBlock Margin="5"
-                               Text="{lex:Loc AccountView_Balance_Cleared}"
+                               Text="{Binding Value.CurrentTexts.AccountView_Balance_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                TextAlignment="Left" />
                 </Border>
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0">
                     <TextBlock Margin="5"
-                               Text="{lex:Loc AccountView_Balance_Uncleared}" />
+                               Text="{Binding Value.CurrentTexts.AccountView_Balance_Uncleared, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 </Border>
                 <TextBlock Margin="5"
-                           Text="{lex:Loc AccountView_Balance_Total}" />
+                           Text="{Binding Value.CurrentTexts.AccountView_Balance_Total, Mode=OneWay, Source={StaticResource TextsHolder}}" />
 
 
 
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
-                               Text="{lex:Loc AccountView_Balance_Current}" />
+                               Text="{Binding Value.CurrentTexts.AccountView_Balance_Current, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 </Border>
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
@@ -72,7 +68,7 @@
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
-                               Text="{lex:Loc AccountView_Balance_All}" />
+                               Text="{Binding Value.CurrentTexts.AccountView_Balance_All, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 </Border>
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
@@ -133,8 +129,8 @@
                 <TextBlock Grid.Row="0"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{lex:Loc ToolTip_Account_StartingBalance}">
-                    <Run Text="{lex:Loc Account_StartingBalance}" />
+                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_StartingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                    <Run Text="{Binding Value.CurrentTexts.Account_StartingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="0"
@@ -146,8 +142,8 @@
                 <TextBlock Grid.Row="1"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{lex:Loc ToolTip_Account_Balance}">
-                    <Run Text="{lex:Loc Account_Balance}" />
+                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                    <Run Text="{Binding Value.CurrentTexts.Account_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="1"
@@ -192,9 +188,9 @@
                 <TextBlock Grid.Row="0"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{lex:Loc ToolTip_Account_IntermediateBalance}"
+                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_IntermediateBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
                            Visibility="{Binding NewTransList.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}">
-                    <Run Text="{lex:Loc AccountView_IntermediateBalance}" />
+                    <Run Text="{Binding Value.CurrentTexts.AccountView_IntermediateBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="0"
@@ -208,9 +204,9 @@
                 <TextBlock Grid.Row="1"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{lex:Loc ToolTip_Account_MissingSum}"
+                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_MissingSum, Mode=OneWay, Source={StaticResource TextsHolder}}"
                            Visibility="{Binding TargetBalance, Converter={x:Static helper:Converters.NullableLongToCollapsed}}">
-                    <Run Text="{lex:Loc AccountView_MissingSum}" />
+                    <Run Text="{Binding Value.CurrentTexts.AccountView_MissingSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="1"
@@ -224,9 +220,9 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center"
-                           ToolTip="{lex:Loc ToolTip_Account_SetTargetBalance}"
+                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
                            Visibility="{Binding TargetBalance, Converter={x:Static helper:Converters.NullableLongToCollapsed}}">
-                    <Run Text="{lex:Loc AccountView_TargetBalance}" />
+                    <Run Text="{Binding Value.CurrentTexts.AccountView_TargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBox Grid.Row="2"

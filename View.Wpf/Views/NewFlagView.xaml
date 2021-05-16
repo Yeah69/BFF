@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              xmlns:views="clr-namespace:BFF.View.Wpf.Views"
@@ -29,7 +28,7 @@
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        DockPanel.Dock="Left">
-                <Run Text="{lex:Loc NameOfNewFlag}" />
+                <Run Text="{Binding Value.CurrentTexts.NameOfNewFlag, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <Run Text=":" />
             </TextBlock>
             <TextBox x:Name="FocusMe"
@@ -45,7 +44,7 @@
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        DockPanel.Dock="Left">
-                <Run Text="{lex:Loc Color}" />
+                <Run Text="{Binding Value.CurrentTexts.Color, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                 <Run Text=":" />
             </TextBlock>
             <Grid Grid.Row="1"
@@ -71,7 +70,7 @@
                     HorizontalAlignment="Right"
                     Click="AddButton_OnClick"
                     Command="{Binding AddCommand}"
-                    ToolTip="{lex:Loc CreateNewFlag}">
+                    ToolTip="{Binding Value.CurrentTexts.CreateNewFlag, Mode=OneWay, Source={StaticResource TextsHolder}}">
                 <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                             Kind="{StaticResource AddIcon}"
                                             Style="{StaticResource CellIconMaterial}" />

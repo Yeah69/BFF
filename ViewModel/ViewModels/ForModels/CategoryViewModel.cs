@@ -45,7 +45,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly ICategory _category;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
-        private readonly ILocalizer _localizer;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly Func<ICategory, IBudgetCategory> _budgetCategoryFactory;
@@ -106,8 +105,10 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    string.Format(_localizer.Localize("ConfirmationDialog_ConfirmCategoryDeletion"), Name),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    string.Format(
+                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmCategoryDeletion"), 
+                        Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)
@@ -129,8 +130,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    string.Format(_localizer.Localize("ConfirmationDialog_ConfirmCategoryMerge"), Name, target.Name),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    string.Format(
+                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmCategoryMerge"),
+                        Name, 
+                        target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)
@@ -193,7 +197,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ICategory category,
             Lazy<ICategoryViewModelService> service,
             ISummaryAccountViewModel summaryAccountViewModel,
-            ILocalizer localizer,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
             Func<ICategory, IBudgetCategory> budgetCategoryFactory,
@@ -208,7 +211,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .ObserveOn(rxSchedulerProvider.UI)
                 .Subscribe(_ => OnPropertyChanged(nameof(Parent)));
             _summaryAccountViewModel = summaryAccountViewModel;
-            _localizer = localizer;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
             _budgetCategoryFactory = budgetCategoryFactory;

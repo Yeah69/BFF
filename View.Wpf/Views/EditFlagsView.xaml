@@ -5,7 +5,6 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              xmlns:dropHandler="clr-namespace:BFF.View.Wpf.DropHandler"
@@ -18,7 +17,7 @@
         <StackPanel>
             <TextBlock Margin="0,10"
                        FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{lex:Loc Flag_Edit}" />
+                       Text="{Binding Value.CurrentTexts.Flag_Edit, Mode=OneWay, Source={StaticResource TextsHolder}}" />
 
             <DataGrid MinWidth="100"
                       MaxHeight="750"
@@ -30,7 +29,7 @@
                       SelectionMode="Single"
                       SelectionUnit="FullRow">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="{lex:Loc General_Name}">
+                    <DataGridTemplateColumn Header="{Binding Value.CurrentTexts.General_Name, Mode=OneWay, Source={StaticResource TextsHolder}}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock d:DataContext="{d:DesignInstance forModels:IFlagViewModel}"
@@ -45,7 +44,7 @@
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn CellTemplate="{StaticResource FlagEditTemplate}"
-                                            Header="{lex:Loc AccountView_Header_Flag}" />
+                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
@@ -53,7 +52,7 @@
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="CallMerge"
-                                                            ToolTip="{lex:Loc ToolTip_MergeToFlag}" />
+                                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_MergeToFlag, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
@@ -75,7 +74,7 @@
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource RemoveFromTableIcon}"
-                                                            ToolTip="{lex:Loc ToolTip_DeleteRow}" />
+                                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_DeleteRow, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
@@ -96,7 +95,7 @@
 
             <TextBlock Margin="0,10"
                        FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{lex:Loc Flag_CreateNew}" />
+                       Text="{Binding Value.CurrentTexts.Flag_CreateNew, Mode=OneWay, Source={StaticResource TextsHolder}}" />
 
             <views:NewFlagView HorizontalAlignment="Stretch"
                                DataContext="{Binding NewFlagViewModel}" />

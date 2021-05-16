@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
@@ -12,12 +11,12 @@
              mc:Ignorable="d">
     <StackPanel>
         <TextBlock>
-            <Run Text="{lex:Loc Account_Name}" />
+            <Run Text="{Binding Value.CurrentTexts.Account_Name, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <Run Text=":" />
         </TextBlock>
         <TextBox Text="{Binding Mode=TwoWay, Path=Name, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock>
-            <Run Text="{lex:Loc Account_StartingBalance}" />
+            <Run Text="{Binding Value.CurrentTexts.Account_StartingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <Run Text=":" />
         </TextBlock>
         <TextBox Name="NewAccountStartingBalance"
@@ -35,7 +34,7 @@
             </TextBox.Text>
         </TextBox>
         <TextBlock>
-            <Run Text="{lex:Loc Account_StartingDate}" />
+            <Run Text="{Binding Value.CurrentTexts.Account_StartingDate, Mode=OneWay, Source={StaticResource TextsHolder}}" />
             <Run Text=":" />
         </TextBlock>
         <DatePicker x:Name="NewAccountDatePicker"
@@ -44,6 +43,6 @@
         <Button Margin="0,5,0,0"
                 HorizontalAlignment="Right"
                 Command="{Binding AddCommand}"
-                Content="{lex:Loc AccountTabsView_NewAccount_Create}" />
+                Content="{Binding Value.CurrentTexts.AccountTabsView_NewAccount_Create, Mode=OneWay, Source={StaticResource TextsHolder}}" />
     </StackPanel>
 </UserControl>

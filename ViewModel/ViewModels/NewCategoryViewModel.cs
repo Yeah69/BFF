@@ -42,7 +42,6 @@ namespace BFF.ViewModel.ViewModels
 
     internal sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
     {
-        private readonly ILocalizer _localizer;
         private readonly ICategoryViewModelService _categoryViewModelService;
         private readonly IIncomeCategoryViewModelService _incomeCategoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
@@ -52,7 +51,6 @@ namespace BFF.ViewModel.ViewModels
 
         public NewCategoryViewModel(
             ICreateNewModels createNewModels,
-            ILocalizer localizer,
             ICategoryViewModelInitializer categoryViewModelInitializer,
             ICategoryViewModelService categoryViewModelService,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
@@ -69,10 +67,9 @@ namespace BFF.ViewModel.ViewModels
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                     ? null
-                    : _localizer.Localize("ErrorMessageWrongCategoryParent");
+                    : ""; // ToDo _localizer.Localize("ErrorMessageWrongCategoryParent");
             }
 
-            _localizer = localizer;
             _categoryViewModelService = categoryViewModelService;
             _incomeCategoryViewModelService = incomeCategoryViewModelService;
             _categoryBaseViewModelService = categoryBaseViewModelService;
@@ -198,12 +195,14 @@ namespace BFF.ViewModel.ViewModels
             bool ret;
             if (string.IsNullOrWhiteSpace(Name))
             {
-                SetErrors(_localizer.Localize("ErrorMessageCategoryNameEmpty").ToEnumerable(), nameof(Name));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageCategoryNameEmpty")
+                    .ToEnumerable(), nameof(Name));
                 ret = false;
             }
             else if (!ValidateNewCategoryRelationCondition())
             {
-                SetErrors(_localizer.Localize("ErrorMessageWrongCategoryName").ToEnumerable(), nameof(Name));
+                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongCategoryName")
+                    .ToEnumerable(), nameof(Name));
                 ret = false;
             }
             else

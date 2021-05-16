@@ -5,7 +5,6 @@
              xmlns:forModels="clr-namespace:BFF.ViewModel.ViewModels.ForModels;assembly=BFF.ViewModel"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:lex="https://github.com/XAMLMarkupExtensions/WPFLocalizationExtension"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:utility="clr-namespace:BFF.ViewModel.ViewModels.ForModels.Utility;assembly=BFF.ViewModel"
@@ -68,53 +67,53 @@
                         <DataGrid.Columns>
                             <!--  Symbol  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource SymbolColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_SymbolAbbr}">
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource TextsHolder}}">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}"
-                                                   ToolTip="{lex:Loc AccountView_Header_SymbolAbbr_Tooltip}" />
+                                                   ToolTip="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr_Tooltip, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
                             </DataGridTemplateColumn>
                             <!--  Account  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource AccountColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Account}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="Account.Name" />
                             <!--  Date  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource DateColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Date}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="Date" />
                             <!--  Flag  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource FlagColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Flag}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="Flag.Name"
                                                     Visibility="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
                             <!--  CheckNumber  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource CheckNumberColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_CheckNumber}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="CheckNumber"
                                                     Visibility="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
                             <!--  Payee  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource PayeeColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Payee}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="Payee.Name" />
                             <!--  Category  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource CategoryColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Category}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="Category.Name" />
                             <!--  Memo  -->
                             <DataGridTemplateColumn Width="*"
                                                     CellTemplate="{StaticResource MemoColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Memo}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     SortMemberPath="Memo" />
                             <!--  Sum  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource SumColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Sum}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     IsReadOnly="False"
                                                     SortMemberPath="Sum" />
                             <!--  Cleared  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                                    Header="{lex:Loc AccountView_Header_Cleared}"
+                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                     IsReadOnly="True"
                                                     SortMemberPath="Cleared" />
                         </DataGrid.Columns>
@@ -406,11 +405,11 @@
                                                              Columns="3"
                                                              DockPanel.Dock="Bottom"
                                                              Rows="2">
-                                                    <TextBlock Text="{lex:Loc Budgeting_Budgeted}"
+                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{lex:Loc Budgeting_Outflows}"
+                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Outflows, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{lex:Loc Budgeting_Balance}"
+                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                TextAlignment="Left" />
                                                     <TextBlock Foreground="{Binding BudgetedThisMonthPositive, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
                                                                Text="{Binding BudgetedThisMonthPositive, Converter={x:Static helper:Converters.SumToString}}"
@@ -553,8 +552,8 @@
                                                                                 <Setter Property="ContentTemplate">
                                                                                     <Setter.Value>
                                                                                         <DataTemplate>
-                                                                                            <TextBlock Text="{lex:Loc Budgeting_Overbudgeted}"
-                                                                                                       ToolTip="{lex:Loc Budgeting_OverbudgetedExplanation}" />
+                                                                                            <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Overbudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OverbudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                                                         </DataTemplate>
                                                                                     </Setter.Value>
                                                                                 </Setter>
@@ -563,8 +562,8 @@
                                                                         <Setter Property="ContentTemplate">
                                                                             <Setter.Value>
                                                                                 <DataTemplate>
-                                                                                    <TextBlock Text="{lex:Loc Budgeting_NotBudgeted}"
-                                                                                               ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_NotBudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                                               ToolTip="{Binding Value.CurrentTexts.Budgeting_NotBudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                                                 </DataTemplate>
                                                                             </Setter.Value>
                                                                         </Setter>
@@ -578,9 +577,9 @@
                                                                        TextAlignment="Right" />
                                                             <TextBlock Grid.Row="1"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_Overspend}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Overspend, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_OverspendExplanation}" />
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OverspendExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                             <TextBlock Grid.Row="1"
                                                                        Grid.Column="1"
                                                                        Foreground="{Binding OverspentInPreviousMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
@@ -588,9 +587,9 @@
                                                                        TextAlignment="Right" />
                                                             <TextBlock Grid.Row="2"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_Income}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Income, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_IncomeExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
 
                                                             <Grid Grid.Row="2"
                                                                   Grid.Column="1"
@@ -632,9 +631,9 @@
                                                             </Grid>
                                                             <TextBlock Grid.Row="3"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_Budgeted}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_BudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                             <TextBlock Grid.Row="3"
                                                                        Grid.Column="1"
                                                                        Foreground="{Binding BudgetedThisMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
@@ -642,9 +641,9 @@
                                                                        TextAlignment="Right" />
                                                             <TextBlock Grid.Row="4"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_UnassignedTransactions}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactions, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}"
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactionsExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                                             <TextBlock Grid.Row="4"
                                                                        Grid.Column="1"
@@ -654,9 +653,9 @@
                                                                        Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                                             <TextBlock Grid.Row="5"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_OneSidedTransfers}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfers, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}"
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfersExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                                             <TextBlock Grid.Row="5"
                                                                        Grid.Column="1"
@@ -677,8 +676,8 @@
                                                                                 <Setter.Value>
                                                                                     <DataTemplate>
                                                                                         <TextBlock FontSize="10"
-                                                                                                   Text="{lex:Loc Budgeting_Overbudgeted}"
-                                                                                                   ToolTip="{lex:Loc Budgeting_OverbudgetedThisMonthExplanation}" />
+                                                                                                   Text="{Binding Value.CurrentTexts.Budgeting_Overbudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                                                   ToolTip="{Binding Value.CurrentTexts.Budgeting_OverbudgetedThisMonthExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                                                     </DataTemplate>
                                                                                 </Setter.Value>
                                                                             </Setter>
@@ -688,8 +687,8 @@
                                                                         <Setter.Value>
                                                                             <DataTemplate>
                                                                                 <TextBlock FontSize="10"
-                                                                                           Text="{lex:Loc Budgeting_Available}"
-                                                                                           ToolTip="{lex:Loc Budgeting_AvailableExplanation}" />
+                                                                                           Text="{Binding Value.CurrentTexts.Budgeting_Available, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                                           ToolTip="{Binding Value.CurrentTexts.Budgeting_AvailableExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
@@ -713,11 +712,11 @@
                                                              Columns="3"
                                                              DockPanel.Dock="Bottom"
                                                              Rows="2">
-                                                    <TextBlock Text="{lex:Loc Budgeting_Budgeted}"
+                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{lex:Loc Budgeting_Outflows}"
+                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Outflows, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{lex:Loc Budgeting_Balance}"
+                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                TextAlignment="Left" />
                                                     <TextBlock Text="0"
                                                                TextAlignment="Right"
@@ -773,42 +772,42 @@
                                                             <TextBlock Grid.Row="0"
                                                                        Grid.Column="0"
                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                                                       Text="{lex:Loc Budgeting_NotBudgeted}"
-                                                                       ToolTip="{lex:Loc Budgeting_NotBudgetedExplanation}" />
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_NotBudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_NotBudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                             <TextBlock Grid.Row="1"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_Overspend}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Overspend, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_OverspendExplanation}" />
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OverspendExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                             <TextBlock Grid.Row="2"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_Income}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Income, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_IncomeExplanation}" />
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_IncomeExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                             <TextBlock Grid.Row="3"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_Budgeted}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_BudgetedExplanation}" />
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_BudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                             <TextBlock Grid.Row="4"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_UnassignedTransactions}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactions, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_UnassignedTransactionsExplanation}"
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactionsExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        Visibility="Hidden" />
                                                             <TextBlock Grid.Row="5"
                                                                        Grid.Column="0"
-                                                                       Text="{lex:Loc Budgeting_OneSidedTransfers}"
+                                                                       Text="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfers, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{lex:Loc Budgeting_OneSidedTransfersExplanation}"
+                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfersExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                                        Visibility="Hidden" />
                                                         </Grid>
                                                         <TextBlock Margin="0,5,0,0"
                                                                    HorizontalAlignment="Center"
                                                                    FontSize="10"
                                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                                                   Text="{lex:Loc Budgeting_Available}"
-                                                                   ToolTip="{lex:Loc Budgeting_AvailableExplanation}" />
+                                                                   Text="{Binding Value.CurrentTexts.Budgeting_Available, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                   ToolTip="{Binding Value.CurrentTexts.Budgeting_AvailableExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                                                         <TextBlock Margin="0,5,0,0"
                                                                    HorizontalAlignment="Center"
                                                                    FontSize="25"
@@ -841,7 +840,7 @@
                                     <Button Margin="5"
                                             Command="{Binding Table.DecreaseMonthStartIndex}"
                                             DockPanel.Dock="Left"
-                                            ToolTip="{lex:Loc ToolTip_BudgetOverview_ShiftMonthBackward}">
+                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_BudgetOverview_ShiftMonthBackward, Mode=OneWay, Source={StaticResource TextsHolder}}">
                                         <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                                                   Height="{StaticResource IconSize}"
                                                                   Kind="ChevronLeft" />
@@ -849,7 +848,7 @@
                                     <Button Margin="5"
                                             Command="{Binding Table.IncreaseMonthStartIndex}"
                                             DockPanel.Dock="Right"
-                                            ToolTip="{lex:Loc ToolTip_BudgetOverview_ShiftMonthForward}">
+                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_BudgetOverview_ShiftMonthForward, Mode=OneWay, Source={StaticResource TextsHolder}}">
                                         <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                                                   Height="{StaticResource IconSize}"
                                                                   Kind="ChevronRight" />
@@ -865,11 +864,11 @@
                                 <mah:ToggleSwitch x:Name="AggregateSwitch"
                                                   VerticalAlignment="Bottom"
                                                   DockPanel.Dock="Bottom"
-                                                  Header="{lex:Loc Budgeting_ShowAggregates}"
+                                                  Header="{Binding Value.CurrentTexts.Budgeting_ShowAggregates, Mode=OneWay, Source={StaticResource TextsHolder}}"
                                                   IsOn="{Binding Data, Mode=TwoWay, Source={StaticResource ShowAggregatesProxy}}"
-                                                  OffContent="{lex:Loc General_No}"
-                                                  OnContent="{lex:Loc General_Yes}"
-                                                  ToolTip="{lex:Loc ToolTip_BudgetOverview_Aggregates}" />
+                                                  OffContent="{Binding Value.CurrentTexts.General_No, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                  OnContent="{Binding Value.CurrentTexts.General_Yes, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                  ToolTip="{Binding Value.CurrentTexts.ToolTip_BudgetOverview_Aggregates, Mode=OneWay, Source={StaticResource TextsHolder}}" />
                             </DockPanel>
                         </DataTemplate>
                     </attachedBehaviors:DynamicTableDataGridBehavior.CornerHeaderTemplate>

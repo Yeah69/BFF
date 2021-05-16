@@ -2,14 +2,39 @@
 using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using MrMeeseeks.ResXToViewModelGenerator;
 using NLog;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 
 namespace BFF.View.Wpf
 {
+    public class TextsHolder : INotifyPropertyChanged
+    {
+        private ICurrentTextsViewModel? _value;
+
+        public ICurrentTextsViewModel? Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -17,13 +42,19 @@ namespace BFF.View.Wpf
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public App(Lazy<MainWindow> mainWindow)
+        public App(
+            Lazy<MainWindow> mainWindow,
+            ICurrentTextsViewModel currentTextsViewModel)
         {
             Logger.Trace("Initializing App");
             
             InitializeComponent();
 
             mainWindow.Value.Show();
+
+            var findName = this.FindResource("TextsHolder");
+            if (findName is TextsHolder textsHolder)
+                textsHolder.Value = currentTextsViewModel;
         }
 
         public static Visibility IsDebug

@@ -25,7 +25,6 @@ namespace BFF.ViewModel.ViewModels.ForModels
     public class IncomeCategoryViewModel : CategoryBaseViewModel, IIncomeCategoryViewModel
     {
         private readonly IIncomeCategory _incomeCategory;
-        private readonly ILocalizer _localizer;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
@@ -46,14 +45,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
         public IncomeCategoryViewModel(
             IIncomeCategory category,
-            ILocalizer localizer,
             ISummaryAccountViewModel summaryAccountViewModel,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _incomeCategory = category;
-            _localizer = localizer;
             _summaryAccountViewModel = summaryAccountViewModel;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
@@ -73,8 +70,10 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    string.Format(_localizer.Localize("ConfirmationDialog_ConfirmIncomeCategoryDeletion"), Name),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    string.Format(
+                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmIncomeCategoryDeletion"),
+                        Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)
@@ -95,8 +94,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    _localizer.Localize("ConfirmationDialog_Title"),
-                    string.Format(_localizer.Localize("ConfirmationDialog_ConfirmIncomeCategoryMerge"), Name, target.Name),
+                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    string.Format(
+                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmIncomeCategoryMerge"),
+                        Name, 
+                        target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)

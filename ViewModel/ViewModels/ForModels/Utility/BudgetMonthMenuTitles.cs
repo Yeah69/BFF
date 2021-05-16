@@ -16,27 +16,24 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
     internal class BudgetMonthMenuTitles : IBudgetMonthMenuTitles
     {
-        private readonly ILocalizer _localizer;
-
-        public BudgetMonthMenuTitles(ILocalizer localizer)
+        public BudgetMonthMenuTitles()
         {
-            _localizer = localizer;
         }
 
-        public string EmptyCellsHeader => _localizer.Localize("Budgeting_Month_ContextMenu_EmptyCellsHeader");
+        public string EmptyCellsHeader => ""; // ToDo _localizer.Localize("Budgeting_Month_ContextMenu_EmptyCellsHeader");
 
-        public string BudgetLastMonth => _localizer.Localize("Budgeting_ContextMenu_BudgetLastMonth");
+        public string BudgetLastMonth => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_BudgetLastMonth");
 
-        public string OutflowsLastMonth => _localizer.Localize("Budgeting_ContextMenu_OutflowsLastMonth");
+        public string OutflowsLastMonth => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_OutflowsLastMonth");
 
-        public string AvgOutflowLastThreeMonths => _localizer.Localize("Budgeting_ContextMenu_AvgOutflowsLastThreeMonths");
+        public string AvgOutflowLastThreeMonths => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_AvgOutflowsLastThreeMonths");
 
-        public string AvgOutflowsLastYear => _localizer.Localize("Budgeting_ContextMenu_AvgOutflowsLastYear");
+        public string AvgOutflowsLastYear => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_AvgOutflowsLastYear");
 
-        public string BalanceToZero => _localizer.Localize("Budgeting_ContextMenu_BalanceToZero");
+        public string BalanceToZero => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_BalanceToZero");
 
-        public string AllCellsHeader => _localizer.Localize("Budgeting_Month_ContextMenu_AllCellsHeader");
+        public string AllCellsHeader => ""; // ToDo _localizer.Localize("Budgeting_Month_ContextMenu_AllCellsHeader");
 
-        public string Zero => _localizer.Localize("Budgeting_ContextMenu_Zero");
+        public string Zero => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_Zero");
     }
 }
