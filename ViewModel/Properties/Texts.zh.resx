@@ -58,154 +58,62 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>新收款人的名字不能是空的或已经存在。</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>此文件路径不存在!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>重音</value>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>类别</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>符号</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>创建一个新的财务计划</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>主题</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>日期</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>小计</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>过去三个月的平均支出</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>注释的目的是为了对该条目进行任何描述。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>好的</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>如果选中，这将创建一个收入类别。
-只有附属于这种类别的交易才会被解释为收入。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>创建</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>创建一个新的分割输出</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>编辑账户</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>设定目标账户余额</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>设置</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>创建一个新的问题</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>取消目标</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>月份偏移是指逐月转移收入变得活跃的时间。
-例如，一个月的偏移量为1，将收入转移到下个月，而减去1则转移到上个月。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>点击查看和编辑部分交易。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>收入类别</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>谢克号</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>银行报表</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>上个月为满足所有类别的需求而缺少的金额。</value>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>取消</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>帐户</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>移除</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>共计</value>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>诺伊尔</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>收入相关？</value>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>本月分配给各类的所有资金总额。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>显示支票号码</value>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>这个内存路径的文件名是空的!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>当前金额</value>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>付款人或支付人在此输入。
+
+如果是转账，则在此输入源账户。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>设置目标账户余额可以自动计算出缺失的金额。</value>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>该条目生效的日期。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>创建一个新的类别</value>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>缺少的金额</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>简要介绍</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>创建新账户</value>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>收入分录标志着一项被认为是收入的交易。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>此文件路径不存在!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>创建第一个账户条目</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>将当前编辑的元素保存到账户中。</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>重音</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -215,13 +123,165 @@
 如果输入的是转帐，那么目标帐户就在这里输入。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>要将一个收入类别与另一个收入类别合并，应将这一列的符号从源行拖出，并释放到目标行。
-目标收入类别将继承源收入类别的所有账户条目，并保留每月的抵消。</value>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>创建新的类别</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>打开银行对账单</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>一笔交易让钱从一个账户中流出或流入。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>该值超出有效范围：[ {0} ... {1} ]!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>创建一个新的问题</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>取消</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>数量</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>银行报表</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>开始日期</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>叠加类别</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>来源账户</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>你确定吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>目标账户余额与小计之间的差额。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>未分配的</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>重置简介</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>主题</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>这个输入字段不能为空!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>保存资料</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>考虑到有未来日期的分录的账户总余额。
+请看工具提示，以便更好地加以区分。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Header" xml:space="preserve">
     <value>标题数据</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>保存路径中的目录不存在!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>所有</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>设置目标账户余额可以自动计算出缺失的金额。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>该条目所属的账户。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>配置</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>账户余额</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>你确定要删除"{0}"标记吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>将所有空的预算单元填上。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>单边转让可以在删除账户后出现。它们必须被考虑在内，因为它们在会计上不是中性的。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>在添加条目之前必须选择一个账户。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>创建条目时发生错误。检查配置。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>目前</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>转换为</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>撤诉</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>上个月的支出</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>如有必要，可在此输入支票号码。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>小计</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>创建一个新的标记</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Test4" xml:space="preserve">
+    <value>再来一次。太有趣了。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>有</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
@@ -229,160 +289,121 @@
 总数可以在账户余额的工具提示中查看。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>你确定"{0}"类别应该被合并到"{1}"类别中吗？</value>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>预算</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>收入分录标志着一项被认为是收入的交易。</value>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>新收款人的名字不能是空的或已经存在。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>该条目所属的账户。</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>你确定收入类别"{0}"应该被合并到收入类别"{1}"中吗？</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>转移</value>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>月抵消</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>零度</value>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>语言</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>显示总数</value>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>如果激活了总数，那么子类别的值就会加到自己的值上。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>受款人</value>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>注释的目的是为了对该条目进行任何描述。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Cleared" xml:space="preserve">
     <value>已完成</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>帐户</value>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>未计入</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>打开一个财务计划</value>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>初始账户余额</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>收入类别</value>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>受款人</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>已完成</value>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>创建新账户</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>注释格式</value>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>上个月给出的金额，但没有记录在任何类别中。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>后移一个月</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>转移</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>创建一个新的付费</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>前进一个月</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>保存新的预算计划。</value>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>编辑标记</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>撤诉</value>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>创建一个新的类别</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>发布</value>
+  <data name="General_Long" xml:space="preserve">
+    <value>郎咸平</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>分离器</value>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>显示标记</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>关闭</value>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>将当前编辑的元素保存到账户中。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
     <value>该小计包括仍需保存的条目。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>如果不存在的话，创建一个新的收款人？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>类别</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>删除简介</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>本月缺少满足所有类别的资金数额。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>将所有空的预算单元填上。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>创建新的收款人</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>文件</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>保存路径中的目录不存在!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>正面</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>编辑收款人</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>创建一个新的标记</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>显示总数</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>必须选择一个类别。</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>创建一个新的财务计划</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>金额格式</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>符号显示账户条目是哪种类型。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>设置</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
     <value>你确定你想让"{0}"标记合并到"{1}"标记吗？</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>简介</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>简要介绍</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>浏览</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>你确定受款人"{0}"应该被合并到受款人"{1}"中吗？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>你确定要删除收入类别"{0}"吗？</value>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>如果选中，这将创建一个收入类别。
+只有附属于这种类别的交易才会被解释为收入。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -391,217 +412,69 @@
 打开左上角的文件菜单。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF财务计划 (*.realm)|*.realm|BFF财务计划 (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>赚取的金额分配给这个月的开支。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>金额格式</value>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>上个月所有类别的预算超支总和。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>数量</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>使用这个日期选择器可以跳到任何月份（日期不重要）。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>基金会</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>YNAB预算CSV的路径。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>来源账户</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>你确定收入类别"{0}"应该被合并到收入类别"{1}"中吗？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>该条目生效的日期。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>没有</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>如果选择了一个父类别，新的类别将作为一个子类别附在它上面。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>平衡</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>这将删除该账户及其所有交易，全额转账将变成单边转账，预算的具体账户问题将消失。
-
-你真的确定吗？将进行自动备份，以便有可能恢复到删除前的状态）。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>余额为零</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>创建条目时发生错误。检查配置。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>这个输入字段不能为空!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>单边转让可以在删除账户后出现。它们必须被考虑在内，因为它们在会计上不是中性的。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>必须选择一个源账户。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>新标记的名称</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>按这一栏的按钮，可以删除相应行的元素。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>所有</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>颜色</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>叠加类别</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>新类别的名称不能是空的!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>受款人格式</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>初始账户余额</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>收入交易</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>必须选择一个收款人。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>康通名</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>收入</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>删除</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>保存新的资料</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>目标账户余额与小计之间的差额。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>上个月的预算值</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>预算</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>未分配的</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>必须选择一个账户。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>超额预订</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>始终隐藏编辑表格中的列标题</value>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>小计</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>这段文字无法被解析为货币!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>目前</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>要将一个收款人与另一个收款人合并，应将这一栏的符号从源行拖到目标行。
-目标收款人将接管源收款人的所有账户条目。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>未计入</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>入的总和。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>新类别的名称</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>一笔交易让钱从一个账户中流出或流入。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>该标记通过颜色直观地突出了条目，而且完全是可选的。</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="AccountView_TargetBalance" xml:space="preserve">
     <value>目标账户余额</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>如有必要，可在此输入支票号码。</value>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>转移</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>进口</value>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>已完成</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>付款人或支付人在此输入。
-
-如果是转账，则在此输入源账户。</value>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>受款人格式</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>没有指定类别的所有交易的总和。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>按这一栏的按钮，可以删除相应行的元素。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>过去三个月的平均支出</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>YNAB预算CSV的路径。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>帐户</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>命名</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>如果不存在的话，创建一个新的收款人？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>要将一个标记与另一个标记合并，应将这一列的符号从源行拖出，并释放到目标行。
+目标标记接管了源标记的所有账户条目，并保持自己的颜色。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
@@ -612,64 +485,357 @@
     <value>所有账户</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>取消</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>进口配置</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>诺伊尔</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>新标记的名称不能是空的或已经存在。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>缺少的金额</value>
+  <data name="General_Positive" xml:space="preserve">
+    <value>正面</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
     <value>导入并保存在以下路径下。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>单边转让</value>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF财务计划 (*.realm)|*.realm|BFF财务计划 (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>YNAB交易CSV的路径。</value>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>标记</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>文件路径</value>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>使用这个日期选择器可以跳到任何月份（日期不重要）。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>命名</value>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>发布</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>在设定的开始日期，账户的余额。</value>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>创建一个新的分割输出</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>必须选择一个收款人。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>超额完成任务</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>好的</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>后移一个月</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>分离器</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>文件</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>简介</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>必须选择一个源账户。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>未分配的</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>账户名称不允许为空，也不允许与现有账户名称相似。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>创建一个新的付费</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>编辑账户</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>显示支票号码</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>新标记的名称</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>符号</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>新收款人名称</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>缺少的金额</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>进口商</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>收入相关？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>这将删除该账户及其所有交易，全额转账将变成单边转账，预算的具体账户问题将消失。
+
+你真的确定吗？将进行自动备份，以便有可能恢复到删除前的状态）。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Negative" xml:space="preserve">
     <value>负数</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>上个月给出的金额，但没有记录在任何类别中。</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>货币格式</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>类别</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>栏目介绍</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>你确定要删除"{0}"类别吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>康通名</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>单边转让</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>要将一个收入类别与另一个收入类别合并，应将这一列的符号从源行拖出，并释放到目标行。
+目标收入类别将继承源收入类别的所有账户条目，并保留每月的抵消。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>进口</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>密码</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>支出</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>没有指定类别的所有交易的总和。</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>上个月的预算值</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>编辑收款人</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>要将一个收款人与另一个收款人合并，应将这一栏的符号从源行拖到目标行。
+目标收款人将接管源收款人的所有账户条目。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>保存新的资料</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>转账是将钱从一个账户转到另一个账户。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>在这个类别层面上，一个具有所选名称的类别已经存在了!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>取消目标</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>创建一个新的转移</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>打开一个财务计划</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>收入交易</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>缺少的金额不包括未提交的条目</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>余额为零</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>基金会</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>受款人</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>删除</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>共计</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>新类别的名称不能是空的!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>创建</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>告知</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>创建新的收款人</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>你确定要删除收入类别"{0}"吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>平衡</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>你确定受款人"{0}"应该被合并到受款人"{1}"中吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>日期格式</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>本月捐赠但尚未记录在任何类别中的金额。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Test 5" xml:space="preserve">
+    <value>快速测试</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>月份偏移是指逐月转移收入变得活跃的时间。
+例如，一个月的偏移量为1，将收入转移到下个月，而减去1则转移到上个月。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>填入所有的预算单元。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>颜色</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>必须选择一个账户。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>缺少的金额</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>YNAB交易CSV的路径。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>设定目标账户余额</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>保存新的预算计划。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>没有</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>您确定要删除收款人"{0}"吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>超额预订</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>收入类别</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>入的总和。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>日期</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>本月缺少满足所有类别的资金数额。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>上个月为满足所有类别的需求而缺少的金额。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>日期格式</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>点击查看和编辑部分交易。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>交易</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>你确定"{0}"类别应该被合并到"{1}"类别中吗？</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>删除简介</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>文件路径</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToCategory" xml:space="preserve">
@@ -678,270 +844,104 @@
 如果一对子类别的名称相同，那么源子类别将被自动重新命名（附加数字）。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>前进一个月</value>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>零度</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>语言</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>无法找到文件"{0}"。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>日期格式</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>日期格式</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>账户余额</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>开放式</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>交易</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>开始日期</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>你确定要删除"{0}"类别吗？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>小计</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>通过</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>保存资料</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>填入所有的预算单元。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>如果激活了总数，那么子类别的值就会加到自己的值上。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>在这个类别层面上，一个具有所选名称的类别已经存在了!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>郎咸平</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>取消</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>本月分配给各类的所有资金总额。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>你确定吗？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>你确定要删除"{0}"标记吗？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>月抵消</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>赚取的金额分配给这个月的开支。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>类别</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>考虑到有未来日期的分录的账户总余额。
-请看工具提示，以便更好地加以区分。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>该值超出有效范围：[ {0} ... {1} ]!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>进口商</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>配置</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>标记</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>重置简介</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>编辑标记</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>符号显示账户条目是哪种类型。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>未分配的</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>栏目介绍</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>创建新标记</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>密码</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>上个月所有类别的预算超支总和。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>账户名称不允许为空，也不允许与现有账户名称相似。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>您确定要删除收款人"{0}"吗？</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>转移</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>告知</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>这个内存路径的文件名是空的!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>在添加条目之前必须选择一个账户。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>本月捐赠但尚未记录在任何类别中的金额。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>进口</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>缺少的金额不包括未提交的条目</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>创建新的类别</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>显示标记</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>超额完成任务</value>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>创建第一个账户条目</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
     <value>必须选择一个目标账户</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>打开银行对账单</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>收入类别</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>上个月的支出</value>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>在设定的开始日期，账户的余额。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>出口目标</value>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>新标记的名称不能是空的或已经存在。</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
-    <value>再来一次。太有趣了。</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>浏览</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>转换为</value>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>开放式</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>有</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>要将一个标记与另一个标记合并，应将这一列的符号从源行拖出，并释放到目标行。
-目标标记接管了源标记的所有账户条目，并保持自己的颜色。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>新收款人名称</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>货币格式</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Test 5" xml:space="preserve">
-    <value>快速测试</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>转账是将钱从一个账户转到另一个账户。</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>通过</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
     <value>这个名字已经存在于所选的类别级别中了!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>受款人</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>注释格式</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>创建一个新的转移</value>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>该标记通过颜色直观地突出了条目，而且完全是可选的。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>新类别的名称</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>始终隐藏编辑表格中的列标题</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>出口目标</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>无法找到文件"{0}"。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>进口</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>当前金额</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>谢克号</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>收入</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>创建新标记</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>如果选择了一个父类别，新的类别将作为一个子类别附在它上面。</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>关闭</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>进口配置</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>移除</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>

@@ -58,154 +58,62 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Uuden maksunsaajan nimi ei saa olla tyhjä tai jo olemassa.</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Tätä tiedostopolkua ei ole olemassa!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Aksentit</value>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Luokka</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Symboli</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Luo uusi rahoitussuunnitelma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Aihe</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Päivämäärä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Yhteensä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Keskimääräiset menot kolmen viime kuukauden aikana</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>Huomautuksen tarkoituksena on antaa merkinnälle jokin kuvaus.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Okei</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Jos tämä valitaan, luodaan tuloluokka.
-Tuloksi tulkitaan ainoastaan tällaiseen luokkaan liitetyt liiketoimet.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Luo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Luo uuden jaetun ulostulon</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Muokkaa tilejä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Aseta tavoitetilin saldo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Asetukset</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Luo uuden numeron</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Peruuta tähtääminen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>Kuukauden siirto siirtää tulojen aktivoitumisen ajankohtaa kuukausittain.
-Esimerkiksi yhden kuukauden kuittaus siirtää tulot seuraavaan kuukauteen ja miinus yksi edelliseen kuukauteen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Napsauttamalla tätä voit tarkastella ja muokata osittaisia tapahtumia.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Tuloluokka</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Scheckin numero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Pankin tiliote</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Rahamäärä, joka puuttui viime kuussa kaikkien luokkien täyttämiseksi.</value>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Peruuta</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Tilit</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Poista</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Yhteensä</value>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Onko tuloilla merkitystä?</value>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Kaikkien tässä kuussa luokkiin kohdennettujen varojen kokonaismäärä.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Näytä tarkistusnumerot</value>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Tämän muistipolun tiedostonimi on tyhjä!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Nykyinen määrä</value>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Tähän merkitään maksettu tai maksava henkilö.
+
+Jos kyseessä on siirto, lähdetili merkitään tähän.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Tavoitetilin saldon asettaminen mahdollistaa puuttuvan määrän automaattisen laskemisen.</value>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Päivämäärä, jolloin merkintä tulee voimaan.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Luo uusi luokka</value>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>Puuttuva määrä</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>Lyhyesti</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Luo uusi tili</value>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Tulokirjaus merkitsee liiketapahtumaa, jota pidetään tulona.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Tätä tiedostopolkua ei ole olemassa!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Luo ensimmäinen tilimerkintä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Tallentaa parhaillaan muokatut elementit tilille</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Aksentit</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -215,13 +123,165 @@ Koska kategoriat voivat olla hierarkkisia, koko hierarkkinen polku näytetään 
 Jos kyseessä on siirto, kohdetili merkitään tähän.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Jos haluat yhdistää yhden tuloluokan toiseen, tämän sarakkeen symboli on vedettävä lähderiviltä ja vapautettava kohderiville.
-Kohdetuloluokka perii kaikki lähdetuloluokan tilikirjaukset ja säilyttää kuukausittaisen kuittauksen.</value>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Luo uusi luokka</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Avaa tiliote</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Tapahtuman avulla rahaa virtaa tililtä tai tilille.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Arvo on voimassaoloalueen ulkopuolella: [ {0} .. {1} ]!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Luo uuden numeron</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Peruuta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Määrä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Pankin tiliote</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Aloituspäivä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Päällekkäinen luokka</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Lähdetili</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Oletko varma?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Tavoitetilin saldon ja välisumman erotus.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Käyttämätön</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>profiilin nollaus</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Aihe</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Tämä kenttä ei saa jäädä tyhjäksi!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Tallenna profiili</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Tilin kokonaissaldo ottaen huomioon kirjaukset, joiden päivämäärä on tulevaisuudessa.
+Katso työkaluvihjeitä, jotta voit tehdä paremman eron.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Header" xml:space="preserve">
     <value>Otsikkotiedot</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Tallennuspolun hakemistoa ei ole olemassa!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Tavoitetilin saldon asettaminen mahdollistaa puuttuvan määrän automaattisen laskemisen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Tili, johon kirjaus kuuluu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfigurointi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Kontostand</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Oletko varma, että haluat poistaa merkin "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Täytä kaikki tyhjät budjettisolut:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Yksipuolisia siirtoja voi esiintyä tilin poistamisen jälkeen. Ne on otettava huomioon, koska ne eivät ole neutraaleja kirjanpidon kannalta.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Tili on valittava ennen merkinnän lisäämistä.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Merkintöjen luomisessa tapahtui virhe. Tarkista kokoonpano.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Nykyinen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Muunna kohteeseen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Viimeisen kuukauden menot</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Tarvittaessa tarkistuksen numero voidaan syöttää tähän.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Yhteensä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Luo uusi merkki</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Test4" xml:space="preserve">
+    <value>Ja vielä kerran. Niin hauskaa.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Saatavilla</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
@@ -229,160 +289,121 @@ Kohdetuloluokka perii kaikki lähdetuloluokan tilikirjaukset ja säilyttää kuu
 Yhteissummat näkyvät tilin saldon työkaluvihjeessä.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Oletko varma, että luokka "{0}" pitäisi yhdistää luokkaan "{1}"?</value>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Talousarvio</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Tulokirjaus merkitsee liiketapahtumaa, jota pidetään tulona.</value>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Uuden maksunsaajan nimi ei saa olla tyhjä tai jo olemassa.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>Tili, johon kirjaus kuuluu.</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Oletko varma, että tuloluokka "{0}" pitäisi yhdistää tuloluokkaan "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Siirto</value>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Kuukausi Offset</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Kieli</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Näytä summat</value>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Jos summat on aktivoitu, alaluokkien arvot lisätään omaan arvoon.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Maksunsaaja</value>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Huomautuksen tarkoituksena on antaa merkinnälle jokin kuvaus.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Cleared" xml:space="preserve">
     <value>Valmistunut</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Tili</value>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Ei otettu huomioon</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Avaa rahoitussuunnitelma</value>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Tilin alkuperäinen saldo</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Tuloluokat</value>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Maksunsaaja</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Valmistunut</value>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Luo uusi tili</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Huomautusmuoto</value>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Rahamäärä, joka annettiin viime kuussa, mutta jota ei kirjattu mihinkään luokkaan.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>Siirry kuukausi taaksepäin</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Siirto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Luo uusi maksullinen</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Siirry kuukausi eteenpäin</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Tallenna uusi talousarviosuunnitelma:</value>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Muokkaa merkkejä</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Luo uusi luokka</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Lähetetty</value>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Erotin</value>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Näytä merkit</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Sulje</value>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Tallentaa parhaillaan muokatut elementit tilille</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
     <value>Välisumma sisältää merkinnät, jotka on vielä tallennettava.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Luoda uusi maksunsaaja, jos sitä ei ole olemassa?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Luokka</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Poista profiili</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>Rahamäärä, joka puuttuu tässä kuussa kaikkien luokkien täyttämiseksi.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Täytä kaikki tyhjät budjettisolut:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Luo uusi maksunsaaja</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>Tiedosto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Tallennuspolun hakemistoa ei ole olemassa!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiivinen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Muokkaa maksunsaajaa</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Luo uusi merkki</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Näytä summat</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>Kategoria on valittava.</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Luo uusi rahoitussuunnitelma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Määrän muoto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Symbolit osoittavat, minkä tyyppinen tiliöinti on.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Asetukset</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
     <value>Oletko varma, että haluat merkin "{0}" sulautuvan merkkiin "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profiili</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Lyhyesti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Selaa</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Oletko varma, että maksunsaaja "{0}" pitäisi yhdistää maksunsaajaan "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Haluatko varmasti poistaa tuloluokan "{0}"?</value>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Jos tämä valitaan, luodaan tuloluokka.
+Tuloksi tulkitaan ainoastaan tällaiseen luokkaan liitetyt liiketoimet.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -391,217 +412,69 @@ Projektin luominen, avaaminen tai tuominen
 avaa tiedostovalikko vasemmassa yläkulmassa.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF-rahoitussuunnitelma (*.realm)|*.realm|BFF-rahoitussuunnitelma (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Ansaittu rahamäärä, joka on varattu tämän kuukauden menoihin.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Määrän muoto</value>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Viime kuun kaikkien luokkien yhteenlasketut talousarvioylitykset.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Määrä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Tämän päivämäärän valitsimen avulla voit siirtyä mihin tahansa kuukauteen (päivällä ei ole merkitystä).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Polku YNAB Budget CSV:hen:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Lähdetili</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Oletko varma, että tuloluokka "{0}" pitäisi yhdistää tuloluokkaan "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>Päivämäärä, jolloin merkintä tulee voimaan.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Ei</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Jos on valittu emoluokka, uusi luokka liitetään siihen alaluokaksi.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Tasapaino</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>Tämä poistaa tilin ja kaikki sen maksutapahtumat, täyssiirrot muuttuvat yksipuolisiksi ja tilikohtainen ongelma budjetin kanssa katoaa.
-
-Oletko todella varma? (Automaattinen varmuuskopio tehdään, jotta voidaan palauttaa ennen poistamista vallinnut tila).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Saldo nollassa</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>Merkintöjen luomisessa tapahtui virhe. Tarkista kokoonpano.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Tämä kenttä ei saa jäädä tyhjäksi!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Yksipuolisia siirtoja voi esiintyä tilin poistamisen jälkeen. Ne on otettava huomioon, koska ne eivät ole neutraaleja kirjanpidon kannalta.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Lähdetili on valittava.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Uuden merkin nimi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Paina tämän sarakkeen painiketta poistaaksesi vastaavan rivin elementin.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Väri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Päällekkäinen luokka</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>Uuden luokan nimi ei saa olla tyhjä!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Maksunsaajan muoto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Tilin alkuperäinen saldo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Tulotapahtuma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>Maksunsaaja on valittava.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Tulot</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Poista</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Tallenna uusi profiili</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Tavoitetilin saldon ja välisumman erotus.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Viimeisen kuukauden budjettiarvo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Talousarvio</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Käyttämätön</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Tili on valittava.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Ylibuukattu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Piilota aina sarakkeiden otsikot muokkaustaulukossa</value>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Yhteensä</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Tätä tekstiä ei voitu tulkita valuutaksi!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Nykyinen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Jos haluat yhdistää yhden maksunsaajan toiseen, tämän sarakkeen symboli on vedettävä lähderiviltä ja pudotettava kohderiville.
-Kohdemaksunsaaja ottaa kaikki lähdemaksunsaajan tilikirjaukset haltuunsa.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Ei otettu huomioon</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>Merkinnän summa.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>Uuden luokan nimi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Tapahtuman avulla rahaa virtaa tililtä tai tilille.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>Merkintä korostaa merkintää visuaalisesti värillä, ja se on täysin vapaaehtoinen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="AccountView_TargetBalance" xml:space="preserve">
     <value>Tavoitetilin saldo</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Tarvittaessa tarkistuksen numero voidaan syöttää tähän.</value>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Siirto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Importieren</value>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Valmistunut</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Tähän merkitään maksettu tai maksava henkilö.
-
-Jos kyseessä on siirto, lähdetili merkitään tähän.</value>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Maksunsaajan muoto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Kaikkien sellaisten tapahtumien summa, joille ei ole määritetty luokkaa.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Paina tämän sarakkeen painiketta poistaaksesi vastaavan rivin elementin.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Keskimääräiset menot kolmen viime kuukauden aikana</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Polku YNAB Budget CSV:hen:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Tili</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Nimi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Luoda uusi maksunsaaja, jos sitä ei ole olemassa?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Jos haluat yhdistää yhden merkin toiseen, tämän sarakkeen symboli on vedettävä lähderiviltä ja vapautettava kohderiville.
+Kohdemerkintä ottaa kaikki lähdemerkinnän tilimerkinnät ja säilyttää oman värinsä.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
@@ -612,64 +485,357 @@ Jos kyseessä on siirto, lähdetili merkitään tähän.</value>
     <value>Kaikki tilit</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Peruuta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Tuo kokoonpano</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>Uuden merkin nimi ei saa olla tyhjä tai jo olemassa.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Puuttuva määrä</value>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiivinen</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
     <value>Tuo ja tallenna seuraavaan polkuun:</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Yksipuoliset siirrot</value>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF-rahoitussuunnitelma (*.realm)|*.realm|BFF-rahoitussuunnitelma (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Polku YNAB-transaktioiden CSV-tiedostoon:</value>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Merkit</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Tiedoston polku</value>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Tämän päivämäärän valitsimen avulla voit siirtyä mihin tahansa kuukauteen (päivällä ei ole merkitystä).</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Nimi</value>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Lähetetty</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Tilin saldo asetettuna aloituspäivänä.</value>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Luo uuden jaetun ulostulon</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Maksunsaaja on valittava.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Ylitys</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okei</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Siirry kuukausi taaksepäin</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Erotin</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Tiedosto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profiili</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Lähdetili on valittava.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Käyttämätön</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Tilin nimi ei saa olla tyhjä tai muistuttaa olemassa olevan tilin nimeä.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Luo uusi maksullinen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Muokkaa tilejä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Näytä tarkistusnumerot</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Uuden merkin nimi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symboli</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Uuden maksunsaajan nimi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Puuttuva määrä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Onko tuloilla merkitystä?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Tämä poistaa tilin ja kaikki sen maksutapahtumat, täyssiirrot muuttuvat yksipuolisiksi ja tilikohtainen ongelma budjetin kanssa katoaa.
+
+Oletko todella varma? (Automaattinen varmuuskopio tehdään, jotta voidaan palauttaa ennen poistamista vallinnut tila).</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Negative" xml:space="preserve">
     <value>Negatiivinen</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Rahamäärä, joka annettiin viime kuussa, mutta jota ei kirjattu mihinkään luokkaan.</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Valuuttamuoto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategoriat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Merkinnät</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Haluatko varmasti poistaa luokan "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Yksipuoliset siirrot</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Jos haluat yhdistää yhden tuloluokan toiseen, tämän sarakkeen symboli on vedettävä lähderiviltä ja vapautettava kohderiville.
+Kohdetuloluokka perii kaikki lähdetuloluokan tilikirjaukset ja säilyttää kuukausittaisen kuittauksen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Salasana</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Menot</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Kaikkien sellaisten tapahtumien summa, joille ei ole määritetty luokkaa.</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Viimeisen kuukauden budjettiarvo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Muokkaa maksunsaajaa</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Jos haluat yhdistää yhden maksunsaajan toiseen, tämän sarakkeen symboli on vedettävä lähderiviltä ja pudotettava kohderiville.
+Kohdemaksunsaaja ottaa kaikki lähdemaksunsaajan tilikirjaukset haltuunsa.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Tallenna uusi profiili</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Siirrolla siirretään rahaa tililtä toiselle.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Tällä kategoriatasolla kategoria, jolla on valittu nimi, on jo olemassa!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Peruuta tähtääminen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Luo uuden siirron</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Avaa rahoitussuunnitelma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Tulotapahtuma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Puuttuva määrä lukuun ottamatta toimittamattomia merkintöjä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo nollassa</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Maksunsaaja</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Poista</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Yhteensä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Uuden luokan nimi ei saa olla tyhjä!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Luo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Notiz</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Luo uusi maksunsaaja</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Haluatko varmasti poistaa tuloluokan "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Tasapaino</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Oletko varma, että maksunsaaja "{0}" pitäisi yhdistää maksunsaajaan "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Päivämäärän muoto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Tässä kuussa annettu rahamäärä, jota ei ole vielä kirjattu mihinkään luokkaan.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Test 5" xml:space="preserve">
+    <value>Pikatesti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Kuukauden siirto siirtää tulojen aktivoitumisen ajankohtaa kuukausittain.
+Esimerkiksi yhden kuukauden kuittaus siirtää tulot seuraavaan kuukauteen ja miinus yksi edelliseen kuukauteen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Täytä kaikki budjettisolut:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Väri</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Tili on valittava.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Puuttuva määrä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Polku YNAB-transaktioiden CSV-tiedostoon:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Aseta tavoitetilin saldo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Tallenna uusi talousarviosuunnitelma:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Ei</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Haluatko varmasti poistaa maksunsaajan "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Ylibuukattu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Tuloluokka</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Merkinnän summa.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Päivämäärä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Rahamäärä, joka puuttuu tässä kuussa kaikkien luokkien täyttämiseksi.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Rahamäärä, joka puuttui viime kuussa kaikkien luokkien täyttämiseksi.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Päivämäärän muoto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Napsauttamalla tätä voit tarkastella ja muokata osittaisia tapahtumia.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaktio</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Oletko varma, että luokka "{0}" pitäisi yhdistää luokkaan "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Poista profiili</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Tiedoston polku</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToCategory" xml:space="preserve">
@@ -678,270 +844,104 @@ Kohdeluokka perii kaikki tilimerkinnät ja alaluokat lähtöluokasta.
 Jos alaluokkaparilla on sama nimi, lähteen alaluokka nimetään automaattisesti uudelleen (numero liitetään).</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Siirry kuukausi eteenpäin</value>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Kieli</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>Tiedostoa "{0}" ei löytynyt.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Päivämäärän muoto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Päivämäärän muoto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Kontostand</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Avaa</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Transaktio</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Aloituspäivä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Haluatko varmasti poistaa luokan "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Yhteensä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Via</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Tallenna profiili</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Täytä kaikki budjettisolut:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Jos summat on aktivoitu, alaluokkien arvot lisätään omaan arvoon.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>Tällä kategoriatasolla kategoria, jolla on valittu nimi, on jo olemassa!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Peruuta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Kaikkien tässä kuussa luokkiin kohdennettujen varojen kokonaismäärä.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Oletko varma?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Oletko varma, että haluat poistaa merkin "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Kuukausi Offset</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Ansaittu rahamäärä, joka on varattu tämän kuukauden menoihin.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Kategoriat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Tilin kokonaissaldo ottaen huomioon kirjaukset, joiden päivämäärä on tulevaisuudessa.
-Katso työkaluvihjeitä, jotta voit tehdä paremman eron.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Arvo on voimassaoloalueen ulkopuolella: [ {0} .. {1} ]!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Konfigurointi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Merkit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>profiilin nollaus</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Muokkaa merkkejä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Symbolit osoittavat, minkä tyyppinen tiliöinti on.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Käyttämätön</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Merkinnät</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Luo uusi merkki</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Salasana</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Viime kuun kaikkien luokkien yhteenlasketut talousarvioylitykset.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>Tilin nimi ei saa olla tyhjä tai muistuttaa olemassa olevan tilin nimeä.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Haluatko varmasti poistaa maksunsaajan "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Siirto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Notiz</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Tämän muistipolun tiedostonimi on tyhjä!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Tili on valittava ennen merkinnän lisäämistä.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Tässä kuussa annettu rahamäärä, jota ei ole vielä kirjattu mihinkään luokkaan.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Tuo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Puuttuva määrä lukuun ottamatta toimittamattomia merkintöjä</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Luo uusi luokka</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Näytä merkit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>Ylitys</value>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Luo ensimmäinen tilimerkintä</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
     <value>Kohdetili on valittava</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Avaa tiliote</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Tuloluokat</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Viimeisen kuukauden menot</value>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Tilin saldo asetettuna aloituspäivänä.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Vientikohde</value>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Uuden merkin nimi ei saa olla tyhjä tai jo olemassa.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
-    <value>Ja vielä kerran. Niin hauskaa.</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Selaa</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Muunna kohteeseen</value>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Avaa</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Saatavilla</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>Jos haluat yhdistää yhden merkin toiseen, tämän sarakkeen symboli on vedettävä lähderiviltä ja vapautettava kohderiville.
-Kohdemerkintä ottaa kaikki lähdemerkinnän tilimerkinnät ja säilyttää oman värinsä.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Uuden maksunsaajan nimi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Valuuttamuoto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Test 5" xml:space="preserve">
-    <value>Pikatesti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>Siirrolla siirretään rahaa tililtä toiselle.</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Via</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
     <value>Tämä nimi on jo olemassa valitulle luokkatasolle!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Maksunsaaja</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Huomautusmuoto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Luo uuden siirron</value>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Merkintä korostaa merkintää visuaalisesti värillä, ja se on täysin vapaaehtoinen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Uuden luokan nimi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Piilota aina sarakkeiden otsikot muokkaustaulukossa</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Vientikohde</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Tiedostoa "{0}" ei löytynyt.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Tuo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Nykyinen määrä</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Scheckin numero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Tulot</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Luo uusi merkki</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Jos on valittu emoluokka, uusi luokka liitetään siihen alaluokaksi.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Sulje</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Tuo kokoonpano</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Poista</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>
