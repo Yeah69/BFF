@@ -60,888 +60,888 @@
   </resheader>
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
     <value>Το όνομα ενός νέου δικαιούχου δεν πρέπει να είναι κενό ή να υπάρχει ήδη.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
     <value>Αξόνες</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
     <value>Σύμβολο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
     <value>Δημιουργήστε ένα νέο οικονομικό σχέδιο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_Theme" xml:space="preserve">
     <value>Θέμα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Date" xml:space="preserve">
     <value>Ημερομηνία</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_IntermediateBalance" xml:space="preserve">
     <value>Υποσύνολο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
     <value>Μέση δαπάνη κατά τους τελευταίους τρεις μήνες</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
     <value>Η σημείωση προορίζεται να δώσει στην καταχώρηση οποιαδήποτε περιγραφή.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Okay" xml:space="preserve">
     <value>Εντάξει</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
     <value>Εάν επιλεγεί, δημιουργείται μια κατηγορία εισοδήματος.
 Μόνο οι συναλλαγές που συνδέονται με μια τέτοια κατηγορία θα ερμηνεύονται ως εισόδημα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Δημιουργία</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
     <value>Δημιουργεί μια νέα έξοδο διαχωρισμού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Edit" xml:space="preserve">
     <value>Επεξεργασία λογαριασμών</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_SetTargetBalance" xml:space="preserve">
     <value>Ορισμός υπολοίπου στόχου λογαριασμού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Settings" xml:space="preserve">
     <value>Ρυθμίσεις</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
     <value>Δημιουργεί ένα νέο θέμα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
     <value>Ακύρωση στόχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
     <value>Η μετατόπιση μήνα μετατοπίζει το χρόνο κατά τον οποίο το εισόδημα γίνεται ενεργό μήνα προς μήνα.
 Για παράδειγμα, ένας μηνιαίος συμψηφισμός της μονάδας μεταφέρει το εισόδημα στον επόμενο μήνα και μείον ένα στον προηγούμενο μήνα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
     <value>Κάντε κλικ για να προβάλετε και να επεξεργαστείτε τις μερικές συναλλαγές.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
     <value>Κατηγορία εισοδήματος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_CheckNumber" xml:space="preserve">
     <value>Αριθμός Scheck</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Τραπεζική δήλωση</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
     <value>Το ποσό των χρημάτων που έλειπε τον περασμένο μήνα για να καλυφθούν όλες οι κατηγορίες.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
     <value>Λογαριασμοί</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ConMenu_Remove" xml:space="preserve">
     <value>Αφαιρέστε το</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Total" xml:space="preserve">
     <value>Σύνολο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
     <value>Το εισόδημα είναι σχετικό;</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_ShowCheckNumbers" xml:space="preserve">
     <value>Εμφάνιση αριθμών ελέγχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
     <value>Τρέχον ποσό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
     <value>Ο καθορισμός του υπολοίπου του λογαριασμού-στόχου επιτρέπει τον αυτόματο υπολογισμό του ελλείποντος ποσού.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
     <value>Δημιουργία νέας κατηγορίας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_MissingSum" xml:space="preserve">
     <value>Λείπει ποσό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_CreateNew" xml:space="preserve">
     <value>Δημιουργία νέου λογαριασμού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
     <value>Αυτή η διαδρομή αρχείου δεν υπάρχει!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_FirstEntry" xml:space="preserve">
     <value>Δημιουργήστε την πρώτη καταχώρηση λογαριασμού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
     <value>Αποθηκεύει τα τρέχοντα στοιχεία που έχουν επεξεργαστεί στο λογαριασμό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
     <value>Η κατηγορία καθορίζει τον προσωπικό σας σκοπό αυτής της καταχώρησης.
 Επειδή οι κατηγορίες μπορεί να είναι ιεραρχικές, ολόκληρη η ιεραρχική διαδρομή εμφανίζεται στο tooltip.
 
 Εάν η καταχώρηση είναι μεταφορά, τότε ο λογαριασμός-στόχος εισάγεται εδώ.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
     <value>Για να συγχωνεύσετε μια κατηγορία εισοδήματος με μια άλλη, το σύμβολο αυτής της στήλης πρέπει να σύρετε από τη γραμμή προέλευσης και να το αφήσετε στη γραμμή στόχου.
 Η κατηγορία εισοδήματος-στόχου θα κληρονομήσει όλες τις εγγραφές λογαριασμού από την κατηγορία εισοδήματος-πηγής και θα διατηρήσει τον μηνιαίο συμψηφισμό.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Header" xml:space="preserve">
     <value>Δεδομένα επικεφαλίδας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
     <value>Αυτό το σημάδι ελέγχου μπορεί να χρησιμοποιηθεί για τη διάκριση των καταχωρίσεων που έχουν ολοκληρωθεί από εκείνες που χρειάζονται ακόμη αναθεώρηση.
 Τα σύνολα μπορούν να προβληθούν στη συμβουλή εργαλείων του υπολοίπου του λογαριασμού.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
     <value>Είστε σίγουροι ότι η κατηγορία "{0}" πρέπει να συγχωνευτεί στην κατηγορία "{1}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
     <value>Μια εγγραφή εισοδήματος σηματοδοτεί μια συναλλαγή που θεωρείται εισόδημα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
     <value>Ο λογαριασμός στον οποίο ανήκει η εγγραφή.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
     <value>Μεταφορά</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
     <value>Μηδέν</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ShowAggregates" xml:space="preserve">
     <value>Εμφάνιση αθροισμάτων</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Payee" xml:space="preserve">
     <value>Δικαιούχος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Cleared" xml:space="preserve">
     <value>Ολοκληρωμένο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
     <value>Λογαριασμός</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Ανοίξτε ένα οικονομικό σχέδιο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
     <value>Κατηγορίες εισοδήματος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
     <value>Ολοκληρωμένο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_MemoFormat" xml:space="preserve">
     <value>Μορφή σημείωσης</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
     <value>Μετακίνηση προς τα πίσω ένα μήνα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
     <value>Δημιουργήστε ένα νέο πληρωμένο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="SaveNewBudgetPlanTo" xml:space="preserve">
     <value>Αποθήκευση νέου σχεδίου προϋπολογισμού:</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Uncleared" xml:space="preserve">
     <value>Unerledigt</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Budgeted" xml:space="preserve">
     <value>Αναρτήθηκε</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Delimiter" xml:space="preserve">
     <value>Διαχωριστής</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_File_Close" xml:space="preserve">
     <value>Κλείστε το</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
     <value>Το υποσύνολο περιλαμβάνει τις εγγραφές που πρέπει να αποθηκευτούν.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
     <value>Δημιουργία νέου δικαιούχου εάν δεν υπάρχει;</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Category" xml:space="preserve">
     <value>Κατηγορία</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">
     <value>Αφαίρεση προφίλ</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
     <value>Το ποσό των χρημάτων που λείπει αυτό το μήνα για να καλυφθούν όλες οι κατηγορίες.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
     <value>Συμπληρώστε όλα τα κενά κελιά του προϋπολογισμού με:</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
     <value>Δημιουργία νέου δικαιούχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_File" xml:space="preserve">
     <value>Αρχείο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
     <value>Ο κατάλογος από τη διαδρομή αποθήκευσης δεν υπάρχει!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Positive" xml:space="preserve">
     <value>Θετικό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_Edit" xml:space="preserve">
     <value>Επεξεργασία δικαιούχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="CreateNewFlag" xml:space="preserve">
     <value>Δημιουργία νέου δείκτη</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
     <value>Πρέπει να επιλεγεί μια κατηγορία.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
     <value>Είστε σίγουροι ότι θέλετε ο δείκτης "{0}" να συγχωνευτεί με τον δείκτη "{1}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Profile" xml:space="preserve">
     <value>Προφίλ</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Short" xml:space="preserve">
     <value>Εν συντομία</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_Browse" xml:space="preserve">
     <value>Περιήγηση στο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
     <value>Είστε σίγουρος ότι ο δικαιούχος "{0}" πρέπει να συγχωνευθεί με τον δικαιούχο "{1}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
     <value>Σίγουρα θέλετε να διαγράψετε την κατηγορία εισοδήματος "{0}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
     <value>Δεν έχει φορτωθεί ακόμη λογιστικό έργο.
 Για να δημιουργήσετε, να ανοίξετε ή να εισαγάγετε ένα έργο
 ανοίξτε το μενού αρχείων στην επάνω αριστερή γωνία.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
     <value>Χρηματοοικονομικό σχέδιο BFF (*.realm)|*.realm|Χρηματοοικονομικό σχέδιο BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_SumFormat" xml:space="preserve">
     <value>Μορφή ποσού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Sum" xml:space="preserve">
     <value>Ποσό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
     <value>Χρησιμοποιήστε αυτόν τον επιλογέα ημερομηνίας για να μεταβείτε σε οποιονδήποτε μήνα (η ημέρα δεν έχει σημασία).</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
     <value>Zielkonto</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
     <value>Διαδρομή προς το CSV του προϋπολογισμού YNAB:</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
     <value>Λογαριασμός πηγής</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
     <value>Είστε σίγουροι ότι η κατηγορία εισοδήματος "{0}" πρέπει να συγχωνευθεί στην κατηγορία εισοδήματος "{1}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
     <value>Η ημερομηνία έναρξης ισχύος της καταχώρησης.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_No" xml:space="preserve">
     <value>Όχι</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
     <value>Εάν έχει επιλεγεί μια γονική κατηγορία, η νέα κατηγορία θα συνδεθεί με αυτήν ως υποκατηγορία.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Balance" xml:space="preserve">
     <value>Υπόλοιπο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
     <value>Αυτό θα διαγράψει τον λογαριασμό και όλες τις συναλλαγές του, οι πλήρεις μεταφορές θα γίνουν μονόπλευρες και το συγκεκριμένο πρόβλημα του λογαριασμού με τον προϋπολογισμό θα εξαφανιστεί.
 
 Είσαι πραγματικά σίγουρος; (Θα δημιουργηθεί αυτόματο αντίγραφο ασφαλείας, ώστε να είναι δυνατή η επαναφορά στην κατάσταση πριν από τη διαγραφή).</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
     <value>Υπόλοιπο στο μηδέν</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
     <value>Προέκυψε σφάλμα κατά τη δημιουργία των καταχωρίσεων. Ελέγξτε τη διαμόρφωση.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
     <value>Αυτό το πεδίο εισαγωγής δεν πρέπει να παραμείνει κενό!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
     <value>Οι μονομερείς μεταφορές μπορούν να εμφανιστούν μετά τη διαγραφή ενός λογαριασμού. Πρέπει να λαμβάνονται υπόψη επειδή δεν είναι ουδέτερες για λογιστικούς σκοπούς.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
     <value>Πρέπει να επιλεγεί ένας λογαριασμός προέλευσης.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="NameOfNewFlag" xml:space="preserve">
     <value>Όνομα του νέου δείκτη</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Πατήστε το κουμπί σε αυτή τη στήλη για να διαγράψετε το στοιχείο της αντίστοιχης γραμμής.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_All" xml:space="preserve">
     <value>Alles</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Color" xml:space="preserve">
     <value>Χρώμα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Επικαλυπτόμενη κατηγορία</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
     <value>Το όνομα μιας νέας κατηγορίας δεν πρέπει να είναι κενό!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_PayeeFormat" xml:space="preserve">
     <value>Μορφή δικαιούχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Αρχικό υπόλοιπο λογαριασμού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
     <value>S</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
     <value>Συναλλαγή εισοδήματος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>Πρέπει να επιλεγεί ένας δικαιούχος.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Name" xml:space="preserve">
     <value>Kontoname</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Income" xml:space="preserve">
     <value>Εισόδημα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
     <value>Διαγραφή</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_SaveNewProfile" xml:space="preserve">
     <value>Αποθήκευση νέου προφίλ</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_MissingSum" xml:space="preserve">
     <value>Η διαφορά μεταξύ του υπολοίπου του λογαριασμού-στόχου και του υποσυνόλου.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
     <value>Αξία του προϋπολογισμού του τελευταίου μήνα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="HamburgerMenu_Budget" xml:space="preserve">
     <value>Προϋπολογισμός</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Unassigned" xml:space="preserve">
     <value>Μη ανατεθείσα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyAccount" xml:space="preserve">
     <value>Πρέπει να επιλεγεί ένας λογαριασμός.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Overbudgeted" xml:space="preserve">
     <value>Overbooked</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
     <value>Να αποκρύπτετε πάντα τους τίτλους των στηλών στον πίνακα επεξεργασίας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
     <value>Αυτό το κείμενο δεν μπορούσε να αναλυθεί ως νόμισμα!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Current" xml:space="preserve">
     <value>Τρέχον</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
     <value>Για να συγχωνεύσετε έναν δικαιούχο με έναν άλλο, το σύμβολο αυτής της στήλης πρέπει να σύρετε από τη γραμμή προέλευσης και να το αφήσετε στη γραμμή στόχου.
 Ο δικαιούχος-στόχος θα αναλάβει όλες τις εγγραφές λογαριασμού από τον δικαιούχο-πηγή.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_NotBudgeted" xml:space="preserve">
     <value>Δεν έχει ληφθεί υπόψη</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
     <value>Το άθροισμα της καταχώρησης.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Όνομα της νέας κατηγορίας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
     <value>Μια συναλλαγή επιτρέπει τη ροή χρημάτων από ή προς έναν λογαριασμό.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
     <value>Ο δείκτης υπογραμμίζει οπτικά την καταχώρηση με χρώμα και είναι εντελώς προαιρετικός.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_TargetBalance" xml:space="preserve">
     <value>Υπόλοιπο λογαριασμού-στόχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
     <value>Εάν είναι απαραίτητο, ο αριθμός της επιταγής μπορεί να εισαχθεί εδώ.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_Import" xml:space="preserve">
     <value>Importieren</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
     <value>Εδώ αναγράφεται ο πληρωθείς ή το πρόσωπο που πληρώνει.
 
 Εάν η εγγραφή είναι μεταφορά, τότε εδώ καταχωρίζεται ο λογαριασμός προέλευσης.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
     <value>Μέση δαπάνη κατά το τελευταίο έτος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
     <value>Όλοι οι λογαριασμοί</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_Cancel" xml:space="preserve">
     <value>Ακύρωση</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_Title" xml:space="preserve">
     <value>Εισαγωγή ρυθμίσεων</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
     <value>Neu</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongFlagName" xml:space="preserve">
     <value>Το όνομα ενός νέου δείκτη δεν πρέπει να είναι κενό ή να υπάρχει ήδη.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
     <value>Λείπει ποσό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
     <value>Εισάγετε και αποθηκεύστε στην ακόλουθη διαδρομή:</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
     <value>Μονομερείς μεταφορές</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
     <value>Διαδρομή προς το CSV συναλλαγών του YNAB:</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_FilePath" xml:space="preserve">
     <value>Διαδρομή αρχείου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Name" xml:space="preserve">
     <value>Όνομα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
     <value>Το υπόλοιπο του λογαριασμού κατά την καθορισμένη ημερομηνία έναρξης.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Negative" xml:space="preserve">
     <value>Αρνητικό</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
     <value>Το χρηματικό ποσό που δόθηκε τον περασμένο μήνα, αλλά δεν καταγράφηκε σε καμία κατηγορία.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Δαπάνες</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
     <value>Το άθροισμα όλων των συναλλαγών στις οποίες δεν έχει αποδοθεί κατηγορία.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToCategory" xml:space="preserve">
     <value>Για να συγχωνεύσετε μια κατηγορία με μια άλλη, θα πρέπει να σύρετε το εικονίδιο αυτής της στήλης από τη γραμμή προέλευσης και να το αφήσετε στη γραμμή στόχου.
 Η κατηγορία-στόχος θα κληρονομήσει όλες τις εγγραφές λογαριασμού και τις υποκατηγορίες από την κατηγορία-πηγή.
 Εάν ένα ζεύγος υποκατηγοριών έχει το ίδιο όνομα, τότε η υποκατηγορία προέλευσης θα μετονομαστεί αυτόματα (θα προστεθεί αριθμός).</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
     <value>Προχωρήστε ένα μήνα μπροστά</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Γλώσσα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Το αρχείο "{0}" δεν βρέθηκε.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Flag" xml:space="preserve">
     <value>M</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_Date" xml:space="preserve">
     <value>Μορφή ημερομηνίας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_DateFormat" xml:space="preserve">
     <value>Μορφή ημερομηνίας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Balance" xml:space="preserve">
     <value>Υπόλοιπο λογαριασμού</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_File_Open" xml:space="preserve">
     <value>Ανοίξτε το</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
     <value>Συναλλαγή</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Account_StartingDate" xml:space="preserve">
     <value>Ημερομηνία έναρξης</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
     <value>Σίγουρα θέλετε να διαγράψετε την κατηγορία "{0}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
     <value>Υποσύνολο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
     <value>Μέσω</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_SaveProfile" xml:space="preserve">
     <value>Αποθήκευση προφίλ</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
     <value>Συμπληρώστε όλα τα κελιά του προϋπολογισμού:</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
     <value>Εάν τα σύνολα είναι ενεργοποιημένα, τότε οι τιμές των υποκατηγοριών προστίθενται στη δική τους τιμή.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
     <value>Σε αυτό το επίπεδο κατηγορίας, μια κατηγορία με το επιλεγμένο όνομα υπάρχει ήδη!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Long" xml:space="preserve">
     <value>Lang</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Cancel" xml:space="preserve">
     <value>Ακύρωση</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
     <value>Σύνολο όλων των κονδυλίων που κατανέμονται σε κατηγορίες αυτόν τον μήνα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Είσαι σίγουρος;</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
     <value>Είστε σίγουροι ότι θέλετε να διαγράψετε τον δείκτη "{0}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_MonthOffset" xml:space="preserve">
     <value>Μήνας Offset</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_IncomeExplanation" xml:space="preserve">
     <value>Κερδισμένο χρηματικό ποσό που διατίθεται για τα έξοδα αυτού του μήνα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_Categories" xml:space="preserve">
     <value>Κατηγορίες</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Το συνολικό υπόλοιπο του λογαριασμού λαμβάνοντας υπόψη τις εγγραφές με μελλοντική ημερομηνία.
 Δείτε το tooltip για καλύτερη διάκριση.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
     <value>Η τιμή είναι εκτός του εύρους εγκυρότητας: [ {0} .. {1} ]!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_ImportKind" xml:space="preserve">
     <value>Importquelle</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Common_Configuration" xml:space="preserve">
     <value>Διαμόρφωση</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_Flags" xml:space="preserve">
     <value>Δείκτες</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_ResetProfile" xml:space="preserve">
     <value>επαναφορά προφίλ</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Flag_Edit" xml:space="preserve">
     <value>Επεξεργασία δεικτών</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
     <value>Τα σύμβολα δείχνουν τον τύπο της εγγραφής λογαριασμού.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
     <value>Μη ανατεθείσα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Common_Entries" xml:space="preserve">
     <value>Ενδείξεις</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Flag_CreateNew" xml:space="preserve">
     <value>Δημιουργία νέου δείκτη</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_Password" xml:space="preserve">
     <value>Κωδικός πρόσβασης</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
     <value>Σύνολο των υπερβάσεων του προϋπολογισμού που αθροίζονται σε όλες τις κατηγορίες τον περασμένο μήνα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
     <value>Το όνομα του λογαριασμού δεν επιτρέπεται να είναι κενό ή να μοιάζει με το όνομα ενός υπάρχοντος λογαριασμού.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
     <value>Σίγουρα θέλετε να διαγράψετε τον δικαιούχο "{0}";</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="General_Yes" xml:space="preserve">
     <value>Ja</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
     <value>Μεταφορά</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
     <value>Notiz</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
     <value>Το όνομα αρχείου αυτής της διαδρομής μνήμης είναι κενό!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
     <value>Πρέπει να επιλεγεί ένας λογαριασμός πριν από την προσθήκη της καταχώρησης.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Το ποσό των χρημάτων που δόθηκαν αυτό το μήνα αλλά δεν έχουν ακόμη καταγραφεί σε καμία κατηγορία.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
     <value>Εισαγωγή</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
     <value>Λείπον ποσό εξαιρουμένων των μη υποβληθεισών εγγραφών</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Category_CreateNew" xml:space="preserve">
     <value>Δημιουργία νέας κατηγορίας</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_ShowFlags" xml:space="preserve">
     <value>Εμφάνιση δεικτών</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Overspend" xml:space="preserve">
     <value>Υπέρβαση</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
     <value>Πρέπει να επιλεγεί ένας λογαριασμός-στόχος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_OpenBankStatement" xml:space="preserve">
     <value>Ανοιχτή τραπεζική δήλωση</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
     <value>Δαπάνες του τελευταίου μήνα</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_ExportKind" xml:space="preserve">
     <value>Στόχος εξαγωγής</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Test4" xml:space="preserve">
     <value>Και άλλη μια φορά. Πολύ διασκεδαστικό.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Label_ConvertTo" xml:space="preserve">
     <value>Μετατροπή σε</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
     <value>Διαθέσιμο</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
     <value>Για να συγχωνεύσετε έναν δείκτη με έναν άλλο, το σύμβολο από αυτή τη στήλη θα πρέπει να σύρετε από τη γραμμή προέλευσης και να το αφήσετε στη γραμμή προορισμού.
 Ο δείκτης-στόχος αναλαμβάνει όλες τις εγγραφές λογαριασμού από τον δείκτη-πηγή και διατηρεί το δικό του χρώμα.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="NameOfNewPayee" xml:space="preserve">
     <value>Όνομα του νέου δικαιούχου</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_Currency" xml:space="preserve">
     <value>Μορφή νομίσματος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Test 5" xml:space="preserve">
     <value>Γρήγορη δοκιμή</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
     <value>Μια μεταφορά μεταφέρει χρήματα από έναν λογαριασμό σε έναν άλλο.</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
     <value>Αυτό το όνομα υπάρχει ήδη για το επιλεγμένο επίπεδο κατηγορίας!</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_Payees" xml:space="preserve">
     <value>Δικαιούχος</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
     <value>Δημιουργεί μια νέα μεταφορά</value>
-    <comment>Automatically Translated</comment>
+    <comment>Automatically translated.</comment>
   </data>
 </root>
