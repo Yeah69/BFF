@@ -1632,6 +1632,15 @@ namespace BFF.View.Wpf.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dies ist schon der zweite Test..
+        /// </summary>
+        internal static string Test2 {
+            get {
+                return ResourceManager.GetString("Test2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Der Gesamtkontostand unter Berücksichtigung der Einträge mit einem zukünftigen Datum.
         ///Schaue in den Tooltip für eine bessere Unterscheidung..
         /// </summary>
