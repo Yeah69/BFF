@@ -58,8 +58,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontonaam</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Profiel opslaan</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Weet u zeker dat u wilt dat de "{0}" marker overgaat in de "{1}" marker?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Gemiddelde uitgaven gedurende de laatste drie maanden</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Er moet een bronrekening worden geselecteerd.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Indien nodig kan hier het nummer van de cheque worden ingevuld.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overboekt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>De datum waarop de boeking van kracht wordt.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Maak een nieuwe marker</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Niet-toegewezen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Nieuw profiel opslaan</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>De naam van een nieuwe begunstigde mag niet leeg zijn of reeds bestaan.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -68,397 +116,145 @@ Om een project te creëren, openen of importeren
 open het bestandsmenu in de linkerbovenhoek.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>Het subtotaal omvat de gegevens die nog moeten worden opgeslagen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Als een bovenliggende categorie is geselecteerd, zal de nieuwe categorie daaraan worden gekoppeld als subcategorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Naam</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Begindatum</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Weet u zeker dat de categorie "{0}" moet worden samengevoegd met de categorie "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Importeren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Door het doelsaldo van de rekening in te stellen, kan het ontbrekende bedrag automatisch worden berekend.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Via</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Pad naar YNAB Budget CSV:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Oké</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Vul alle lege begrotingscellen met:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Kleur</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Weet u zeker dat u de categorie "{0}" wilt verwijderen?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Maak een nieuwe betaalde</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Subtotaal</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Nieuw account aanmaken</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Sla nieuw begrotingsplan op:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Creëer nieuwe categorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Ontbrekend bedrag</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Begunstigde</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>Uitgaven</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>Ontbrekend bedrag</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Begunstigde</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Toon totalen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Geen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Er moet een categorie worden gekozen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Slaat de momenteel bewerkte elementen op in de account</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Ga een maand vooruit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>De som van alle transacties waaraan geen categorie is toegekend.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Delete</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Open bankafschrift</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>De notitie is bedoeld om de vermelding een beschrijving te geven.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF Financieel Plan (*.realm)|*.realm|BFF Financieel Plan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontonaam</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Vul alle begrotingscellen in:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Pad naar de YNAB Transactie CSV:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Sluiten</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Er moet een rekening worden geselecteerd.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Snelle test</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Oorspronkelijk rekeningsaldo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Passwort</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>Overschrijding</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Begroting</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>De naam van een nieuwe categorie mag niet leeg zijn!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Geplaatst op</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Een nieuwe begunstigde aanmaken als die niet bestaat?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Kopgegevens</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Weet u zeker dat u de inkomenscategorie "{0}" wilt verwijderen?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Het saldo van de rekening op de ingestelde begindatum.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>De rekening waartoe de boeking behoort.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Bladeren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Markers</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>Op dit categorieniveau bestaat al een categorie met een gekozen naam!</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Bent u er zeker van dat de inkomenscategorie "{0}" moet worden samengevoegd met de inkomenscategorie "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_PayeeFormat" xml:space="preserve">
     <value>Formaat begunstigde</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Weet u zeker dat u wilt dat de "{0}" marker overgaat in de "{1}" marker?</value>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Creëer nieuwe categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Op dit categorieniveau bestaat al een categorie met een gekozen naam!</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_Total" xml:space="preserve">
     <value>Totaal</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Klik op om de deelverrichtingen te bekijken en te bewerken.</value>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Een nieuw financieel plan opstellen</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Ben je zeker?</value>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Pad naar YNAB Budget CSV:</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Inkomen</value>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Taal</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Niet-toegewezen</value>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Begindatum</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Overdracht</value>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>reset profiel</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>Met een overschrijving wordt geld van de ene rekening naar de andere overgeschreven.</value>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Wijzig begunstigde</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Saldo op nul</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Via</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Dit invoerveld mag niet leeg blijven!</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Toon totalen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Vul alle begrotingscellen in:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Bedrag</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Het totale rekeningsaldo rekening houdend met de boekingen met een toekomstige datum.
+Zie de tooltip voor een beter onderscheid.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Verrichting</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Inkomsten transactie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Bedrag formaat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Eenzijdige overschrijvingen kunnen voorkomen na de schrapping van een rekening. Zij moeten in aanmerking worden genomen omdat zij voor boekhoudkundige doeleinden niet neutraal zijn.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Als een bovenliggende categorie is geselecteerd, zal de nieuwe categorie daaraan worden gekoppeld als subcategorie.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Label_ConvertTo" xml:space="preserve">
     <value>Converteer naar</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Passwort</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Schecknummer</value>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Er is een fout opgetreden bij het aanmaken van de vermeldingen. Controleer de configuratie.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Er moet een rekening worden geselecteerd.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>De naam van de rekening mag niet leeg zijn of lijken op de naam van een bestaande rekening.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Rekeningen bewerken</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Beschikbaar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Erledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Erledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Annuleren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Er moet een begunstigde worden gekozen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Het bedrag dat deze maand ontbreekt om aan alle categorieën te voldoen.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_MemoFormat" xml:space="preserve">
     <value>Noot formaat</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Naam van de nieuwe marker</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Bestandspad</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Maand Compensatie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Open</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Notiz</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Een rekening moet worden geselecteerd voordat de boeking wordt toegevoegd.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>De datum waarop de boeking van kracht wordt.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Overboekt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Rekeningen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>Ga een maand terug</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Rekening</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Nieuw profiel opslaan</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>De bestandsnaam van dit geheugenpad is leeg!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Dit bestandspad bestaat niet!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Weet u zeker dat begunstigde "{0}" moet worden samengevoegd met begunstigde "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>De map van het opslagpad bestaat niet!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>De naam van een nieuwe marker mag niet leeg zijn of al bestaan.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Maak de eerste rekening</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Om een inkomenscategorie met een andere samen te voegen, moet het symbool van deze kolom uit de bronrij worden gesleept en op de doelrij worden losgelaten.
-De doelinkomenscategorie erft alle rekeningposten van de broninkomenscategorie en behoudt de maandelijkse verrekening.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Inkomenscategorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>Het bestand "{0}" kon niet gevonden worden.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Er moet een bronrekening worden geselecteerd.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Gemiddelde uitgaven in het afgelopen jaar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Toon markers</value>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Bronrekening</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Flag_Edit" xml:space="preserve">
@@ -472,316 +268,12 @@ Omdat categorieën hiërarchisch kunnen zijn, wordt het hele hiërarchische pad 
 Indien de boeking een overschrijving is, wordt hier de doelrekening ingevoerd.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Naam van de nieuwe begunstigde</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>De som van de vermelding.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Accenten</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Totaal van de budgetoverschrijdingen opgeteld over alle categorieën van de afgelopen maand.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Het bedrag dat deze maand is gegeven, maar nog niet in een categorie is opgenomen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>En nog een keer. Zo leuk.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Profiel verwijderen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>reset profiel</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Maak een nieuwe marker</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>De naam van de rekening mag niet leeg zijn of lijken op de naam van een bestaande rekening.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Gemiddelde uitgaven gedurende de laatste drie maanden</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Importeer en bewaar onder het volgende pad:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Datum</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Gesuperponeerde categorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>De symbolen geven aan van welk type de boeking is.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Gebruik deze datumkiezer om naar een willekeurige maand te springen (de dag doet er niet toe).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Om een begunstigde met een andere samen te voegen, moet het symbool van deze kolom uit de bronrij worden gesleept en op de doelrij worden neergezet.
-De begunstigde van het doelsaldo neemt alle rekeningboekingen van de begunstigde van het doelsaldo over.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>De maandelijkse verrekening verschuift het tijdstip waarop het inkomen actief wordt van maand tot maand.
-Zo verschuift bijvoorbeeld een maand afwijking van één het inkomen naar de volgende maand en min één naar de vorige maand.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Huidig bedrag</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Kolomtitels altijd verbergen in de bewerkingstabel</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Importieren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Weet u zeker dat u begunstigde "{0}" wilt verwijderen?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Erledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Datum formaat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Een inkomstenboeking markeert een transactie die als inkomsten wordt beschouwd.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Om een categorie met een andere samen te voegen, moet het pictogram van deze kolom uit de bronrij worden gesleept en op de doelrij worden neergezet.
-De doelcategorie erft alle accountvermeldingen en subcategorieën van de broncategorie.
-Als een paar subcategorieën dezelfde naam hebben, dan wordt de bronsubcategorie automatisch hernoemd (nummer toegevoegd).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Subtotaal</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Creëert een nieuwe uitgifte</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Creëert een nieuwe gesplitste uitvoer</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Bedrag</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Onderwerp</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Erledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Alle rekeningen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>Naam van de nieuwe categorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Kort</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>De marker markeert de invoer visueel met een kleur en is volledig optioneel.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Het geldbedrag dat vorige maand werd gegeven, maar in geen enkele categorie werd geregistreerd.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Een nieuw financieel plan opstellen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Open een financieel plan</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Verwijder</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Bedrag formaat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Bent u er zeker van dat de inkomenscategorie "{0}" moet worden samengevoegd met de inkomenscategorie "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Uitgaven van de laatste maand</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Verrichting</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>Om een marker met een andere samen te voegen, moet het symbool uit deze kolom uit de bronrij worden gesleept en op de doelrij worden losgelaten.
-De doelmarkeerder neemt alle accountgegevens van de bronmarkeerder over en behoudt zijn eigen kleur.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Maak</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Saldo op de rekening</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Maak nieuwe marker</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>Bestand</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Dit vinkje kan worden gebruikt om een onderscheid te maken tussen ingevulde en nog te reviseren gegevens.
-De totalen kunnen worden bekeken in de tooltip van het rekeningsaldo.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ImportView_Title" xml:space="preserve">
     <value>Configuratie importeren</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Toon chequenummers</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Deze tekst kon niet geparsed worden als valuta!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Valuta formaat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Balans</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Het bedrag dat vorige maand ontbrak om aan alle categorieën te voldoen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Categorieën</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>Dit zal de rekening en al hun transacties verwijderen, volledige overschrijvingen zullen eenzijdig worden en het rekening-specifieke probleem met het budget zal verdwijnen.
-
-Weet je het echt zeker? (Er wordt een automatische back-up gemaakt zodat de toestand van vóór de verwijdering kan worden hersteld).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Totaal van alle fondsen die deze maand aan categorieën zijn toegewezen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Datum formaat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Bronrekening</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Niet verantwoord</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Bankafschrift</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Inkomsten transactie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>Er is een fout opgetreden bij het aanmaken van de vermeldingen. Controleer de configuratie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Een transactie laat geld van of naar een rekening stromen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Categorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Niet-toegewezen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Inzendingen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Druk op de knop in deze kolom om het element van de overeenkomstige rij te wissen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Streefcijfer rekeningsaldo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Streefcijfer rekeningsaldo</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Eenzijdige overschrijvingen kunnen voorkomen na de schrapping van een rekening. Zij moeten in aanmerking worden genomen omdat zij voor boekhoudkundige doeleinden niet neutraal zijn.</value>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Weet je zeker dat je de "{0}" marker wilt verwijderen?</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
@@ -790,129 +282,508 @@ Weet je het echt zeker? (Er wordt een automatische back-up gemaakt zodat de toes
 Indien de boeking een overschrijving is, wordt hier de bronrekening ingevuld.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Annuleren</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>Kort</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Rekeningen bewerken</value>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Geplaatst op</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Een transactie laat geld van of naar een rekening stromen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Bestandspad</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Gemiddelde uitgaven in het afgelopen jaar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Inkomenscategorieën</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Inzendingen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Sla nieuw begrotingsplan op:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Er moet een categorie worden gekozen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Datum</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
     <value>Overdracht</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Taal</value>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Bestand</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Er moet een doelrekening worden geselecteerd</value>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Huidig bedrag</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Budgetwaarde van de laatste maand</value>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Naam van de nieuwe begunstigde</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Is inkomen relevant?</value>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>De maandelijkse verrekening verschuift het tijdstip waarop het inkomen actief wordt van maand tot maand.
+Zo verschuift bijvoorbeeld een maand afwijking van één het inkomen naar de volgende maand en min één naar de vorige maand.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Als de totalen geactiveerd zijn, dan worden de waarden van de subcategorieën bij de eigen waarde opgeteld.</value>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Weet u zeker dat de categorie "{0}" moet worden samengevoegd met de categorie "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Scheider</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Weet je zeker dat je de "{0}" marker wilt verwijderen?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Konfiguratie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Instellingen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Verdiende geldbedrag voor de uitgaven van deze maand.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>Het bedrag dat deze maand ontbreekt om aan alle categorieën te voldoen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Nieuwe begunstigde aanmaken</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Het totale rekeningsaldo rekening houdend met de boekingen met een toekomstige datum.
-Zie de tooltip voor een beter onderscheid.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Huidige</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Symbool</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Het verschil tussen het doelsaldo van de rekening en het subtotaal.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Maak een nieuwe categorie</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>De naam van een nieuwe begunstigde mag niet leeg zijn of reeds bestaan.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Beschikbaar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Creëert een nieuwe overdracht</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negativ</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Ontbrekend bedrag exclusief niet-ingediende vermeldingen</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Unilaterale overdrachten</value>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Streefcijfer rekeningsaldo</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
     <value>Deze naam bestaat al voor het geselecteerde categorieniveau!</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Begunstigde</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Maand Compensatie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Kleur</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Ga een maand terug</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Profiel verwijderen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>De som van de vermelding.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Er moet een doelrekening worden geselecteerd</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Slaat de momenteel bewerkte elementen op in de account</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Maak de eerste rekening</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Geen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Rekening</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>De som van alle transacties waaraan geen categorie is toegekend.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Oorspronkelijk rekeningsaldo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bankafschrift</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Om een inkomenscategorie met een andere samen te voegen, moet het symbool van deze kolom uit de bronrij worden gesleept en op de doelrij worden losgelaten.
+De doelinkomenscategorie erft alle rekeningposten van de broninkomenscategorie en behoudt de maandelijkse verrekening.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Om een categorie met een andere samen te voegen, moet het pictogram van deze kolom uit de bronrij worden gesleept en op de doelrij worden neergezet.
+De doelcategorie erft alle accountvermeldingen en subcategorieën van de broncategorie.
+Als een paar subcategorieën dezelfde naam hebben, dan wordt de bronsubcategorie automatisch hernoemd (nummer toegevoegd).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Kopgegevens</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Importeren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Door het doelsaldo van de rekening in te stellen, kan het ontbrekende bedrag automatisch worden berekend.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Markers</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>En nog een keer. Zo leuk.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Uitgaven van de laatste maand</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Inkomenscategorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Naam</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Toon chequenummers</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>Om een marker met een andere samen te voegen, moet het symbool uit deze kolom uit de bronrij worden gesleept en op de doelrij worden losgelaten.
+De doelmarkeerder neemt alle accountgegevens van de bronmarkeerder over en behoudt zijn eigen kleur.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Saldo op nul</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Bladeren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Open</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguratie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Naam van de nieuwe categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Inkomen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>De notitie is bedoeld om de vermelding een beschrijving te geven.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overschrijding</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Huidige</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balans</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>De naam van een nieuwe categorie mag niet leeg zijn!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Creëert een nieuwe overdracht</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Is inkomen relevant?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Open een financieel plan</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Een inkomstenboeking markeert een transactie die als inkomsten wordt beschouwd.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Begroting</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>De map van het opslagpad bestaat niet!</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
     <value>De waarde ligt buiten het geldigheidsbereik: [ {0} .. {1} ]!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Profiel opslaan</value>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Niet-toegewezen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Creëert een nieuwe gesplitste uitvoer</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Het bestand "{0}" kon niet gevonden worden.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Alle rekeningen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Creëert een nieuwe uitgifte</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Scheider</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Druk op de knop in deze kolom om het element van de overeenkomstige rij te wissen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Annuleren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbool</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF Financieel Plan (*.realm)|*.realm|BFF Financieel Plan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Schecknummer</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Het saldo van de rekening op de ingestelde begindatum.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Dit bestandspad bestaat niet!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Nieuw account aanmaken</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Totaal van alle fondsen die deze maand aan categorieën zijn toegewezen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Notiz</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Met een overschrijving wordt geld van de ene rekening naar de andere overgeschreven.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Het bedrag dat vorige maand ontbrak om aan alle categorieën te voldoen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Niet verantwoord</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Uitgaven</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Begunstigde</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Datum formaat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>Dit zal de rekening en al hun transacties verwijderen, volledige overschrijvingen zullen eenzijdig worden en het rekening-specifieke probleem met het budget zal verdwijnen.
+
+Weet je het echt zeker? (Er wordt een automatische back-up gemaakt zodat de toestand van vóór de verwijdering kan worden hersteld).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>De rekening waartoe de boeking behoort.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Het geldbedrag dat vorige maand werd gegeven, maar in geen enkele categorie werd geregistreerd.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Als de totalen geactiveerd zijn, dan worden de waarden van de subcategorieën bij de eigen waarde opgeteld.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Maak</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Weet u zeker dat u de categorie "{0}" wilt verwijderen?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Nieuwe begunstigde aanmaken</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Vul alle lege begrotingscellen met:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Budgetwaarde van de laatste maand</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Dit vinkje kan worden gebruikt om een onderscheid te maken tussen ingevulde en nog te reviseren gegevens.
+De totalen kunnen worden bekeken in de tooltip van het rekeningsaldo.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Gesuperponeerde categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Naam van de nieuwe marker</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Overdracht</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Kolomtitels altijd verbergen in de bewerkingstabel</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Verdiende geldbedrag voor de uitgaven van deze maand.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Ontbrekend bedrag</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Accenten</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Exportdoelstelling</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Saldo op de rekening</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Weet u zeker dat u de inkomenscategorie "{0}" wilt verwijderen?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Streefcijfer rekeningsaldo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Dit invoerveld mag niet leeg blijven!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>De symbolen geven aan van welk type de boeking is.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Valuta formaat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Open bankafschrift</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Categorieën</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Annuleren</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
@@ -920,28 +791,157 @@ Zie de tooltip voor een beter onderscheid.</value>
 Alleen transacties die onder een dergelijke categorie vallen, zullen als inkomsten worden geïnterpreteerd.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Exportdoelstelling</value>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Een rekening moet worden geselecteerd voordat de boeking wordt toegevoegd.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>Er moet een begunstigde worden gekozen.</value>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Klik op om de deelverrichtingen te bekijken en te bewerken.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Annuleren</value>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Ben je zeker?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Wijzig begunstigde</value>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Het subtotaal omvat de gegevens die nog moeten worden opgeslagen.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Indien nodig kan hier het nummer van de cheque worden ingevuld.</value>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Gebruik deze datumkiezer om naar een willekeurige maand te springen (de dag doet er niet toe).</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Inkomenscategorieën</value>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Het verschil tussen het doelsaldo van de rekening en het subtotaal.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Toon markers</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Maak nieuwe marker</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Subtotaal</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>De marker markeert de invoer visueel met een kleur en is volledig optioneel.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Een nieuwe begunstigde aanmaken als die niet bestaat?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Maak een nieuwe categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Totaal van de budgetoverschrijdingen opgeteld over alle categorieën van de afgelopen maand.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Datum formaat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Snelle test</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Instellingen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>De bestandsnaam van dit geheugenpad is leeg!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Ontbrekend bedrag</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Sluiten</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Om een begunstigde met een andere samen te voegen, moet het symbool van deze kolom uit de bronrij worden gesleept en op de doelrij worden neergezet.
+De begunstigde van het doelsaldo neemt alle rekeningboekingen van de begunstigde van het doelsaldo over.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Subtotaal</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Maak een nieuwe betaalde</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Onderwerp</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Weet u zeker dat begunstigde "{0}" moet worden samengevoegd met begunstigde "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Pad naar de YNAB Transactie CSV:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Ga een maand vooruit</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Het bedrag dat deze maand is gegeven, maar nog niet in een categorie is opgenomen.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>De naam van een nieuwe marker mag niet leeg zijn of al bestaan.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Oké</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Rekeningen</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Unilaterale overdrachten</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Verwijder</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importeer en bewaar onder het volgende pad:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Deze tekst kon niet geparsed worden als valuta!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Weet u zeker dat u begunstigde "{0}" wilt verwijderen?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Ontbrekend bedrag exclusief niet-ingediende vermeldingen</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>
