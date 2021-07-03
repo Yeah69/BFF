@@ -15,7 +15,7 @@
             <TextBlock Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        DockPanel.Dock="Left">
-                <Run Text="{Binding Value.CurrentTexts.NameOfNewPayee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                <Run Text="{Binding CurrentTexts.NameOfNewPayee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <Run Text=":" />
             </TextBlock>
             <TextBox x:Name="FocusMe"
@@ -28,7 +28,7 @@
         <Button HorizontalAlignment="Right"
                 Click="AddButton_OnClick"
                 Command="{Binding AddPayeeCommand}"
-                ToolTip="{Binding Value.CurrentTexts.CreateNewPayee, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                ToolTip="{Binding CurrentTexts.CreateNewPayee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
             <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                         Kind="{StaticResource AddIcon}"
                                         Style="{StaticResource CellIconMaterial}" />

@@ -47,7 +47,7 @@
             <DataGrid.Columns>
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                        Header="{Binding CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource TransactionBrush}"
@@ -58,51 +58,51 @@
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}"
-                                       ToolTip="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr_Tooltip, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                       ToolTip="{Binding CurrentTexts.AccountView_Header_SymbolAbbr_Tooltip, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
                 </DataGridTemplateColumn>
                 <!--  Account  -->
                 <DataGridTemplateColumn x:Name="AccountColumn"
                                         CellTemplate="{StaticResource AccountEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         Visibility="{Binding Data, Source={StaticResource ParentAccountColumnVisibility}}" />
                 <!--  Date  -->
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellTemplate="{StaticResource DateEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        Header="{Binding CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <!--  Flag  -->
                 <DataGridTemplateColumn x:Name="FlagColumn"
                                         CellTemplate="{StaticResource FlagEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}" />
                 <!--  CheckNumber  -->
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
                                         CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellTemplate="{StaticResource PayeeEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        Header="{Binding CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <!--  Category  -->
                 <DataGridTemplateColumn x:Name="CategoryColumn"
                                         CellTemplate="{StaticResource ParentCategoryEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        Header="{Binding CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         CellTemplate="{StaticResource MemoEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        Header="{Binding CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn x:Name="SumColumn"
                                         CellTemplate="{StaticResource ParentSumEditingColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         IsReadOnly="False" />
                 <!--  Cleared  -->
                 <DataGridTemplateColumn x:Name="ClearedColumn"
                                         CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
@@ -200,20 +200,20 @@
                             <TextBlock Grid.Row="0"
                                        Grid.Column="0"
                                        Margin="2.5">
-                                <Run Text="{Binding Value.CurrentTexts.ParentTransEditingView_CurrentSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                <Run Text="{Binding CurrentTexts.ParentTransEditingView_CurrentSum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                 <Run Text=":" />
                             </TextBlock>
                             <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        Margin="2.5"
                                        Visibility="{Binding NewSubTransactions.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}">
-                                <Run Text="{Binding Value.CurrentTexts.ParentTransEditingView_IntermediateSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                <Run Text="{Binding CurrentTexts.ParentTransEditingView_IntermediateSum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                 <Run Text=":" />
                             </TextBlock>
                             <TextBlock Grid.Row="2"
                                        Grid.Column="0"
                                        Margin="2.5">
-                                <Run Text="{Binding Value.CurrentTexts.AccountView_MissingSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                <Run Text="{Binding CurrentTexts.AccountView_MissingSum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                 <Run Text=":" />
                             </TextBlock>
                             <TextBlock Grid.Row="0"

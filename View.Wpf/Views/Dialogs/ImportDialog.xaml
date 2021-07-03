@@ -6,7 +6,7 @@
                           xmlns:import="clr-namespace:BFF.ViewModel.ViewModels.Import;assembly=BFF.ViewModel"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                           xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
-                          Title="{Binding Value.CurrentTexts.ImportView_Title, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                          Title="{Binding CurrentTexts.ImportView_Title, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                           d:DataContext="{d:DesignInstance import:IImportDialogViewModel}"
                           Loaded="ImportDialog_OnLoaded"
                           mc:Ignorable="d">
@@ -30,7 +30,7 @@
                     <Label Grid.Row="0"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
-                           Content="{Binding Value.CurrentTexts.ImportView_YNAB4_Transaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           Content="{Binding CurrentTexts.ImportView_YNAB4_Transaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <TextBox x:Name="TransactionTextBox"
                              Grid.Row="1"
                              Grid.Column="0"
@@ -48,11 +48,11 @@
                             Grid.Column="1"
                             Margin="5"
                             Command="{Binding BrowseTransactionCommand}"
-                            Content="{Binding Value.CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Label Grid.Row="2"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
-                           Content="{Binding Value.CurrentTexts.ImportView_YNAB4_Budget, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           Content="{Binding CurrentTexts.ImportView_YNAB4_Budget, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <TextBox x:Name="BudgetTextBox"
                              Grid.Row="3"
                              Grid.Column="0"
@@ -70,7 +70,7 @@
                             Grid.Column="1"
                             Margin="5"
                             Command="{Binding BrowseBudgetCommand}"
-                            Content="{Binding Value.CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate DataType="{x:Type import:RealmFileExportViewModel}">
@@ -88,7 +88,7 @@
                     <Label Grid.Row="0"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
-                           Content="{Binding Value.CurrentTexts.ImportView_SaveFile, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           Content="{Binding CurrentTexts.ImportView_SaveFile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <TextBox x:Name="SavePathTextBox"
                              Grid.Row="1"
                              Grid.Column="0"
@@ -108,11 +108,11 @@
                             Grid.Column="1"
                             Margin="5"
                             Command="{Binding BrowseCommand}"
-                            Content="{Binding Value.CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Label Grid.Row="2"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
-                           Content="{Binding Value.CurrentTexts.ImportView_Password, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           Content="{Binding CurrentTexts.ImportView_Password, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <ContentControl Grid.Row="3"
                                     Grid.Column="0"
                                     Content="{Binding PasswordConfiguration}" />
@@ -121,7 +121,7 @@
         </ResourceDictionary>
     </dialogs1:BaseMetroDialog.Resources>
     <StackPanel>
-        <Label Content="{Binding Value.CurrentTexts.ImportView_ImportKind, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+        <Label Content="{Binding CurrentTexts.ImportView_ImportKind, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
         <ComboBox Margin="5"
                   DisplayMemberPath="Description"
                   ItemsSource="{Binding Source={helper:Enumeration import:ImportOption}}"
@@ -129,7 +129,7 @@
                   SelectedValuePath="Value" />
         <ContentControl x:Name="ImportContent"
                         Content="{Binding ImportViewModel}" />
-        <Label Content="{Binding Value.CurrentTexts.ImportView_ExportKind, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+        <Label Content="{Binding CurrentTexts.ImportView_ExportKind, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
         <ComboBox Margin="5"
                   DisplayMemberPath="Description"
                   ItemsSource="{Binding Source={helper:Enumeration import:ExportOption}}"
@@ -142,10 +142,10 @@
             <Button x:Name="ButtCancel"
                     Margin="5"
                     HorizontalAlignment="Right"
-                    Content="{Binding Value.CurrentTexts.ImportView_Cancel, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    Content="{Binding CurrentTexts.ImportView_Cancel, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Button x:Name="ButtImport"
                     Margin="5"
-                    Content="{Binding Value.CurrentTexts.ImportView_Import, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                    Content="{Binding CurrentTexts.ImportView_Import, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                 <Button.Style>
                     <Style BasedOn="{StaticResource BffGeneralButtonStyle}"
                            TargetType="{x:Type Button}">

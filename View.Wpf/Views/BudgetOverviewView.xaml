@@ -67,53 +67,53 @@
                         <DataGrid.Columns>
                             <!--  Symbol  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource SymbolColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                                    Header="{Binding CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}"
-                                                   ToolTip="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr_Tooltip, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                   ToolTip="{Binding CurrentTexts.AccountView_Header_SymbolAbbr_Tooltip, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
                             </DataGridTemplateColumn>
                             <!--  Account  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource AccountColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="Account.Name" />
                             <!--  Date  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource DateColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="Date" />
                             <!--  Flag  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource FlagColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="Flag.Name"
                                                     Visibility="{Binding DataContext.TransDataGridColumnManager.ShowFlags.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
                             <!--  CheckNumber  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource CheckNumberColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="CheckNumber"
                                                     Visibility="{Binding DataContext.TransDataGridColumnManager.ShowCheckNumbers.Value, Source={x:Reference Root}, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
                             <!--  Payee  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource PayeeColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="Payee.Name" />
                             <!--  Category  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource CategoryColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="Category.Name" />
                             <!--  Memo  -->
                             <DataGridTemplateColumn Width="*"
                                                     CellTemplate="{StaticResource MemoColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     SortMemberPath="Memo" />
                             <!--  Sum  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource SumColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     IsReadOnly="False"
                                                     SortMemberPath="Sum" />
                             <!--  Cleared  -->
                             <DataGridTemplateColumn CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                                    Header="{Binding Value.CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    Header="{Binding CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                     IsReadOnly="True"
                                                     SortMemberPath="Cleared" />
                         </DataGrid.Columns>
@@ -405,11 +405,11 @@
                                                              Columns="3"
                                                              DockPanel.Dock="Bottom"
                                                              Rows="2">
-                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Outflows, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_Outflows, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_Balance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                TextAlignment="Left" />
                                                     <TextBlock Foreground="{Binding BudgetedThisMonthPositive, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
                                                                Text="{Binding BudgetedThisMonthPositive, Converter={x:Static helper:Converters.SumToString}}"
@@ -552,8 +552,8 @@
                                                                                 <Setter Property="ContentTemplate">
                                                                                     <Setter.Value>
                                                                                         <DataTemplate>
-                                                                                            <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Overbudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OverbudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                                            <TextBlock Text="{Binding CurrentTexts.Budgeting_Overbudgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                                                                       ToolTip="{Binding CurrentTexts.Budgeting_OverbudgetedExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                                                         </DataTemplate>
                                                                                     </Setter.Value>
                                                                                 </Setter>
@@ -562,8 +562,8 @@
                                                                         <Setter Property="ContentTemplate">
                                                                             <Setter.Value>
                                                                                 <DataTemplate>
-                                                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_NotBudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                                                               ToolTip="{Binding Value.CurrentTexts.Budgeting_NotBudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_NotBudgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                                                               ToolTip="{Binding CurrentTexts.Budgeting_NotBudgetedExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                                                 </DataTemplate>
                                                                             </Setter.Value>
                                                                         </Setter>
@@ -577,9 +577,9 @@
                                                                        TextAlignment="Right" />
                                                             <TextBlock Grid.Row="1"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Overspend, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_Overspend, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OverspendExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_OverspendExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                             <TextBlock Grid.Row="1"
                                                                        Grid.Column="1"
                                                                        Foreground="{Binding OverspentInPreviousMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
@@ -587,9 +587,9 @@
                                                                        TextAlignment="Right" />
                                                             <TextBlock Grid.Row="2"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Income, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_Income, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_IncomeExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_IncomeExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
                                                             <Grid Grid.Row="2"
                                                                   Grid.Column="1"
@@ -631,9 +631,9 @@
                                                             </Grid>
                                                             <TextBlock Grid.Row="3"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_BudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_BudgetedExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                             <TextBlock Grid.Row="3"
                                                                        Grid.Column="1"
                                                                        Foreground="{Binding BudgetedThisMonth, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
@@ -641,9 +641,9 @@
                                                                        TextAlignment="Right" />
                                                             <TextBlock Grid.Row="4"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactions, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_UnassignedTransactions, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactionsExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_UnassignedTransactionsExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                                             <TextBlock Grid.Row="4"
                                                                        Grid.Column="1"
@@ -653,9 +653,9 @@
                                                                        Visibility="{Binding UnassignedTransactionSumForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                                             <TextBlock Grid.Row="5"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfers, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_OneSidedTransfers, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfersExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_OneSidedTransfersExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        Visibility="{Binding DanglingTransferForThisMonth, Converter={x:Static helper:Converters.ZeroLongToHidden}}" />
                                                             <TextBlock Grid.Row="5"
                                                                        Grid.Column="1"
@@ -676,8 +676,8 @@
                                                                                 <Setter.Value>
                                                                                     <DataTemplate>
                                                                                         <TextBlock FontSize="10"
-                                                                                                   Text="{Binding Value.CurrentTexts.Budgeting_Overbudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                                                                   ToolTip="{Binding Value.CurrentTexts.Budgeting_OverbudgetedThisMonthExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                                                   Text="{Binding CurrentTexts.Budgeting_Overbudgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                                                                   ToolTip="{Binding CurrentTexts.Budgeting_OverbudgetedThisMonthExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                                                     </DataTemplate>
                                                                                 </Setter.Value>
                                                                             </Setter>
@@ -687,8 +687,8 @@
                                                                         <Setter.Value>
                                                                             <DataTemplate>
                                                                                 <TextBlock FontSize="10"
-                                                                                           Text="{Binding Value.CurrentTexts.Budgeting_Available, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                                                           ToolTip="{Binding Value.CurrentTexts.Budgeting_AvailableExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                                           Text="{Binding CurrentTexts.Budgeting_Available, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                                                           ToolTip="{Binding CurrentTexts.Budgeting_AvailableExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                                             </DataTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
@@ -712,11 +712,11 @@
                                                              Columns="3"
                                                              DockPanel.Dock="Bottom"
                                                              Rows="2">
-                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Outflows, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_Outflows, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                TextAlignment="Left" />
-                                                    <TextBlock Text="{Binding Value.CurrentTexts.Budgeting_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                    <TextBlock Text="{Binding CurrentTexts.Budgeting_Balance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                TextAlignment="Left" />
                                                     <TextBlock Text="0"
                                                                TextAlignment="Right"
@@ -772,42 +772,42 @@
                                                             <TextBlock Grid.Row="0"
                                                                        Grid.Column="0"
                                                                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_NotBudgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_NotBudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       Text="{Binding CurrentTexts.Budgeting_NotBudgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_NotBudgetedExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                             <TextBlock Grid.Row="1"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Overspend, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_Overspend, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OverspendExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_OverspendExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                             <TextBlock Grid.Row="2"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Income, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_Income, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_IncomeExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_IncomeExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                             <TextBlock Grid.Row="3"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_Budgeted, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_BudgetedExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_BudgetedExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                             <TextBlock Grid.Row="4"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactions, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_UnassignedTransactions, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_UnassignedTransactionsExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_UnassignedTransactionsExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        Visibility="Hidden" />
                                                             <TextBlock Grid.Row="5"
                                                                        Grid.Column="0"
-                                                                       Text="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfers, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       Text="{Binding CurrentTexts.Budgeting_OneSidedTransfers, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        TextTrimming="CharacterEllipsis"
-                                                                       ToolTip="{Binding Value.CurrentTexts.Budgeting_OneSidedTransfersExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                                       ToolTip="{Binding CurrentTexts.Budgeting_OneSidedTransfersExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                                        Visibility="Hidden" />
                                                         </Grid>
                                                         <TextBlock Margin="0,5,0,0"
                                                                    HorizontalAlignment="Center"
                                                                    FontSize="10"
                                                                    Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
-                                                                   Text="{Binding Value.CurrentTexts.Budgeting_Available, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                                   ToolTip="{Binding Value.CurrentTexts.Budgeting_AvailableExplanation, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                   Text="{Binding CurrentTexts.Budgeting_Available, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                                   ToolTip="{Binding CurrentTexts.Budgeting_AvailableExplanation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                         <TextBlock Margin="0,5,0,0"
                                                                    HorizontalAlignment="Center"
                                                                    FontSize="25"
@@ -840,7 +840,7 @@
                                     <Button Margin="5"
                                             Command="{Binding Table.DecreaseMonthStartIndex}"
                                             DockPanel.Dock="Left"
-                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_BudgetOverview_ShiftMonthBackward, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                            ToolTip="{Binding CurrentTexts.ToolTip_BudgetOverview_ShiftMonthBackward, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                                         <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                                                   Height="{StaticResource IconSize}"
                                                                   Kind="ChevronLeft" />
@@ -848,7 +848,7 @@
                                     <Button Margin="5"
                                             Command="{Binding Table.IncreaseMonthStartIndex}"
                                             DockPanel.Dock="Right"
-                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_BudgetOverview_ShiftMonthForward, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                            ToolTip="{Binding CurrentTexts.ToolTip_BudgetOverview_ShiftMonthForward, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                                         <iconPacks:PackIconModern Width="{StaticResource IconSize}"
                                                                   Height="{StaticResource IconSize}"
                                                                   Kind="ChevronRight" />
@@ -864,11 +864,11 @@
                                 <mah:ToggleSwitch x:Name="AggregateSwitch"
                                                   VerticalAlignment="Bottom"
                                                   DockPanel.Dock="Bottom"
-                                                  Header="{Binding Value.CurrentTexts.Budgeting_ShowAggregates, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                  Header="{Binding CurrentTexts.Budgeting_ShowAggregates, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                   IsOn="{Binding Data, Mode=TwoWay, Source={StaticResource ShowAggregatesProxy}}"
-                                                  OffContent="{Binding Value.CurrentTexts.General_No, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                  OnContent="{Binding Value.CurrentTexts.General_Yes, Mode=OneWay, Source={StaticResource TextsHolder}}"
-                                                  ToolTip="{Binding Value.CurrentTexts.ToolTip_BudgetOverview_Aggregates, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                  OffContent="{Binding CurrentTexts.General_No, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                  OnContent="{Binding CurrentTexts.General_Yes, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
+                                                  ToolTip="{Binding CurrentTexts.ToolTip_BudgetOverview_Aggregates, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                             </DockPanel>
                         </DataTemplate>
                     </attachedBehaviors:DynamicTableDataGridBehavior.CornerHeaderTemplate>

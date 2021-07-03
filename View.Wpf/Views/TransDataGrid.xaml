@@ -55,7 +55,7 @@
                 <!--  Symbol  -->
                 <DataGridTemplateColumn x:Name="SymbolColumn"
                                         CellTemplate="{StaticResource SymbolColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                        Header="{Binding CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
@@ -64,7 +64,7 @@
                                     <ToolTip>
                                         <StackPanel>
                                             <TextBlock Margin="2.5"
-                                                       Text="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_S, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                       Text="{Binding CurrentTexts.ToolTip_TransGrid_Header_S, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                             <StackPanel Orientation="Horizontal">
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                                                             Height="{StaticResource IconSize}"
@@ -72,7 +72,7 @@
                                                                             Foreground="{DynamicResource TransactionBrush}"
                                                                             Kind="{StaticResource TransactionIcon}" />
                                                 <TextBlock Margin="2.5"
-                                                           Text="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_S_Transaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                           Text="{Binding CurrentTexts.ToolTip_TransGrid_Header_S_Transaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal">
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -81,7 +81,7 @@
                                                                             Foreground="{DynamicResource TransferBrush}"
                                                                             Kind="{StaticResource TransferIcon}" />
                                                 <TextBlock Margin="2.5"
-                                                           Text="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_S_Transfer, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                           Text="{Binding CurrentTexts.ToolTip_TransGrid_Header_S_Transfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal">
                                                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -90,7 +90,7 @@
                                                                             Foreground="{DynamicResource IncomeBrush}"
                                                                             Kind="{StaticResource IncomeIcon}" />
                                                 <TextBlock Margin="2.5"
-                                                           Text="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_S_Income, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                           Text="{Binding CurrentTexts.ToolTip_TransGrid_Header_S_Income, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                             </StackPanel>
                                         </StackPanel>
                                     </ToolTip>
@@ -103,13 +103,13 @@
                 <DataGridTemplateColumn x:Name="AccountColumn"
                                         CellEditingTemplate="{StaticResource AccountEditingColumnTemplate}"
                                         CellTemplate="{StaticResource AccountColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Account.Name"
                                         Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Account, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -117,12 +117,12 @@
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
                                         CellTemplate="{StaticResource DateColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Date">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -130,13 +130,13 @@
                 <DataGridTemplateColumn x:Name="FlagColumn"
                                         CellEditingTemplate="{StaticResource FlagEditingColumnTemplate}"
                                         CellTemplate="{StaticResource FlagColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Flag.Name"
                                         Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Flag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -144,13 +144,13 @@
                 <DataGridTemplateColumn x:Name="CheckNumberColumn"
                                         CellEditingTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CheckNumberColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="CheckNumber"
                                         Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_CheckNumber, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -158,12 +158,12 @@
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
                                         CellTemplate="{StaticResource PayeeColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Payee.Name">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Payee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -171,12 +171,12 @@
                 <DataGridTemplateColumn x:Name="CategoryColumn"
                                         CellEditingTemplate="{StaticResource CategoryEditingColumnTemplate}"
                                         CellTemplate="{StaticResource CategoryColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Category.Name">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Category, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -185,12 +185,12 @@
                                         Width="*"
                                         CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
                                         CellTemplate="{StaticResource MemoColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Memo">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -198,26 +198,26 @@
                 <DataGridTemplateColumn x:Name="SumColumn"
                                         CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
                                         CellTemplate="{StaticResource SumColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         IsReadOnly="False"
                                         SortMemberPath="Sum">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
                 <!--  Cleared  -->
                 <DataGridTemplateColumn x:Name="ClearedColumn"
                                         CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         IsReadOnly="True"
                                         SortMemberPath="Cleared">
                     <DataGridTemplateColumn.HeaderStyle>
                         <Style BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_TransGrid_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_TransGrid_Header_Cleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </Style>
                     </DataGridTemplateColumn.HeaderStyle>
                 </DataGridTemplateColumn>
@@ -248,35 +248,35 @@
                        Grid.Column="0"
                        Grid.ColumnSpan="2"
                        FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{Binding Value.CurrentTexts.AccountView_FirstEntry, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.AccountView_FirstEntry, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
 
             <TextBlock Grid.Row="1"
                        Grid.Column="1"
                        Margin="5,15,0,0"
                        VerticalAlignment="Center"
-                       Text="{Binding Value.CurrentTexts.AccountView_ToolTip_NewTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.AccountView_ToolTip_NewTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Margin="5,5,0,0"
                        VerticalAlignment="Center"
-                       Text="{Binding Value.CurrentTexts.AccountView_ToolTip_NewTransfer, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.AccountView_ToolTip_NewTransfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <TextBlock Grid.Row="3"
                        Grid.Column="1"
                        Margin="5,5,0,0"
                        VerticalAlignment="Center"
-                       Text="{Binding Value.CurrentTexts.AccountView_ToolTip_NewParentTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.AccountView_ToolTip_NewParentTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
                        Margin="5,15,0,0"
                        VerticalAlignment="Center"
-                       Text="{Binding Value.CurrentTexts.AccountView_ToolTip_AddToTable, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.AccountView_ToolTip_AddToTable, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
             <Button Grid.Row="1"
                     Grid.Column="0"
                     Margin="0,15,0,0"
                     Command="{Binding NewTransactionCommand}"
-                    ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_NewTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    ToolTip="{Binding CurrentTexts.AccountView_ToolTip_NewTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding NewTransactionVisibility}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -294,7 +294,7 @@
                     Grid.Column="0"
                     Margin="0,5,0,0"
                     Command="{Binding NewTransferCommand}"
-                    ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_NewTransfer, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    ToolTip="{Binding CurrentTexts.AccountView_ToolTip_NewTransfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding NewTransferVisibility}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -312,7 +312,7 @@
                     Grid.Column="0"
                     Margin="0,5,0,0"
                     Command="{Binding NewParentTransactionCommand}"
-                    ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_NewParentTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    ToolTip="{Binding CurrentTexts.AccountView_ToolTip_NewParentTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding NewParentTransactionVisibility}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -336,7 +336,7 @@
                     Margin="0,15,0,0"
                     Command="{Binding ApplyCommand}"
                     DockPanel.Dock="Right"
-                    ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_AddToTable, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    ToolTip="{Binding CurrentTexts.AccountView_ToolTip_AddToTable, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding ApplyVisibility}">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
@@ -363,47 +363,47 @@
                     <!--  Symbol  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SymbolColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource SymbolNewColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            Header="{Binding CurrentTexts.AccountView_Header_SymbolAbbr, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Account  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference AccountColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource AccountEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                            Header="{Binding CurrentTexts.AccountView_Header_Account, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                             Visibility="{Binding Data, Source={StaticResource AccountColumnVisibility}}" />
                     <!--  Date  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference DateColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource DateEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            Header="{Binding CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Flag  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference FlagColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource FlagEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                            Header="{Binding CurrentTexts.AccountView_Header_Flag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                             Visibility="{Binding Data, Source={StaticResource FlagColumnVisibility}}" />
                     <!--  CheckNumber  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CheckNumberColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource CheckNumberEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                            Header="{Binding CurrentTexts.AccountView_Header_CheckNumber, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                             Visibility="{Binding Data, Source={StaticResource CheckNumberColumnVisibility}}" />
                     <!--  Payee  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference PayeeColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource PayeeEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            Header="{Binding CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Category  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference CategoryColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource CategoryEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            Header="{Binding CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Memo  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference MemoColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource MemoEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            Header="{Binding CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Sum  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference SumColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource SumEditingColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                            Header="{Binding CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                             IsReadOnly="False" />
                     <!--  Cleared  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ClearedColumn}, Mode=TwoWay}"
                                             CellTemplate="{StaticResource ClearedColumnTemplate}"
-                                            Header="{Binding Value.CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                            Header="{Binding CurrentTexts.AccountView_Header_Cleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                             IsReadOnly="True" />
                     <!--  Context Menu  -->
                     <DataGridTemplateColumn Width="{Binding Width, Source={x:Reference ContextMenuColumn}, Mode=TwoWay}"
@@ -414,7 +414,7 @@
             <DockPanel Margin="0,5,0,0"
                        LastChildFill="False">
                 <Button Command="{Binding NewTransactionCommand}"
-                        ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_NewTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        ToolTip="{Binding CurrentTexts.AccountView_ToolTip_NewTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         Visibility="{Binding NewTransactionVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -430,7 +430,7 @@
                 </Button>
                 <Button Margin="5,0,0,0"
                         Command="{Binding NewTransferCommand}"
-                        ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_NewTransfer, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        ToolTip="{Binding CurrentTexts.AccountView_ToolTip_NewTransfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         Visibility="{Binding NewTransferVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -446,7 +446,7 @@
                 </Button>
                 <Button Margin="5,0,0,0"
                         Command="{Binding NewParentTransactionCommand}"
-                        ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_NewParentTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        ToolTip="{Binding CurrentTexts.AccountView_ToolTip_NewParentTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         Visibility="{Binding NewParentTransactionVisibility}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -472,7 +472,7 @@
                 <Button Margin="5,0,0,0"
                         Command="{Binding ApplyCommand}"
                         DockPanel.Dock="Right"
-                        ToolTip="{Binding Value.CurrentTexts.AccountView_ToolTip_AddToTable, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        ToolTip="{Binding CurrentTexts.AccountView_ToolTip_AddToTable, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         ToolTipService.ShowOnDisabled="True"
                         Visibility="{Binding ApplyVisibility}">
                     <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
@@ -482,15 +482,15 @@
                 </Button>
 
                 <Button Command="{Binding AccountViewModel.StartTargetingBalance}"
-                        Content="{Binding Value.CurrentTexts.AccountView_SetTargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        Content="{Binding CurrentTexts.AccountView_SetTargetBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         DockPanel.Dock="Right"
-                        ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        ToolTip="{Binding CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static helper:Converters.InverseNullableLongToCollapsed}}" />
 
                 <Button Command="{Binding AccountViewModel.AbortTargetingBalance}"
-                        Content="{Binding Value.CurrentTexts.AccountView_AbortTargetingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        Content="{Binding CurrentTexts.AccountView_AbortTargetingBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         DockPanel.Dock="Right"
-                        ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                        ToolTip="{Binding CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                         Visibility="{Binding AccountViewModel.TargetBalance, Converter={x:Static helper:Converters.NullableLongToCollapsed}}" />
             </DockPanel>
         </StackPanel>

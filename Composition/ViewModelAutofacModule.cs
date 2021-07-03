@@ -8,6 +8,7 @@ using BFF.ViewModel.ViewModels;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
@@ -94,6 +95,10 @@ namespace BFF.Composition
             builder.RegisterType<BudgetEntryViewModel>().AsImplementedInterfaces();
 
             builder.RegisterType<LifetimeScopeRegistry>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            builder.RegisterType<CurrentTextsViewModel>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
         }

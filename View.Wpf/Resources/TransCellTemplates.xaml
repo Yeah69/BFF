@@ -25,18 +25,18 @@
                   DataType="{x:Type forModels:ParentTransactionViewModel}">
         <StackPanel>
             <TextBlock Margin="2.5"
-                       Text="{Binding Value.CurrentTexts.ToolTip_Symbol_SplitTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.ToolTip_Symbol_SplitTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <DataGrid Margin="2.5"
                       ItemsSource="{Binding SubTransactions}">
                 <DataGrid.Columns>
                     <!--  Category  -->
                     <DataGridTextColumn Binding="{Binding Category.Name}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        Header="{Binding CurrentTexts.AccountView_Header_Category, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Memo  -->
                     <DataGridTextColumn Binding="{Binding Memo}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        Header="{Binding CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <!--  Sum  -->
-                    <DataGridTemplateColumn Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                    <DataGridTemplateColumn Header="{Binding CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Foreground="{Binding Sum.Value, Converter={x:Static helper:Converters.SumToSolidColorBrush}}"
@@ -112,12 +112,12 @@
                                         <DataTrigger Binding="{Binding Category, Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
                                                      Value="True">
                                             <Setter Property="Kind" Value="{StaticResource IncomeIcon}" />
-                                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_Symbol_IncomeTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_Symbol_IncomeTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                             <Setter Property="Foreground" Value="{DynamicResource IncomeBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                     <Setter Property="Kind" Value="{StaticResource TransactionIcon}" />
-                                    <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                    <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                     <Setter Property="Foreground" Value="{DynamicResource TransactionBrush}" />
                                 </Style>
                             </iconPacks:PackIconMaterial.Style>
@@ -166,7 +166,7 @@
                                                     Foreground="{DynamicResource TransactionBrush}"
                                                     Kind="{StaticResource TransactionIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
-                                                    ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                    ToolTip="{Binding CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
@@ -174,7 +174,7 @@
                                                 Foreground="{DynamicResource TransferBrush}"
                                                 Kind="{StaticResource TransferIcon}"
                                                 Style="{StaticResource CellIconMaterial}"
-                                                ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_Transfer, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                ToolTip="{Binding CurrentTexts.ToolTip_Symbol_Transfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
@@ -277,12 +277,12 @@
                                         <DataTrigger Binding="{Binding Category, Converter={x:Static helper:Converters.OfType}, ConverterParameter={x:Type forModels:IIncomeCategoryViewModel}}"
                                                      Value="True">
                                             <Setter Property="Kind" Value="{StaticResource IncomeIcon}" />
-                                            <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_Symbol_IncomeTransaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                            <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_Symbol_IncomeTransaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                             <Setter Property="Foreground" Value="{DynamicResource IncomeBrush}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                     <Setter Property="Kind" Value="{StaticResource TransactionIcon}" />
-                                    <Setter Property="ToolTip" Value="{Binding Value.CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                    <Setter Property="ToolTip" Value="{Binding CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                     <Setter Property="Foreground" Value="{DynamicResource TransactionBrush}" />
                                 </Style>
                             </iconPacks:PackIconMaterial.Style>
@@ -357,7 +357,7 @@
                                                     Foreground="{DynamicResource TransactionBrush}"
                                                     Kind="{StaticResource TransactionIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
-                                                    ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                    ToolTip="{Binding CurrentTexts.ToolTip_Symbol_Transaction, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
@@ -423,7 +423,7 @@
                                                     Foreground="{DynamicResource TransferBrush}"
                                                     Kind="{StaticResource TransferIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
-                                                    ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_Transfer, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                    ToolTip="{Binding CurrentTexts.ToolTip_Symbol_Transfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
@@ -443,7 +443,7 @@
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                     <TextBlock Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                Style="{StaticResource CellTextBlock}"
-                               Text="{Binding Value.CurrentTexts.AccountView_Column_Transfer, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                               Text="{Binding CurrentTexts.AccountView_Column_Transfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
@@ -470,7 +470,7 @@
                 <DataTemplate DataType="{x:Type forModels:TransferViewModel}">
                     <TextBlock Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                Style="{StaticResource CellTextBlock}"
-                               Text="{Binding Value.CurrentTexts.AccountView_Column_Transfer, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                               Text="{Binding CurrentTexts.AccountView_Column_Transfer, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type forModels:TransLikeViewModelPlaceholder}" />
             </ContentControl.Resources>
@@ -600,7 +600,7 @@
                         <Button Click="OpenFlagPopup_OnClick"
                                 DockPanel.Dock="Right"
                                 TabIndex="1"
-                                ToolTip="{Binding Value.CurrentTexts.CreateNewFlag, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                ToolTip="{Binding CurrentTexts.CreateNewFlag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                         Kind="{StaticResource AddIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
@@ -714,7 +714,7 @@
                                                                Opacity="0.75"
                                                                Style="{StaticResource CellTextBlock}">
                                                         <Run Text="(" />
-                                                        <Run Text="{Binding Value.CurrentTexts.General_Unassigned, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                        <Run Text="{Binding CurrentTexts.General_Unassigned, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                         <Run Text=")" />
                                                     </TextBlock>
                                                 </DataTemplate>
@@ -734,7 +734,7 @@
                                                     Foreground="{DynamicResource MahApps.Brushes.Gray4}"
                                                     Kind="{StaticResource TransactionIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
-                                                    ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_FromAccount, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                    ToolTip="{Binding CurrentTexts.ToolTip_Symbol_FromAccount, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type utility:CsvBankStatementImportItemViewModel}">
@@ -780,7 +780,7 @@
                         <Button Click="OpenPayeePopup_OnClick"
                                 DockPanel.Dock="Right"
                                 TabIndex="1"
-                                ToolTip="{Binding Value.CurrentTexts.CreateNewPayee, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                ToolTip="{Binding CurrentTexts.CreateNewPayee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                         Kind="{StaticResource AddIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />
@@ -914,7 +914,7 @@
                                                     IsTabStop="True"
                                                     Kind="{StaticResource IncomeIcon}"
                                                     Style="{StaticResource CellIconMaterial}"
-                                                    ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_ToAccount, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                    ToolTip="{Binding CurrentTexts.ToolTip_Symbol_ToAccount, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type structure:TransLikeViewModel}">
@@ -932,7 +932,7 @@
                                                                Opacity="0.75"
                                                                Style="{StaticResource CellTextBlock}">
                                                         <Run Text="(" />
-                                                        <Run Text="{Binding Value.CurrentTexts.General_Unassigned, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                        <Run Text="{Binding CurrentTexts.General_Unassigned, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                         <Run Text=")" />
                                                     </TextBlock>
                                                 </DataTemplate>
@@ -982,7 +982,7 @@
                                                                 Kind="{StaticResource IncomeIcon}"
                                                                 Opacity="0.75"
                                                                 Style="{StaticResource CellIconMaterial}"
-                                                                ToolTip="{Binding Value.CurrentTexts.ToolTip_Symbol_IncomeCategory, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                                ToolTip="{Binding CurrentTexts.ToolTip_Symbol_IncomeCategory, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ContentControl.Resources>
@@ -1034,7 +1034,7 @@
                         <Button Click="OpenCategoryPopup_OnClick"
                                 DockPanel.Dock="Right"
                                 TabIndex="1"
-                                ToolTip="{Binding Value.CurrentTexts.CreateNewCategory, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                                ToolTip="{Binding CurrentTexts.CreateNewCategory, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                             <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                         Kind="{StaticResource AddIcon}"
                                                         Style="{StaticResource CellIconMaterial}" />

@@ -30,7 +30,7 @@
             <Label Grid.Row="0"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
-                   Content="{Binding Value.CurrentTexts.ImportView_SaveFile, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                   Content="{Binding CurrentTexts.ImportView_SaveFile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <TextBox x:Name="SavePathTextBox"
                      Grid.Row="1"
                      Grid.Column="0"
@@ -50,11 +50,11 @@
                     Grid.Column="1"
                     Margin="5"
                     Command="{Binding BrowseCommand}"
-                    Content="{Binding Value.CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    Content="{Binding CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Label Grid.Row="2"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
-                   Content="{Binding Value.CurrentTexts.ImportView_Password, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                   Content="{Binding CurrentTexts.ImportView_Password, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <ContentControl Grid.Row="3"
                             Grid.Column="0"
                             Content="{Binding PasswordConfiguration}" />

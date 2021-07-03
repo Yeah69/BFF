@@ -61,7 +61,7 @@
                                                         Height="{StaticResource TabHeaderIconSize}"
                                                         VerticalAlignment="Center"
                                                         Kind="{StaticResource AllAccountsIcon}" />
-                            <TextBlock Text="{Binding Value.CurrentTexts.AccountTabsView_AllAccounts, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <TextBlock Text="{Binding CurrentTexts.AccountTabsView_AllAccounts, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </StackPanel>
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
@@ -94,7 +94,7 @@
                     VerticalAlignment="Center"
                     Visibility="{Binding AllAccounts.Count, Converter={x:Static helper:Converters.IntEqualToZeroVisibleElseCollapsed}}">
             <TextBlock FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{Binding Value.CurrentTexts.Account_CreateNew, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.Account_CreateNew, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
             <views:NewAccountView Width="500"
                                   DataContext="{Binding NewAccountViewModel}" />

@@ -21,14 +21,17 @@ namespace BFF.View.Wpf.Views
     /// </summary>
     public partial class MainWindow
     {
-        
+        public ICurrentTextsViewModel CurrentTextsViewModel { get; }
+
         private readonly Func<IImportDialogViewModel> _importDialogViewModelFactory;
         
 
         public MainWindow(
             IMainWindowViewModel dataContext,
+            ICurrentTextsViewModel currentTextsViewModel,
             Func<IImportDialogViewModel> importDialogViewModelFactory)
         {
+            CurrentTextsViewModel = currentTextsViewModel;
             InitializeComponent();
             
             InitializeCultureComboBoxes();

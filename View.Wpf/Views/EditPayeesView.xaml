@@ -17,7 +17,7 @@
         <StackPanel>
             <TextBlock Margin="0,10"
                        FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{Binding Value.CurrentTexts.Payee_Edit, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.Payee_Edit, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
             <DataGrid MinWidth="100"
                       MaxHeight="750"
@@ -29,7 +29,7 @@
                       SelectionMode="Single"
                       SelectionUnit="FullRow">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="{Binding Value.CurrentTexts.General_Name, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                    <DataGridTemplateColumn Header="{Binding CurrentTexts.General_Name, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock d:DataContext="{d:DesignInstance forModels:IPayeeViewModel}"
@@ -50,7 +50,7 @@
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="CallMerge"
-                                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_MergeToPayee, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                            ToolTip="{Binding CurrentTexts.ToolTip_MergeToPayee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
@@ -72,7 +72,7 @@
                                                             Height="{StaticResource IconSize}"
                                                             Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                                             Kind="{StaticResource RemoveFromTableIcon}"
-                                                            ToolTip="{Binding Value.CurrentTexts.ToolTip_DeleteRow, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                            ToolTip="{Binding CurrentTexts.ToolTip_DeleteRow, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
@@ -93,7 +93,7 @@
 
             <TextBlock Margin="0,10"
                        FontSize="{StaticResource BigTitleFontSize}"
-                       Text="{Binding Value.CurrentTexts.Payee_CreateNew, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                       Text="{Binding CurrentTexts.Payee_CreateNew, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
             <views:NewPayeeView HorizontalAlignment="Stretch"
                                 DataContext="{Binding NewPayeeViewModel}" />

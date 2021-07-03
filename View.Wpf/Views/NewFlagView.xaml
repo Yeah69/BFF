@@ -28,7 +28,7 @@
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        DockPanel.Dock="Left">
-                <Run Text="{Binding Value.CurrentTexts.NameOfNewFlag, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                <Run Text="{Binding CurrentTexts.NameOfNewFlag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <Run Text=":" />
             </TextBlock>
             <TextBox x:Name="FocusMe"
@@ -44,7 +44,7 @@
                        Margin="5,0,5,0"
                        VerticalAlignment="Center"
                        DockPanel.Dock="Left">
-                <Run Text="{Binding Value.CurrentTexts.Color, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                <Run Text="{Binding CurrentTexts.Color, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 <Run Text=":" />
             </TextBlock>
             <Grid Grid.Row="1"
@@ -70,7 +70,7 @@
                     HorizontalAlignment="Right"
                     Click="AddButton_OnClick"
                     Command="{Binding AddCommand}"
-                    ToolTip="{Binding Value.CurrentTexts.CreateNewFlag, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                    ToolTip="{Binding CurrentTexts.CreateNewFlag, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
                 <iconPacks:PackIconMaterial Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
                                             Kind="{StaticResource AddIcon}"
                                             Style="{StaticResource CellIconMaterial}" />

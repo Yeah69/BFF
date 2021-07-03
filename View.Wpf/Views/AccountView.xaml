@@ -24,23 +24,23 @@
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0">
                     <TextBlock Margin="5"
-                               Text="{Binding Value.CurrentTexts.AccountView_Balance_Cleared, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                               Text="{Binding CurrentTexts.AccountView_Balance_Cleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                TextAlignment="Left" />
                 </Border>
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,0,1,0">
                     <TextBlock Margin="5"
-                               Text="{Binding Value.CurrentTexts.AccountView_Balance_Uncleared, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                               Text="{Binding CurrentTexts.AccountView_Balance_Uncleared, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </Border>
                 <TextBlock Margin="5"
-                           Text="{Binding Value.CurrentTexts.AccountView_Balance_Total, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           Text="{Binding CurrentTexts.AccountView_Balance_Total, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
 
 
 
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
-                               Text="{Binding Value.CurrentTexts.AccountView_Balance_Current, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                               Text="{Binding CurrentTexts.AccountView_Balance_Current, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </Border>
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
@@ -68,7 +68,7 @@
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
                     <TextBlock Margin="5"
-                               Text="{Binding Value.CurrentTexts.AccountView_Balance_All, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                               Text="{Binding CurrentTexts.AccountView_Balance_All, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </Border>
                 <Border BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                         BorderThickness="0,1,1,0">
@@ -129,8 +129,8 @@
                 <TextBlock Grid.Row="0"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_StartingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}">
-                    <Run Text="{Binding Value.CurrentTexts.Account_StartingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           ToolTip="{Binding CurrentTexts.ToolTip_Account_StartingBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
+                    <Run Text="{Binding CurrentTexts.Account_StartingBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="0"
@@ -142,8 +142,8 @@
                 <TextBlock Grid.Row="1"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}">
-                    <Run Text="{Binding Value.CurrentTexts.Account_Balance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                           ToolTip="{Binding CurrentTexts.ToolTip_Account_Balance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
+                    <Run Text="{Binding CurrentTexts.Account_Balance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="1"
@@ -188,9 +188,9 @@
                 <TextBlock Grid.Row="0"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_IntermediateBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                           ToolTip="{Binding CurrentTexts.ToolTip_Account_IntermediateBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                            Visibility="{Binding NewTransList.Count, Converter={x:Static helper:Converters.IntGreaterThanZeroVisibleElseCollapsed}}">
-                    <Run Text="{Binding Value.CurrentTexts.AccountView_IntermediateBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.AccountView_IntermediateBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="0"
@@ -204,9 +204,9 @@
                 <TextBlock Grid.Row="1"
                            Grid.Column="0"
                            Margin="2.5"
-                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_MissingSum, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                           ToolTip="{Binding CurrentTexts.ToolTip_Account_MissingSum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                            Visibility="{Binding TargetBalance, Converter={x:Static helper:Converters.NullableLongToCollapsed}}">
-                    <Run Text="{Binding Value.CurrentTexts.AccountView_MissingSum, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.AccountView_MissingSum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBlock Grid.Row="1"
@@ -220,9 +220,9 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center"
-                           ToolTip="{Binding Value.CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                           ToolTip="{Binding CurrentTexts.ToolTip_Account_SetTargetBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                            Visibility="{Binding TargetBalance, Converter={x:Static helper:Converters.NullableLongToCollapsed}}">
-                    <Run Text="{Binding Value.CurrentTexts.AccountView_TargetBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.AccountView_TargetBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBox Grid.Row="2"

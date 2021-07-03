@@ -12,6 +12,7 @@
                       xmlns:views="clr-namespace:BFF.View.Wpf.Views"
                       xmlns:wpf="clr-namespace:BFF.View.Wpf"
                       xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
+                      x:Name="This"
                       Title="{Binding Title}"
                       Width="{Binding Width, Mode=TwoWay}"
                       Height="{Binding Height, Mode=TwoWay}"
@@ -66,7 +67,7 @@
             <!--  Settings Flyout  -->
             <controls:Flyout Name="SettingsFlyout"
                              Width="400"
-                             Header="{helper:Blah MainWindow_Settings}"
+                             Header="{Binding CurrentTexts.MainWindow_Settings, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                              Position="Right">
                 <StackPanel Margin="10"
                             Orientation="Vertical">
@@ -90,7 +91,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBlock>
-                        <Run Text="{Binding Value.CurrentTexts.Settings_Accents, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_Accents, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <ComboBox Name="AccentCombo"
@@ -109,12 +110,12 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBlock>
-                        <Run Text="{Binding Value.CurrentTexts.Settings_Language, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_Language, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <ComboBox x:Name="LanguageCombo"
-                              ItemsSource="{Binding CurrentTextsViewModel.AvailableOptions}"
-                              SelectedItem="{Binding CurrentTextsViewModel.CurrentOption, Mode=TwoWay}">
+                              ItemsSource="{Binding CurrentTextsViewModel.AvailableOptions, ElementName=This}"
+                              SelectedItem="{Binding CurrentTextsViewModel.CurrentOption, Mode=TwoWay, ElementName=This}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -125,7 +126,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBlock Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}">
-                        <Run Text="{Binding Value.CurrentTexts.Settings_Currency, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_Currency, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <ComboBox x:Name="CurrencyCombo"
@@ -152,7 +153,7 @@
                                            Content="{Binding NativeName}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0">
-                                        <Run Text="{Binding Value.CurrentTexts.General_Positive, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        <Run Text="{Binding CurrentTexts.General_Positive, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                         <Run Text=":" />
                                     </TextBlock>
                                     <Label Grid.Row="1"
@@ -161,7 +162,7 @@
                                            Foreground="{StaticResource IncomeBrush}" />
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="0">
-                                        <Run Text="{Binding Value.CurrentTexts.General_Negative, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        <Run Text="{Binding CurrentTexts.General_Negative, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                         <Run Text=":" />
                                     </TextBlock>
                                     <Label Grid.Row="2"
@@ -173,7 +174,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <TextBlock Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}">
-                        <Run Text="{Binding Value.CurrentTexts.Settings_Date, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <ComboBox x:Name="DateCombo"
@@ -200,7 +201,7 @@
                                            Content="{Binding NativeName}" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0">
-                                        <Run Text="{Binding Value.CurrentTexts.General_Short, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        <Run Text="{Binding CurrentTexts.General_Short, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                         <Run Text=":" />
                                     </TextBlock>
                                     <Label Grid.Row="1"
@@ -208,7 +209,7 @@
                                            Content="{Binding Name, Converter={x:Static helper:Converters.DateChoiceBoxExampleConversion}, ConverterParameter=short}" />
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="0">
-                                        <Run Text="{Binding Value.CurrentTexts.General_Long, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                        <Run Text="{Binding CurrentTexts.General_Long, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                         <Run Text=":" />
                                     </TextBlock>
                                     <Label Grid.Row="2"
@@ -225,21 +226,21 @@
                               Visibility="{Binding CultureManager, Converter={x:Static helper:Converters.NullToCollapsed}}">
                         <TextBlock>
                             <Run Text=":" />
-                            <Run Text="{Binding Value.CurrentTexts.General_Long, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            <Run Text="{Binding CurrentTexts.General_Long, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         </TextBlock>
                     </CheckBox>
                     <TextBlock>
-                        <Run Text="{Binding Value.CurrentTexts.Settings_ShowFlags, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_ShowFlags, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <CheckBox IsChecked="{Binding TransDataGridColumnManager.ShowFlags.Value}" />
                     <TextBlock>
-                        <Run Text="{Binding Value.CurrentTexts.Settings_ShowCheckNumbers, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_ShowCheckNumbers, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <CheckBox IsChecked="{Binding TransDataGridColumnManager.ShowCheckNumbers.Value}" />
                     <TextBlock>
-                        <Run Text="{Binding Value.CurrentTexts.Settings_AlwaysHideEditHeaders, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_AlwaysHideEditHeaders, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <CheckBox IsChecked="{Binding TransDataGridColumnManager.NeverShowEditHeaders}" />
@@ -247,25 +248,25 @@
             </controls:Flyout>
             <!--  File Flyout  -->
             <controls:Flyout Name="FileFlyout"
-                             Header="{Binding Value.CurrentTexts.MainWindow_File, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                             Header="{Binding CurrentTexts.MainWindow_File, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                              Position="Left">
                 <StackPanel Margin="10"
                             Orientation="Vertical">
                     <Button Margin="10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding NewBudgetPlanCommand}"
-                            Content="{Binding Value.CurrentTexts.MainWindow_File_New, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.MainWindow_File_New, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Button Margin="10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding OpenBudgetPlanCommand}"
-                            Content="{Binding Value.CurrentTexts.MainWindow_File_Open, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.MainWindow_File_Open, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Button Margin="10,5"
                             Click="Open_ImportDialog"
-                            Content="{Binding Value.CurrentTexts.MainWindow_File_Import, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.MainWindow_File_Import, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Button Margin="10,5"
                             Click="Close_FileFlyout"
                             Command="{Binding CloseBudgetPlanCommand}"
-                            Content="{Binding Value.CurrentTexts.MainWindow_File_Close, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                            Content="{Binding CurrentTexts.MainWindow_File_Close, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                 </StackPanel>
             </controls:Flyout>
             <!--  ParentTransaction Flyout  -->
@@ -334,30 +335,30 @@
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
             <Button Click="FileButt_Click"
-                    Content="{Binding Value.CurrentTexts.MainWindow_File, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    Content="{Binding CurrentTexts.MainWindow_File, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
             <Button Click="EditAccounts_OnClick"
-                    Content="{Binding Value.CurrentTexts.HamburgerMenu_Accounts, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    Content="{Binding CurrentTexts.HamburgerMenu_Accounts, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding TopLevelViewModelComposition.EditAccountsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}" />
             <Button Click="EditCategories_OnClick"
-                    Content="{Binding Value.CurrentTexts.Domain_Categories, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    Content="{Binding CurrentTexts.Domain_Categories, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding TopLevelViewModelComposition.EditCategoriesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}" />
             <Button Click="EditPayees_OnClick"
-                    Content="{Binding Value.CurrentTexts.Domain_Payees, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    Content="{Binding CurrentTexts.Domain_Payees, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding TopLevelViewModelComposition.EditPayeesViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}" />
             <Button Click="EditFlags_OnClick"
-                    Content="{Binding Value.CurrentTexts.Domain_Flags, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    Content="{Binding CurrentTexts.Domain_Flags, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="{Binding TopLevelViewModelComposition.EditFlagsViewModel, Converter={x:Static helper:Converters.NullToCollapsed}}" />
             <Button Click="SettingsButt_Click">
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
                                             Kind="{StaticResource SettingsIcon}" />
             </Button>
-            <Button Content="{Binding Value.CurrentTexts.MainWindow_About, Mode=OneWay, Source={StaticResource TextsHolder}}"
+            <Button Content="{Binding CurrentTexts.MainWindow_About, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     Visibility="Collapsed" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
@@ -379,7 +380,7 @@
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
-                                                   Text="{Binding Value.CurrentTexts.MainWindow_Empty, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                                   Text="{Binding CurrentTexts.MainWindow_Empty, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                                    TextAlignment="Center" />
                                     </DataTemplate>
                                 </Setter.Value>
@@ -404,7 +405,7 @@
                                                            HorizontalAlignment="Left"
                                                            FontSize="23"
                                                            FontWeight="Bold"
-                                                           Text="{Binding Value.CurrentTexts.HamburgerMenu_Accounts, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                           Text="{Binding CurrentTexts.HamburgerMenu_Accounts, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                 <TextBlock Grid.Column="1"
                                                            Margin="0,0,5,0"
                                                            HorizontalAlignment="Right"
@@ -425,7 +426,7 @@
                                                            HorizontalAlignment="Left"
                                                            FontSize="23"
                                                            FontWeight="Bold"
-                                                           Text="{Binding Value.CurrentTexts.HamburgerMenu_Budget, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                                                           Text="{Binding CurrentTexts.HamburgerMenu_Budget, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                                                 <TextBlock Grid.Column="1"
                                                            Margin="0,0,5,0"
                                                            HorizontalAlignment="Right"

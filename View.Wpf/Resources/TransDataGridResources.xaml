@@ -6,7 +6,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ContextMenu x:Key="RowMenu">
-        <MenuItem Command="{Binding DeleteCommand}" Header="{Binding Value.CurrentTexts.AccountView_ConMenu_Delete, Mode=OneWay, Source={StaticResource TextsHolder}}">
+        <MenuItem Command="{Binding DeleteCommand}" Header="{Binding CurrentTexts.AccountView_ConMenu_Delete, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
             <MenuItem.Icon>
                 <iconPacks:PackIconMaterial Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"
@@ -17,7 +17,7 @@
     </ContextMenu>
 
     <ContextMenu x:Key="NewRowMenu">
-        <MenuItem Command="{Binding RemoveCommand}" Header="{Binding Value.CurrentTexts.AccountView_ConMenu_Remove, Mode=OneWay, Source={StaticResource TextsHolder}}">
+        <MenuItem Command="{Binding RemoveCommand}" Header="{Binding CurrentTexts.AccountView_ConMenu_Remove, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
             <MenuItem.Icon>
                 <iconPacks:PackIconOcticons Width="{StaticResource IconSize}"
                                             Height="{StaticResource IconSize}"

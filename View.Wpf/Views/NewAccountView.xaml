@@ -11,12 +11,12 @@
              mc:Ignorable="d">
     <StackPanel>
         <TextBlock>
-            <Run Text="{Binding Value.CurrentTexts.Account_Name, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.Account_Name, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <TextBox Text="{Binding Mode=TwoWay, Path=Name, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock>
-            <Run Text="{Binding Value.CurrentTexts.Account_StartingBalance, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.Account_StartingBalance, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <TextBox Name="NewAccountStartingBalance"
@@ -34,7 +34,7 @@
             </TextBox.Text>
         </TextBox>
         <TextBlock>
-            <Run Text="{Binding Value.CurrentTexts.Account_StartingDate, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.Account_StartingDate, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <DatePicker x:Name="NewAccountDatePicker"
@@ -43,6 +43,6 @@
         <Button Margin="0,5,0,0"
                 HorizontalAlignment="Right"
                 Command="{Binding AddCommand}"
-                Content="{Binding Value.CurrentTexts.AccountTabsView_NewAccount_Create, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                Content="{Binding CurrentTexts.AccountTabsView_NewAccount_Create, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
     </StackPanel>
 </UserControl>

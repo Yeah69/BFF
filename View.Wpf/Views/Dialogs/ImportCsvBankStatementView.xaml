@@ -36,7 +36,7 @@
                    Grid.Column="0"
                    Margin="2.5"
                    VerticalAlignment="Center">
-            <Run Text="{Binding Value.CurrentTexts.General_FilePath, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.General_FilePath, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <DockPanel Grid.Row="0"
@@ -44,7 +44,7 @@
                    LastChildFill="True">
             <Button Margin="2.5"
                     Command="{Binding BrowseCsvBankStatementFileCommand}"
-                    Content="{Binding Value.CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                    Content="{Binding CurrentTexts.ImportView_Browse, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                     DockPanel.Dock="Right" />
             <views:StatusCheckMark Margin="2.5"
                                    VerticalAlignment="Center"
@@ -60,7 +60,7 @@
                    Grid.Column="0"
                    Margin="2.5"
                    VerticalAlignment="Center">
-            <Run Text="{Binding Value.CurrentTexts.General_Profile, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.General_Profile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <DockPanel Grid.Row="1"
@@ -73,25 +73,25 @@
                     <Button Margin="2.5"
                             Click="CloseProfileManagementMenu_OnClick"
                             Command="{Binding Configuration.Value.ResetProfile}"
-                            Content="{Binding Value.CurrentTexts.General_ResetProfile, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                            Content="{Binding CurrentTexts.General_ResetProfile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                             DockPanel.Dock="Left" />
                     <Button Margin="2.5"
                             Click="CloseProfileManagementMenu_OnClick"
                             Command="{Binding Configuration.Value.SaveToProfile}"
-                            Content="{Binding Value.CurrentTexts.General_SaveProfile, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                            Content="{Binding CurrentTexts.General_SaveProfile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                             DockPanel.Dock="Left"
                             Visibility="{Binding Configuration.Value.SaveToProfile, Converter={x:Static helper:Converters.NullToCollapsed}}" />
                     <Button Margin="2.5"
                             Click="CloseProfileManagementMenu_OnClick"
                             Command="{Binding Configuration.Value.RemoveProfile}"
-                            Content="{Binding Value.CurrentTexts.General_RemoveProfile, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                            Content="{Binding CurrentTexts.General_RemoveProfile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                             DockPanel.Dock="Left"
                             Visibility="{Binding Configuration.Value.RemoveProfile, Converter={x:Static helper:Converters.NullToCollapsed}}" />
                     <DockPanel LastChildFill="True">
                         <Button Margin="2.5"
                                 Click="CloseProfileManagementMenu_OnClick"
                                 Command="{Binding Configuration.Value.SaveNewProfile}"
-                                Content="{Binding Value.CurrentTexts.General_SaveNewProfile, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                Content="{Binding CurrentTexts.General_SaveNewProfile, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                 DockPanel.Dock="Left" />
                         <TextBox MinWidth="50"
                                  Margin="2.5"
@@ -126,7 +126,7 @@
                    Grid.Column="0"
                    Margin="2.5"
                    VerticalAlignment="Center">
-            <Run Text="{Binding Value.CurrentTexts.General_Header, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.General_Header, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <DockPanel Grid.Row="2"
@@ -151,7 +151,7 @@
                   mah:ControlsHelper.ContentCharacterCasing="Normal"
                   Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
                   BorderThickness="0"
-                  Header="{Binding Value.CurrentTexts.Common_Configuration, Mode=OneWay, Source={StaticResource TextsHolder}}">
+                  Header="{Binding CurrentTexts.Common_Configuration, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -170,7 +170,7 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center">
-                    <Run Text="{Binding Value.CurrentTexts.General_Delimiter, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.General_Delimiter, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBox Grid.Row="0"
@@ -184,7 +184,7 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center">
-                    <Run Text="{Binding Value.CurrentTexts.General_DateFormat, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.General_DateFormat, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <DockPanel Grid.Row="1"
@@ -225,7 +225,7 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center">
-                    <Run Text="{Binding Value.CurrentTexts.General_PayeeFormat, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.General_PayeeFormat, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBox Grid.Row="2"
@@ -238,7 +238,7 @@
                 <CheckBox Grid.Row="3"
                           Grid.Column="1"
                           Margin="2.5"
-                          Content="{Binding Value.CurrentTexts.General_NewPayeeIfNotExisting, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                          Content="{Binding CurrentTexts.General_NewPayeeIfNotExisting, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                           DockPanel.Dock="Right"
                           IsChecked="{Binding Configuration.Value.ShouldCreateNewPayeeIfNotExisting.Value}" />
 
@@ -246,7 +246,7 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center">
-                    <Run Text="{Binding Value.CurrentTexts.General_MemoFormat, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.General_MemoFormat, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <TextBox Grid.Row="4"
@@ -259,7 +259,7 @@
                            Grid.Column="0"
                            Margin="2.5"
                            VerticalAlignment="Center">
-                    <Run Text="{Binding Value.CurrentTexts.General_SumFormat, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    <Run Text="{Binding CurrentTexts.General_SumFormat, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                     <Run Text=":" />
                 </TextBlock>
                 <DockPanel Grid.Row="5"
@@ -311,14 +311,14 @@
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
                    Background="{StaticResource TransactionBrush}"
-                   Text="{Binding Value.CurrentTexts.CsvBankStatementImport_ErrorDuringItemsCreation, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                   Text="{Binding CurrentTexts.CsvBankStatementImport_ErrorDuringItemsCreation, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                    Visibility="{Binding ShowItemsError.Value, Converter={x:Static helper:Converters.FalseToCollapsed}}" />
 
         <TextBlock Grid.Row="5"
                    Grid.Column="0"
                    Margin="2.5"
                    VerticalAlignment="Center">
-            <Run Text="{Binding Value.CurrentTexts.Common_Entries, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+            <Run Text="{Binding CurrentTexts.Common_Entries, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Run Text=":" />
         </TextBlock>
         <DataGrid Grid.Row="5"
@@ -330,25 +330,25 @@
                 <DataGridTemplateColumn x:Name="DateColumn"
                                         CellEditingTemplate="{StaticResource DateEditingColumnTemplate}"
                                         CellTemplate="{StaticResource DateColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Date, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Date" />
                 <!--  Payee  -->
                 <DataGridTemplateColumn x:Name="PayeeColumn"
                                         CellEditingTemplate="{StaticResource PayeeEditingColumnTemplate}"
                                         CellTemplate="{StaticResource PayeeColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Payee, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Payee.Name" />
                 <!--  Memo  -->
                 <DataGridTemplateColumn x:Name="MemoColumn"
                                         Width="*"
                                         CellEditingTemplate="{StaticResource MemoEditingColumnTemplate}"
                                         CellTemplate="{StaticResource MemoColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Memo, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         SortMemberPath="Memo" />
                 <!--  Sum  -->
                 <DataGridTemplateColumn CellEditingTemplate="{StaticResource SumEditingColumnTemplate}"
                                         CellTemplate="{StaticResource SumColumnTemplate}"
-                                        Header="{Binding Value.CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                                        Header="{Binding CurrentTexts.AccountView_Header_Sum, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}"
                                         IsReadOnly="False"
                                         SortMemberPath="Sum.Value" />
             </DataGrid.Columns>
@@ -360,10 +360,10 @@
                     Orientation="Horizontal">
             <Button Margin="2.5"
                     Command="{Binding OkCommand}"
-                    Content="{Binding Value.CurrentTexts.General_Okay, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    Content="{Binding CurrentTexts.General_Okay, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
             <Button Margin="2.5"
                     Command="{Binding CancelCommand}"
-                    Content="{Binding Value.CurrentTexts.General_Cancel, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                    Content="{Binding CurrentTexts.General_Cancel, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
         </StackPanel>
     </Grid>
 </UserControl>
