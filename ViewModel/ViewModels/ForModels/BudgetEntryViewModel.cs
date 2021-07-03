@@ -126,25 +126,25 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             BudgetLastMonth = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     CompositeDisposable,
                     async () => await SetBudgetToAverageBudgetOfLastMonths(1).ConfigureAwait(false));
 
             OutflowsLastMonth = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     CompositeDisposable,
                     async () => await SetBudgetToAverageOutflowOfLastMonths(1).ConfigureAwait(false));
 
             AvgOutflowsLastThreeMonths = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     CompositeDisposable,
                     async () => await SetBudgetToAverageOutflowOfLastMonths(3).ConfigureAwait(false));
 
             AvgOutflowsLastYear = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     CompositeDisposable,
                     async () => await SetBudgetToAverageOutflowOfLastMonths(12).ConfigureAwait(false));
 

@@ -50,11 +50,11 @@ namespace BFF.View.Wpf
             
             InitializeComponent();
 
-            mainWindow.Value.Show();
-
             var findName = this.FindResource("TextsHolder");
             if (findName is TextsHolder textsHolder)
                 textsHolder.Value = currentTextsViewModel;
+
+            mainWindow.Value.Show();
         }
 
         public static Visibility IsDebug

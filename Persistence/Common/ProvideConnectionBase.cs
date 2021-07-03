@@ -9,6 +9,8 @@ namespace BFF.Persistence.Common
 {
     internal abstract class ProvideConnectionBase<T> : IProvideConnection<T>
     {
+        private readonly IDateTimeStaticDelegate _dateTimeStaticDelegate;
+
         public abstract T Connection { get; }
 
         public void Backup(string reason)
@@ -22,15 +24,16 @@ namespace BFF.Persistence.Common
             var backupDirectory = directory.GetDirectories().FirstOrDefault(di => di.Name == backupDirectoryPath) ??
                                   directory.CreateSubdirectory(backupDirectoryPath);
 
-            fileInfo.CopyTo($"{backupDirectory.FullName}{Path.DirectorySeparatorChar}{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{reason.RemoveIllegalFilePathCharacters()}_{fileInfo.Name}");
+            fileInfo.CopyTo($"{backupDirectory.FullName}{Path.DirectorySeparatorChar}{_dateTimeStaticDelegate.Now:yyyy-MM-dd_HH-mm-ss}_{reason.RemoveIllegalFilePathCharacters()}_{fileInfo.Name}");
         }
-
-        protected abstract string ConnectionString { get; }
         protected string DbPath { get; }
         private static string BackupDirectoryPath(string fileName) => $"BFF_{fileName}_Backups";
 
-        protected ProvideConnectionBase(IProjectFileAccessConfiguration config)
+        protected ProvideConnectionBase(
+            IProjectFileAccessConfiguration config,
+            IDateTimeStaticDelegate dateTimeStaticDelegate)
         {
+            _dateTimeStaticDelegate = dateTimeStaticDelegate;
             DbPath = config.Path;
         }
     }

@@ -244,7 +244,7 @@ atidarykite failų meniu viršutiniame kairiajame kampe.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Greitas testas</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Jei įrašas yra pervedimas, čia įrašoma tikslinė sąskaita.</value>
     <value>Šį mėnesį pervesta, bet dar neįrašyta į jokią kategoriją pinigų suma.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>Ir dar kartą. Labai smagu.</value>
     <comment>Automatically translated.</comment>
   </data>

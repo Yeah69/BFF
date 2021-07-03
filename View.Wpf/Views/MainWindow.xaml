@@ -7,11 +7,11 @@
                       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
                       xmlns:hm="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
                       xmlns:helper="clr-namespace:BFF.View.Wpf.Helper"
                       xmlns:views="clr-namespace:BFF.View.Wpf.Views"
                       xmlns:wpf="clr-namespace:BFF.View.Wpf"
+                      xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
                       Title="{Binding Title}"
                       Width="{Binding Width, Mode=TwoWay}"
                       Height="{Binding Height, Mode=TwoWay}"
@@ -66,12 +66,12 @@
             <!--  Settings Flyout  -->
             <controls:Flyout Name="SettingsFlyout"
                              Width="400"
-                             Header="{Binding Value.CurrentTexts.MainWindow_Settings, Mode=OneWay, Source={StaticResource TextsHolder}}"
+                             Header="{helper:Blah MainWindow_Settings}"
                              Position="Right">
                 <StackPanel Margin="10"
                             Orientation="Vertical">
                     <TextBlock>
-                        <Run Text="{Binding Value.CurrentTexts.Settings_Theme, Mode=OneWay, Source={StaticResource TextsHolder}}" />
+                        <Run Text="{Binding CurrentTexts.Settings_Theme, Mode=OneWay, Source={StaticResource CurrentTextsViewModel}}" />
                         <Run Text=":" />
                     </TextBlock>
                     <ComboBox Name="ThemeCombo"

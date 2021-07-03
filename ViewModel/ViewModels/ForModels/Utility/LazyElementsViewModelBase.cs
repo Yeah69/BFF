@@ -34,7 +34,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
             LoadLazyElements = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     CompositeDisposable,
                     async () =>
                     {

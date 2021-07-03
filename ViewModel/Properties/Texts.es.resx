@@ -244,7 +244,7 @@ abrir el menú de archivos en la esquina superior izquierda.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Prueba rápida</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Si la entrada es una transferencia, entonces la cuenta de destino se introduce a
     <value>La cantidad de dinero entregada este mes pero que aún no se ha registrado en ninguna categoría.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>Y una vez más. Muy divertido.</value>
     <comment>Automatically translated.</comment>
   </data>

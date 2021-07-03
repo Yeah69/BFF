@@ -32,15 +32,18 @@ namespace BFF.Persistence.Import
 
         private readonly IDtoImportContainerBuilder _dtoImportContainerBuilder;
         private readonly IYnab4CsvImportConfiguration _ynab4CsvImportConfiguration;
+        private readonly IDateTimeStaticDelegate _dateTimeStaticDelegate;
         private readonly IDisposable _cleanUpContext;
 
         public Ynab4CsvImporter(
             IDtoImportContainerBuilder dtoImportContainerBuilder,
             IYnab4CsvImportConfiguration ynab4CsvImportConfiguration,
+            IDateTimeStaticDelegate dateTimeStaticDelegate,
             IDisposable cleanUpContext)
         {
             _dtoImportContainerBuilder = dtoImportContainerBuilder;
             _ynab4CsvImportConfiguration = ynab4CsvImportConfiguration;
+            _dateTimeStaticDelegate = dateTimeStaticDelegate;
             _cleanUpContext = cleanUpContext;
 
             Title = ynab4CsvImportConfiguration.TransactionPath;
@@ -85,7 +88,7 @@ namespace BFF.Persistence.Import
                             AddTransfer(ynabTransaction);
                         else
                             _dtoImportContainerBuilder.AddAsTransaction(
-                                DateTime.SpecifyKind(ynabTransaction.Date, DateTimeKind.Utc),
+                                _dateTimeStaticDelegate.SpecifyKind(ynabTransaction.Date, DateTimeKind.Utc),
                                 ynabTransaction.Account,
                                 ynabTransaction.ParsePayeeFromPayee(),
                                 GetOrCreateCategory(ynabTransaction.MasterCategory, ynabTransaction.SubCategory),
@@ -176,7 +179,7 @@ namespace BFF.Persistence.Import
             if (subTransactions.Any())
             {
                 _dtoImportContainerBuilder.AddParentAndSubTransactions(
-                    DateTime.SpecifyKind(ynabTransaction.Date, DateTimeKind.Utc),
+                    _dateTimeStaticDelegate.SpecifyKind(ynabTransaction.Date, DateTimeKind.Utc),
                     ynabTransaction.Account,
                     ynabTransaction.ParsePayeeFromPayee(),
                     ynabTransaction.CheckNumber,
@@ -207,7 +210,7 @@ namespace BFF.Persistence.Import
             if (!_processedAccountsList.Contains(otherAccount))
             {
                 _dtoImportContainerBuilder.AddAsTransfer(
-                    DateTime.SpecifyKind(ynabTransfer.Date, DateTimeKind.Utc),
+                    _dateTimeStaticDelegate.SpecifyKind(ynabTransfer.Date, DateTimeKind.Utc),
                     ynabTransfer.GetFromAccountName(),
                     ynabTransfer.GetToAccountName(),
                     ynabTransfer.CheckNumber,
@@ -223,9 +226,9 @@ namespace BFF.Persistence.Import
                 .Where(ybe => ybe.MasterCategory != "Uncategorized Transactions")
                 .ForEach(ybe =>
                 {
-                    var month = DateTime.ParseExact(ybe.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
+                    var month = _dateTimeStaticDelegate.ParseExact(ybe.Month, "MMMM yyyy", CultureInfo.GetCultureInfo("de-DE")); // TODO make this customizable + exception handling
                     _dtoImportContainerBuilder.AddBudgetEntry(
-                        DateTime.SpecifyKind(month, DateTimeKind.Utc),
+                        _dateTimeStaticDelegate.SpecifyKind(month, DateTimeKind.Utc),
                         GetOrCreateCategory(ybe.MasterCategory, ybe.SubCategory),
                         ybe.Budgeted);
                 });

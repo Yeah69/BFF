@@ -244,7 +244,7 @@ nyissa meg a bal felső sarokban található fájl menüt.</value>
     <value>pozitív</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Gyors teszt</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Ha a bejegyzés átutalás, akkor a célszámlát kell itt megadni.</value>
     <value>Az az összeg, amelyet ebben a hónapban adnak, de még nem került rögzítésre egyik kategóriában sem.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>És még egyszer. Annyira jó móka.</value>
     <comment>Automatically translated.</comment>
   </data>

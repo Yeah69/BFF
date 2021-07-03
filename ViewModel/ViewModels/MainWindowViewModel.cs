@@ -14,7 +14,6 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Reactive.Extensions;
-using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using NLog;
 using Reactive.Bindings;
@@ -34,7 +33,7 @@ namespace BFF.ViewModel.ViewModels
         ICultureManager? CultureManager { get; }
         bool IsEmpty { get; }
         CultureInfo LanguageCulture { get; set; }
-        ICurrentTextsViewModel CurrentTextsViewModel { get; } // ToDo 
+        //ICurrentTextsViewModel CurrentTextsViewModel { get; } // ToDo 
         IReadOnlyReactiveProperty<IParentTransactionViewModel?> OpenParentTransaction { get; }
         bool ParentTransFlyoutOpen { get; set; }
         double Width { get; set; }
@@ -113,7 +112,7 @@ namespace BFF.ViewModel.ViewModels
         private bool _parentTransFlyoutOpen;
         private ICultureManager? _cultureManager;
         private TopLevelViewModelCompositionBase? _topLevelViewModelComposition;
-        public ICurrentTextsViewModel CurrentTextsViewModel { get; }
+        //public ICurrentTextsViewModel CurrentTextsViewModel { get; }
         public IReadOnlyReactiveProperty<IParentTransactionViewModel?> OpenParentTransaction { get; }
 
         public bool ParentTransFlyoutOpen
@@ -125,7 +124,7 @@ namespace BFF.ViewModel.ViewModels
         public MainWindowViewModel(
             ICurrentProject currentProject,
             IContextManager contextManager,
-            ICurrentTextsViewModel currentTextsViewModel,
+            //ICurrentTextsViewModel currentTextsViewModel,
             Func<IContext, ILoadContextViewModel> loadContextViewModelFactory,
             Func<IEmptyContextViewModel> emptyContextViewModelFactory,
             Func<INewFileAccessViewModel> newFileAccessViewModelFactory,
@@ -136,7 +135,7 @@ namespace BFF.ViewModel.ViewModels
             IParentTransactionFlyoutManager parentTransactionFlyoutManager,
             CompositeDisposable compositeDisposable)
         {
-            CurrentTextsViewModel = currentTextsViewModel;
+            //CurrentTextsViewModel = currentTextsViewModel;
             TransDataGridColumnManager = transDataGridColumnManager;
             _bffSettings = bffSettings;
             Logger.Debug("Initializing …");

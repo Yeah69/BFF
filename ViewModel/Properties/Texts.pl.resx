@@ -244,7 +244,7 @@ otwórz menu plików w lewym górnym rogu.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Szybki test</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Jeśli zapis jest przelewem, to tutaj wpisuje się rachunek docelowy.</value>
     <value>Kwota pieniędzy przekazana w tym miesiącu, ale jeszcze nie zapisana w żadnej kategorii.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>I jeszcze raz. Tyle zabawy.</value>
     <comment>Automatically translated.</comment>
   </data>

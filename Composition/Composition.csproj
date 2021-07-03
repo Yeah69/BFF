@@ -15,7 +15,6 @@
       <ProjectReference Include="..\Model\Model.csproj" />
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
       <ProjectReference Include="..\View.Avalonia\View.Avalonia.csproj" />
-      <ProjectReference Include="..\View.Wpf\View.Wpf.csproj" />
       <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
     </ItemGroup>
 

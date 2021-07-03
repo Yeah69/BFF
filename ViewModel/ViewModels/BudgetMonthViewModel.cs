@@ -82,7 +82,7 @@ namespace BFF.ViewModel.ViewModels
 
             EmptyCellsBudgetLastMonth = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {
@@ -92,7 +92,7 @@ namespace BFF.ViewModel.ViewModels
 
             EmptyCellsOutflowsLastMonth = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {
@@ -102,7 +102,7 @@ namespace BFF.ViewModel.ViewModels
 
             EmptyCellsAvgOutflowsLastThreeMonths = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {
@@ -112,7 +112,7 @@ namespace BFF.ViewModel.ViewModels
 
             EmptyCellsAvgOutflowsLastYear = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {
@@ -122,7 +122,7 @@ namespace BFF.ViewModel.ViewModels
 
             EmptyCellsBalanceToZero = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {
@@ -132,7 +132,7 @@ namespace BFF.ViewModel.ViewModels
 
             AllCellsZero = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {

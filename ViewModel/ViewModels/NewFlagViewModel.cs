@@ -48,7 +48,7 @@ namespace BFF.ViewModel.ViewModels
 
             AddCommand = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {

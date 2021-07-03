@@ -24,7 +24,7 @@ namespace BFF.ViewModel.Extensions
             return disposableRxCommand;
         }
         
-        public static ICommand StandardCase(
+        public static ICommand StandardCaseAsync(
             this IDisposableRxCommand disposableRxCommand,
             CompositeDisposable compositeDisposable,
             Func<Task> asyncAction)

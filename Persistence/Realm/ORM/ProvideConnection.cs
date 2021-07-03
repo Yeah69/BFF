@@ -5,6 +5,7 @@ using BFF.Persistence.Contexts;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using Realms;
+using System;
 
 namespace BFF.Persistence.Realm.ORM
 {
@@ -31,10 +32,10 @@ namespace BFF.Persistence.Realm.ORM
             }
         }
 
-        protected override string ConnectionString => DbPath;
-
         public ProvideConnection(
-            IRealmProjectFileAccessConfiguration config) : base(config)
+            IRealmProjectFileAccessConfiguration config,
+            IDateTimeStaticDelegate dateTimeStaticDelegate)
+            : base(config, dateTimeStaticDelegate)
         {
             if (config.Password is not null)
                 _hash = GetHash(config.Password);

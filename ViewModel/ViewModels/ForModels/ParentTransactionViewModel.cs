@@ -242,7 +242,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                         .ObservePropertyChanged(nameof(SubTransactions.Count))
                         .Select(_ => SubTransactions.Count >= 1),
                     SubTransactions.Count >= 1)
-                .StandardCase(
+                .StandardCaseAsync(
                     CompositeDisposable,
                     async () =>
                     {

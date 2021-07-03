@@ -5,7 +5,7 @@ using System.Windows.Threading;
 
 namespace BFF.View.Wpf.Helper
 {
-    class WpfRxSchedulerProvider : IRxSchedulerProvider
+    internal class WpfRxSchedulerProvider : IRxSchedulerProvider
     {
         public WpfRxSchedulerProvider()
         {

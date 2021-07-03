@@ -244,7 +244,7 @@ open het bestandsmenu in de linkerbovenhoek.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Snelle test</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Indien de boeking een overschrijving is, wordt hier de doelrekening ingevoerd.</
     <value>Het bedrag dat deze maand is gegeven, maar nog niet in een categorie is opgenomen.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>En nog een keer. Zo leuk.</value>
     <comment>Automatically translated.</comment>
   </data>

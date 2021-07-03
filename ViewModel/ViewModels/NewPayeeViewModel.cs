@@ -50,7 +50,7 @@ namespace BFF.ViewModel.ViewModels
 
             AddPayeeCommand = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(
+                .StandardCaseAsync(
                     _compositeDisposable,
                     async () =>
                     {

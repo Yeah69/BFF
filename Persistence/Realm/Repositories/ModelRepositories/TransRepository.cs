@@ -30,6 +30,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         private readonly Lazy<IRealmPayeeRepositoryInternal> _payeeRepository;
         private readonly Lazy<IRealmFlagRepositoryInternal> _flagRepository;
         private readonly Lazy<IRealmSubTransactionRepository> _subTransactionsRepository;
+        private readonly IDateTimeStaticDelegate _dateTimeStaticDelegate;
         private readonly ICrudOrm<Trans> _crudOrm;
         private readonly IRealmOperations _realmOperations;
         private readonly Lazy<ITransOrm> _transOrm;
@@ -40,6 +41,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             Lazy<IRealmPayeeRepositoryInternal> payeeRepository,
             Lazy<IRealmFlagRepositoryInternal> flagRepository,
             Lazy<IRealmSubTransactionRepository> subTransactionsRepository, 
+            IDateTimeStaticDelegate dateTimeStaticDelegate,
             ICrudOrm<Trans> crudOrm,
             IRealmOperations realmOperations,
             Lazy<ITransOrm> transOrm)
@@ -49,6 +51,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             _categoryBaseRepository = categoryBaseRepository;
             _payeeRepository = payeeRepository;
             _subTransactionsRepository = subTransactionsRepository;
+            _dateTimeStaticDelegate = dateTimeStaticDelegate;
             _crudOrm = crudOrm;
             _realmOperations = realmOperations;
             _transOrm = transOrm;
@@ -200,7 +203,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
                         _subTransactionsRepository.Value),
                     _ => new Models.Domain.Transaction(
                         null,
-                        DateTime.Today, 
+                        _dateTimeStaticDelegate.Today, 
                         null, 
                         "", 
                         null, 

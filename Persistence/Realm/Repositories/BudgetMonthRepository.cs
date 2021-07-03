@@ -15,15 +15,18 @@ namespace BFF.Persistence.Realm.Repositories
         private readonly Lazy<IIncomeCategoryRepository> _incomeCategoryRepository;
         private readonly Lazy<IRealmTransRepository> _transRepository;
         private readonly Lazy<IBudgetOrm> _budgetOrm;
+        private readonly IDateTimeStaticDelegate _dateTimeStaticDelegate;
 
         public RealmBudgetMonthRepository(
             Lazy<IIncomeCategoryRepository> incomeCategoryRepository,
             Lazy<IRealmTransRepository> transRepository,
-            Lazy<IBudgetOrm> budgetOrm)
+            Lazy<IBudgetOrm> budgetOrm,
+            IDateTimeStaticDelegate dateTimeStaticDelegate)
         {
             _incomeCategoryRepository = incomeCategoryRepository;
             _transRepository = transRepository;
             _budgetOrm = budgetOrm;
+            _dateTimeStaticDelegate = dateTimeStaticDelegate;
         }
 
         public async Task<IList<IBudgetMonth>> FindAsync(int year)
@@ -61,7 +64,7 @@ namespace BFF.Persistence.Realm.Repositories
 
         public async Task<long> GetAvailableToBudgetOfCurrentMonth()
         {
-            var now = DateTime.Now;
+            var now = _dateTimeStaticDelegate.Now;
             return (await this.FindAsync(now.Year).ConfigureAwait(false))[now.Month - 1].AvailableToBudget;
         }
 

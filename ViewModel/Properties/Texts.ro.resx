@@ -244,7 +244,7 @@ deschideți meniul de fișiere din colțul din stânga sus.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Test rapid</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Dacă este vorba de un transfer, aici se introduce contul țintă.</value>
     <value>Suma de bani dată în această lună, dar care nu a fost încă înregistrată în nicio categorie.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>Și încă o dată. Atât de distractiv.</value>
     <comment>Automatically translated.</comment>
   </data>

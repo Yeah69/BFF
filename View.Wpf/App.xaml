@@ -12,6 +12,7 @@
              xmlns:views="clr-namespace:BFF.View.Wpf.Views"
              xmlns:viewModels="clr-namespace:BFF.ViewModel.ViewModels;assembly=BFF.ViewModel"
              xmlns:wpf="clr-namespace:BFF.View.Wpf"
+             xmlns:resXToViewModelGenerator="clr-namespace:MrMeeseeks.ResXToViewModelGenerator;assembly=BFF.ViewModel"
              Startup="Application_Startup"
              x:Name="This"
              mc:Ignorable="d">
@@ -29,6 +30,8 @@
             </ResourceDictionary.MergedDictionaries>
             
             <wpf:TextsHolder x:Key="TextsHolder" />
+            
+            <resXToViewModelGenerator:CurrentTextsViewModel x:Key="CurrentTextsViewModel" />
 
             <DataTemplate x:Key="EmptyDataTemplate" />
 

@@ -244,7 +244,7 @@ Sådan opretter, åbner eller importerer du et projekt
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
+  <data name="TestFive" xml:space="preserve">
     <value>Hurtig test</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -492,7 +492,7 @@ Hvis der er tale om en overførsel, angives målkontoen her.</value>
     <value>Det beløb, der er givet i denne måned, men som endnu ikke er blevet registreret i nogen kategori.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Test4" xml:space="preserve">
+  <data name="TestFour" xml:space="preserve">
     <value>Og endnu en gang. Det er så sjovt.</value>
     <comment>Automatically translated.</comment>
   </data>

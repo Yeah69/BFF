@@ -48,7 +48,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
 
             DeleteCommand = RxCommand
                 .CanAlwaysExecute()
-                .StandardCase(CompositeDisposable, DeleteAsync);
+                .StandardCaseAsync(CompositeDisposable, DeleteAsync);
         }
         
         public virtual Task InsertAsync()

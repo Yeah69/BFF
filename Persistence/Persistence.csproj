@@ -15,6 +15,7 @@
     </PackageReference>
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MrMeeseeks" Version="69.0.24" />
+    <PackageReference Include="MrMeeseeks.StaticDelegateGenerator" Version="69.0.0" />
     <PackageReference Include="MuVaViMo" Version="0.4.0" />
     <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />
