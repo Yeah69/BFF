@@ -244,10 +244,6 @@ otwórz menu plików w lewym górnym rogu.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Szybki test</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Saldo początkowe rachunku</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Jeśli zapis jest przelewem, to tutaj wpisuje się rachunek docelowy.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Kwota pieniędzy przekazana w tym miesiącu, ale jeszcze nie zapisana w żadnej kategorii.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>I jeszcze raz. Tyle zabawy.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

@@ -244,10 +244,6 @@ open the File-menu in the upper left corner.</value>
     <value>Positive</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Quick test</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Starting Balance</value>
     <comment>Manually overriden.</comment>
@@ -491,10 +487,6 @@ In case the entry is a transfer, the target-account is filled in here.</value>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Amount of money which is available in this month but not assigned to any category yet.</value>
     <comment>Manually overriden.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>And one more time. So much fun.</value>
-    <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">
     <value>Remove Profile</value>

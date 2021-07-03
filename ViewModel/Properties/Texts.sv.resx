@@ -244,10 +244,6 @@ Skapa, öppna eller importera ett projekt
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Snabbtest</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Ursprungligt saldo på kontot</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Om bokföringen är en överföring anges målkontot här.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Det belopp som har givits denna månad men som ännu inte har registrerats i någon kategori.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Och en gång till. Det är så roligt.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

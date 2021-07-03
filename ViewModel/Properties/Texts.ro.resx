@@ -244,10 +244,6 @@ deschideți meniul de fișiere din colțul din stânga sus.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Test rapid</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Soldul inițial al contului</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Dacă este vorba de un transfer, aici se introduce contul țintă.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Suma de bani dată în această lună, dar care nu a fost încă înregistrată în nicio categorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Și încă o dată. Atât de distractiv.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

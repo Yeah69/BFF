@@ -244,10 +244,6 @@
     <value>Отрицательно</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Быстрый тест</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Начальное сальдо счёта</value>
     <comment>Manually overriden.</comment>
@@ -490,10 +486,6 @@
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Сумма денег, выданная в этом месяце, но еще не учтенная ни в одной категории.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>И еще раз. Так весело.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

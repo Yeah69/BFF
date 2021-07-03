@@ -244,10 +244,6 @@ odprite meni datotek v zgornjem levem kotu.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Hitri test</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Začetno stanje na računu</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Ker so kategorije lahko hierarhične, je v opombi prikazana celotna hierarhična
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Znesek denarja, ki je dan ta mesec, vendar še ni zabeležen v nobeni kategoriji.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>In še enkrat. Toliko zabave.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

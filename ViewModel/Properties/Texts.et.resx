@@ -244,10 +244,6 @@ avage failimenüü vasakus ülanurgas.</value>
     <value>Positiivne</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Kiire test</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Konto algsaldo</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Kui kanne on ülekanne, siis sisestatakse siia sihtkonto.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Sel kuul antud, kuid üheski kategoorias veel registreerimata rahasumma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Ja veel kord. Nii lõbus.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

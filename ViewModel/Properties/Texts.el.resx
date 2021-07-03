@@ -244,10 +244,6 @@
     <value>Θετικό</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Γρήγορη δοκιμή</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Αρχικό υπόλοιπο λογαριασμού</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Το ποσό των χρημάτων που δόθηκαν αυτό το μήνα αλλά δεν έχουν ακόμη καταγραφεί σε καμία κατηγορία.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Και άλλη μια φορά. Πολύ διασκεδαστικό.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

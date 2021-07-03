@@ -244,10 +244,6 @@ otevřete nabídku souborů v levém horním rohu.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Rychlý test</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Počáteční zůstatek účtu</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Pokud se jedná o převod, zadává se zde cílový účet.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Částka, která byla tento měsíc darována, ale ještě nebyla zaznamenána v žádné kategorii.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>A ještě jednou. Tolik zábavy.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

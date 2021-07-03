@@ -244,10 +244,6 @@ atidarykite failų meniu viršutiniame kairiajame kampe.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Greitas testas</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Pradinis sąskaitos likutis</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ Jei įrašas yra pervedimas, čia įrašoma tikslinė sąskaita.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Šį mėnesį pervesta, bet dar neįrašyta į jokią kategoriją pinigų suma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Ir dar kartą. Labai smagu.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

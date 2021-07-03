@@ -244,10 +244,6 @@ nyissa meg a bal felső sarokban található fájl menüt.</value>
     <value>pozitív</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Gyors teszt</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Kiinduló számlaegyenleg</value>
     <comment>Manually overriden.</comment>
@@ -490,10 +486,6 @@ Ha a bejegyzés átutalás, akkor a célszámlát kell itt megadni.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Az az összeg, amelyet ebben a hónapban adnak, de még nem került rögzítésre egyik kategóriában sem.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>És még egyszer. Annyira jó móka.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

@@ -244,10 +244,6 @@ ouvrez le menu fichier dans le coin supérieur gauche.</value>
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Test rapide</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Solde initial du compte</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@ S'il s'agit d'un transfert, le compte cible est indiqué ici.</value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Le montant d'argent donné ce mois-ci mais pas encore enregistré dans une catégorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Et encore une fois. C'est tellement amusant.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

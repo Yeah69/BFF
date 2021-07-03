@@ -244,10 +244,6 @@
     <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Бърз тест</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Първоначално салдо по сметката</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>Сумата на парите, дадени този месец, но все още нерегистрирани в някоя категория.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>И още един път. Толкова е забавно.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">

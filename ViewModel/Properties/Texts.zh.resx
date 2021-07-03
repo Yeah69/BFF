@@ -244,10 +244,6 @@
     <value>正面</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>快速测试</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>初始账户余额</value>
     <comment>Automatically translated.</comment>
@@ -490,10 +486,6 @@
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
     <value>本月捐赠但尚未记录在任何类别中的金额。</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>再来一次。太有趣了。</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">
