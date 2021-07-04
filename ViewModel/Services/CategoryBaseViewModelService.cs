@@ -37,7 +37,7 @@ namespace BFF.ViewModel.Services
                 case null:
                     return null;
                 default:
-                    throw new ArgumentException("Such a category type is not considered yet!"); // TODO Localize!
+                    throw new ArgumentException("Such a category type is not considered yet!");
             }
         }
 
@@ -52,7 +52,7 @@ namespace BFF.ViewModel.Services
                 case null:
                     return null;
                 default:
-                    throw new ArgumentException("Such a category type is not considered yet!"); // TODO Localize!
+                    throw new ArgumentException("Such a category type is not considered yet!");
             }
         }
     }

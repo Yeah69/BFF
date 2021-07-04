@@ -786,4 +786,7 @@ Wenn der Eintrag ein Transfer ist, dann wird hier das Quellkonto eingetragen.</v
   <data name="AllAccounts" xml:space="preserve">
     <value>Alle Konten</value>
   </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value>Importiere Kontoauszug über ein CSV-Datei</value>
+  </data>
 </root>
