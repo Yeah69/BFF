@@ -58,16 +58,105 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>小計には、まだ保存する必要のあるエントリーが含まれています。</value>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>新規カテゴリーの作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>現在編集中の要素をアカウントに保存</value>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>エントリーが有効になる日。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>カテゴリー「{0}」を削除してよろしいですか？</value>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>利用可能</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>振込先の編集</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>不足分</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>チェックを入れると、収入のカテゴリーが作成されます。
+このようなカテゴリーに属する取引のみが収入として解釈されます。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>先月の支出</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>収入区分</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>過去3ヵ月間の平均支出額</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>受取人</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>設定された開始日のアカウントの残高です。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>輸出目標</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>本当に「{0}」のマーカーが「{1}」のマーカーにマージされるのですか？</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>以下のパスで読み込み、保存します。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>新しいカテゴリーの名前は、空であってはいけません。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>アカウントの編集</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>振込先が存在しないのに新規に作成することはできますか？</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>支出</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>目標口座残高</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>取引とは、お金が口座から出たり入ったりすることです。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>コントラメ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>この名前は、選択されたカテゴリーレベルにすでに存在しています。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>振込先「{0}」が振込先「{1}」に統合されることは間違いありませんか？</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>ラング</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
@@ -75,108 +164,199 @@
 振込先は、振込元の口座入力をすべて引き継ぎます。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>言語</value>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>受取人</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>編集テーブルの列タイトルを常に隠す</value>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>プロファイルの保存</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>コントラメ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>対象となる勘定科目の残高と小計との差額です。</value>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>一方的な譲渡は、アカウントの削除後に現れることがあります。会計上は中立ではないので、考慮しなければなりません。</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
     <value>Neu</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>支払った人、または支払う人をここに入力します。
-
-エントリーがトランスファーの場合は、ソースアカウントをここに入力します。</value>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>インポータビリティー</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>ユニラテラル・トランスファー</value>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>収入項目は、収入とみなされる取引を示すものです。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>シェック番号</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>クリックすると、部分的なトランザクションの表示と編集ができます。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>すべての予算セルを埋めてください。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>いいえ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>記号</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>リセットプロファイル</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>簡単な説明</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>月間オフセット</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>合計</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>日付</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>スーパーインポーズされたカテゴリー</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Label_ConvertTo" xml:space="preserve">
     <value>に変換します。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>記号は、その勘定科目がどのタイプであるかを示しています。</value>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>インポート設定</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
-    <value>クイックテスト</value>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>新しいファイナンシャルプランの作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>ソースアカウントを選択する必要があります。</value>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>編集テーブルの列タイトルを常に隠す</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>あるカテゴリーを別のカテゴリーにマージするには、この列のアイコンをソース行からドラッグしてターゲット行にドロップします。
-ターゲットカテゴリーは、ソースカテゴリーのすべてのアカウントエントリーとサブカテゴリーを継承します。
-一組のサブカテゴリーが同じ名前の場合、元のサブカテゴリーは自動的に名前が変更されます（数字が付加されます）。</value>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>カテゴリが割り当てられていないすべてのトランザクションの合計です。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>ノート形式</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>投稿</value>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>新規プロファイルの保存</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>パスワート</value>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>トランザクション</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>所得区分「{0}」は所得区分「{1}」に統合されるべきであると確信していますか？</value>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>これにより、アカウントとそのすべての取引が削除され、完全な転送が一方的に行われ、予算に関するアカウント固有の問題が消えます。
+
+本当にそうなのか？削除前の状態に戻すことができるように、自動バックアップが行われます）。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>クリエイト</value>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>未提出のエントリーを除いた不足分</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ContentIsLoading" xml:space="preserve">
-    <value>コンテンツが読み込まれると...。</value>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>新規分割出力の作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>ゼロのバランス</value>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>そのエントリーが属するアカウント。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Via</value>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>マーカー</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>取引とは、お金が口座から出たり入ったりすることです。</value>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>コンフィグレーション</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>プロフィール</value>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>カテゴリ「{0}」がカテゴリ「{1}」に統合されるべきだと確信していますか？</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>先月の支出</value>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>削除</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>1ヶ月前に進む</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>このテキストは、通貨として解析できませんでした。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>この日付セレクターを使って、任意の月にジャンプすることができます（日にちは関係ありません）。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>エントリーが追加される前に、アカウントが選択されている必要があります。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>銀行口座開設</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
     <value>振込先「{0}」を削除してよろしいですか？</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>ある所得区分を別の所得区分に統合するには、この列のシンボルをソース行からドラッグしてターゲット行にリリースする必要があります。
+ターゲットの収入カテゴリーは、ソースの収入カテゴリーからすべてのアカウントエントリーを継承し、月ごとのオフセットを維持します。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ContentIsLoading" xml:space="preserve">
+    <value>コンテンツが読み込まれると...。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>目標口座残高の設定</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>この列のボタンを押すと、対応する行の要素が削除されます。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>新しいマーカーの名前</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>カラー</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>完成</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>サブトータル</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>インカムカテゴリー「{0}」を削除してよろしいですか？</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -186,195 +366,48 @@
 振替の場合は、対象となる口座を入力します。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>過去3ヵ月間の平均支出額</value>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>インカム</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>不足分</value>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>ゼロ</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>ノーティズ</value>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>カテゴリー「{0}」を削除してよろしいですか？</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>通貨フォーマット</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>振込先フォーマット</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>インポート</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>トランザクション</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>チェックを入れると、収入のカテゴリーが作成されます。
-このようなカテゴリーに属する取引のみが収入として解釈されます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>プロファイルの保存</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>新規カテゴリーの作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>この名前は、選択されたカテゴリーレベルにすでに存在しています。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>本当に「{0}」のマーカーが「{1}」のマーカーにマージされるのですか？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>アカウント</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>金額フォーマット</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>マーカーは、エントリーを色で視覚的に強調するもので、完全に任意です。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>今月与えられたが、まだどのカテゴリーにも記録されていない金額。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>輸出目標</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>リセットプロファイル</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>先月、すべてのカテゴリーで集計された予算超過額の合計。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>親カテゴリーが選択されている場合、新しいカテゴリーはその親カテゴリーにサブカテゴリーとして添付されます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>閉じる</value>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Settings_Date" xml:space="preserve">
     <value>日付フォーマット</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>現在の金額</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>トータル表示</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>完成</value>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>解除されました</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>開始日</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>新規分割出力の作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>完成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>コンフィグレーション</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>この列のボタンを押すと、対応する行の要素が削除されます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>クリックすると、部分的なトランザクションの表示と編集ができます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>新しい受取人の名前</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>新規作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>受取人</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>一方的な譲渡は、アカウントの削除後に現れることがあります。会計上は中立ではないので、考慮しなければなりません。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>エディットマーカ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>1ヶ月前に戻す</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>カラー</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>新しい予算案を保存します。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>オーバーブッキング</value>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>キャンセル</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>振込先を選択する必要があります。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>すべてのカテゴリーを満たすために、先月足りなかった金額。</value>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>サブトータル</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="MainWindow_Empty" xml:space="preserve">
-    <value>会計プロジェクトはまだ搭載されていません。
-プロジェクトを作成、開く、またはインポートするには
-左上のファイルメニューを開きます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>すべての予算セルを埋めてください。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>合計を有効にすると、サブカテゴリーの値が自分の値に加算されます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>このメモリパスのファイル名は空です。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>口座残高</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>インカムカテゴリー「{0}」を削除してよろしいですか？</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>先月の予算値</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
@@ -382,369 +415,135 @@
 ツールチップを参照すると、より分かりやすくなります。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>以下のパスで読み込み、保存します。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>収入区分</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>アカウントの初期残高</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>必要に応じて、ここにチェックナンバーを入力することができます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>エントリーが有効になる日。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>セパレーター</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>オープン</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>件名</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>現在</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>転送</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>いいえ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>振込先「{0}」が振込先「{1}」に統合されることは間違いありませんか？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>今月、カテゴリーに割り当てられたすべての資金の合計。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>未分類</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>アクセント</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>新規マーカーの作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>ポジティブ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>このノートは、エントリーに任意の説明を与えるためのものです。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>対象となるアカウントを選択する必要があります。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>収入の関係？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>新規マーカーの作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>振込先が存在しないのに新規に作成することはできますか？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>プロファイルの削除</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>バランス</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>最初のアカウントエントリの作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>目標口座残高の設定</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>カテゴリー</value>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>エントリー</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
     <value>アカウント名を空にしたり、既存のアカウント名に似せたりすることはできません。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>ノート形式</value>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>新規作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>そのエントリーが属するアカウント。</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>件名</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>カテゴリが割り当てられていないすべてのトランザクションの合計です。</value>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>対象となる勘定科目の残高と小計との差額です。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>ヘッダーデータ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>エントリーが追加される前に、アカウントが選択されている必要があります。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>ソースアカウント</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>サブトータル</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>削除</value>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>収入の関係？</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
     <value>先月渡されたが、どのカテゴリーにも記録されていない金額。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>未分類</value>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>すべてのカテゴリーを満たすために、今月足りない分。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>サブトータル</value>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>ファイル「{0}」が見つかりませんでした。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>設定</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>新規アカウントの作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>支出</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>アカウント</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>このチェックマークは、完成したエントリーと修正が必要なエントリーを区別するために使用されます。
-合計値は、アカウント残高のツールチップで確認できます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>値が有効範囲外： [ {0} ... {1} ]!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>月間オフセットは、インカムが有効になる時期を月ごとにずらします。
-例えば、月のオフセットが1の場合、収入は翌月に、マイナス1の場合は前月にシフトします。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>カテゴリー</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>ある所得区分を別の所得区分に統合するには、この列のシンボルをソース行からドラッグしてターゲット行にリリースする必要があります。
-ターゲットの収入カテゴリーは、ソースの収入カテゴリーからすべてのアカウントエントリーを継承し、月ごとのオフセットを維持します。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>YNAB予算のCSVへのパスです。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>新規課題の作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>このカテゴリーレベルでは、選ばれた名前のカテゴリーがすでに存在しています。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>すべてのアカウント</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>目標とする口座残高を設定することで、不足分を自動的に計算することができます。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>カテゴリーを選択する必要があります。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>アカウントが選択されている必要があります。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>収入区分</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>トータル表示</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>今月の経費に充当される獲得金額。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>本当ですか？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>スーパーインポーズされたカテゴリー</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>新規転送の作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>ラング</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>新しいマーカーの名前は、空であったり、すでに存在していてはいけません。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>振込先の新規作成</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>新しいカテゴリーの名前</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>ファイナンシャルプランの開設</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>銀行口座開設</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>YNAB TransactionのCSVへのパスです。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>キャンセル</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>これにより、アカウントとそのすべての取引が削除され、完全な転送が一方的に行われ、予算に関するアカウント固有の問題が消えます。
-
-本当にそうなのか？削除前の状態に戻すことができるように、自動バックアップが行われます）。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>カテゴリ「{0}」がカテゴリ「{1}」に統合されるべきだと確信していますか？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>インポート設定</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>エントリーの作成中にエラーが発生しました。設定を確認します。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>ファイルパス</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>未提出のエントリーを除いた不足分</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>アカウントの編集</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>本当に「{0}」マーカーを削除していいのか？</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>新しいファイナンシャルプランの作成</value>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>不足分</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
     <value>削除</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>この入力欄は空欄のままではいけません。</value>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>あるマーカーを別のマーカーにマージするには、この列のシンボルをソース行からドラッグしてターゲット行にリリースする必要があります。
+ターゲットマーカーは、ソースマーカーからすべてのアカウントエントリを引き継ぎ、独自の色を維持します。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>エントリーの合計です。</value>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>設定</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>インカム</value>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>新規転送の作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>エントリー</value>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>インポートケル</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>日付</value>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>ソースアカウントを選択する必要があります。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>転送</value>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>新しいマーカーの名前</value>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>マーカーを表示する</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>金額</value>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>空の予算セルをすべて埋める。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>この日付セレクターを使って、任意の月にジャンプすることができます（日にちは関係ありません）。</value>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>アカウント</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>カテゴリー</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>通貨フォーマット</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>ネガティブ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>完成</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>支払った人、または支払う人をここに入力します。
+
+エントリーがトランスファーの場合は、ソースアカウントをここに入力します。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>エントリーの作成中にエラーが発生しました。設定を確認します。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>ファイル</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>名前</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>損益計算書</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>ヘッダーデータ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>YNAB TransactionのCSVへのパスです。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>アクセント</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
@@ -755,197 +554,402 @@
     <value>銀行口座開設</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>空の予算セルをすべて埋める。</value>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>振込先の新規作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>オーバーラン</value>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>このカテゴリーレベルでは、選ばれた名前のカテゴリーがすでに存在しています。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>アカウントが選択されている必要があります。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>セパレーター</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>振込先フォーマット</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>未分類</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>今月与えられたが、まだどのカテゴリーにも記録されていない金額。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>所得区分「{0}」は所得区分「{1}」に統合されるべきであると確信していますか？</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>新規マーカーの作成</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>収入区分</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>ファイナンシャルプランの開設</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>会計プロジェクトはまだ搭載されていません。
+プロジェクトを作成、開く、またはインポートするには
+左上のファイルメニューを開きます。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>開始日</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
     <value>過去1年間の平均支出額</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>マーカーを表示する</value>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>ノーティズ</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>ファイル「{0}」が見つかりませんでした。</value>
+  <data name="General_Positive" xml:space="preserve">
+    <value>ポジティブ</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>キャンセル</value>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>新しい予算案を保存します。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>名前</value>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>新規マーカーの作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>あるマーカーを別のマーカーにマージするには、この列のシンボルをソース行からドラッグしてターゲット行にリリースする必要があります。
-ターゲットマーカーは、ソースマーカーからすべてのアカウントエントリを引き継ぎ、独自の色を維持します。</value>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>現在</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>振込先の編集</value>
+  <data name="Test 5" xml:space="preserve">
+    <value>クイックテスト</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>ゼロ</value>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>最初のアカウントエントリの作成</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>このテキストは、通貨として解析できませんでした。</value>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>インポート</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>不足分</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>転送</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>新しい受取人の名前は、空白やすでに存在しているものではありません。</value>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>値が有効範囲外： [ {0} ... {1} ]!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>バランス</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>現在編集中の要素をアカウントに保存</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>金額</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>ゼロのバランス</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>オープン</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Test4" xml:space="preserve">
     <value>そしてもう一回。とても楽しいです。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>新しいカテゴリーの名前は、空であってはいけません。</value>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>必要に応じて、ここにチェックナンバーを入力することができます。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>簡単な説明</value>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>この入力欄は空欄のままではいけません。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>新規プロファイルの保存</value>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>新しいカテゴリーの名前</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>ファイル</value>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>記号は、その勘定科目がどのタイプであるかを示しています。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>利用可能</value>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>今月の経費に充当される獲得金額。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>新規カテゴリーの作成</value>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>パスワート</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>合計</value>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>このチェックマークは、完成したエントリーと修正が必要なエントリーを区別するために使用されます。
+合計値は、アカウント残高のツールチップで確認できます。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>収入項目は、収入とみなされる取引を示すものです。</value>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>エントリーの合計です。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>保存先のディレクトリが存在しません。</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>1ヶ月前に進む</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Via</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>予算</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>計上されていない</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>インポートケル</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>月間オフセット</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>目標口座残高</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>設定された開始日のアカウントの残高です。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>キャンセル</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>マーカー</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>OK</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>記号</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>ネガティブ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>日付フォーマット</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>シェック番号</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>受取人</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>閲覧</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>インポータビリティー</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>解除されました</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>送金とは、ある口座から別の口座へお金を移動することです。</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Settings_ShowCheckNumbers" xml:space="preserve">
     <value>チェックナンバーの表示</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>対象となるアカウントを選択する必要があります。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>すべてのカテゴリーを満たすために、先月足りなかった金額。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>キャンセル</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>ユニラテラル・トランスファー</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>先月、すべてのカテゴリーで集計された予算超過額の合計。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>新規アカウントの作成</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>すべてのアカウント</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>新規カテゴリーの作成</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>閉じる</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>現在の金額</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>カテゴリー</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>転送</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>エディットマーカ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>保存先のディレクトリが存在しません。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>1ヶ月前に戻す</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>日付フォーマット</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>オーバーラン</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>金額フォーマット</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>アカウントの初期残高</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>計上されていない</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>本当に「{0}」マーカーを削除していいのか？</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>口座残高</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
     <value>このファイルパスは存在しません。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>損益計算書</value>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>新しい受取人の名前</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>すべてのカテゴリーを満たすために、今月足りない分。</value>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>親カテゴリーが選択されている場合、新しいカテゴリーはその親カテゴリーにサブカテゴリーとして添付されます。</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>先月の予算値</value>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>月間オフセットは、インカムが有効になる時期を月ごとにずらします。
+例えば、月のオフセットが1の場合、収入は翌月に、マイナス1の場合は前月にシフトします。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>YNAB予算のCSVへのパスです。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>目標とする口座残高を設定することで、不足分を自動的に計算することができます。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>小計には、まだ保存する必要のあるエントリーが含まれています。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>本当ですか？</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>このノートは、エントリーに任意の説明を与えるためのものです。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>言語</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>投稿</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>カテゴリーを選択する必要があります。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>閲覧</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>今月、カテゴリーに割り当てられたすべての資金の合計。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>あるカテゴリーを別のカテゴリーにマージするには、この列のアイコンをソース行からドラッグしてターゲット行にドロップします。
+ターゲットカテゴリーは、ソースカテゴリーのすべてのアカウントエントリーとサブカテゴリーを継承します。
+一組のサブカテゴリーが同じ名前の場合、元のサブカテゴリーは自動的に名前が変更されます（数字が付加されます）。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>OK</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>プロフィール</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>送金とは、ある口座から別の口座へお金を移動することです。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>合計を有効にすると、サブカテゴリーの値が自分の値に加算されます。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>このメモリパスのファイル名は空です。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>ファイルパス</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>マーカーは、エントリーを色で視覚的に強調するもので、完全に任意です。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>新規課題の作成</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>アカウント</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>クリエイト</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>新しいマーカーの名前は、空であったり、すでに存在していてはいけません。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>未分類</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>新しい受取人の名前は、空白やすでに存在しているものではありません。</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>オーバーブッキング</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>予算</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>ソースアカウント</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AllAccounts" xml:space="preserve">
+    <value>すべてのアカウント</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>プロファイルの削除</value>
     <comment>Automatically Translated</comment>
   </data>
 </root>
