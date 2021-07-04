@@ -58,121 +58,190 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>Į tarpinę sumą įtraukiami įrašai, kuriuos dar reikia išsaugoti.</value>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Žymeklis vizualiai paryškina įrašą spalva ir yra visiškai neprivalomas.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Įrašo šiuo metu redaguojamus elementus į paskyrą</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Ar tikrai norite ištrinti pajamų kategoriją "{0}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Ar tikrai norite ištrinti kategoriją "{0}"?</value>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Norint sujungti vieną gavėją su kitu, šio stulpelio simbolį reikia vilkti iš pradinės eilutės ir nuleisti į tikslinę eilutę.
-Tikslinis gavėjas perims visus pradinio gavėjo sąskaitos įrašus.</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Vidutinės išlaidos per pastaruosius tris mėnesius</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Kalba</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Akcentai</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Visada paslėpti stulpelių pavadinimus redagavimo lentelėje</value>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Pajamų sandoris</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Užbaigta</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Skirtumas tarp tikslinės sąskaitos likučio ir tarpinės sumos.</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Pastabos formatas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Čia įrašomas mokėtojas arba mokėtojas.
-
-Jei įrašas yra pervedimas, čia įrašoma šaltinio sąskaita.</value>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Įrašo įsigaliojimo data.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Vienašaliai perdavimai</value>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Sandoris</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Konvertuoti į</value>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Norint sujungti vieną pajamų kategoriją su kita, šio stulpelio simbolį reikia vilkti iš pradinės eilutės ir paleisti į tikslinę eilutę.
+Tikslinė pajamų kategorija paveldės visus sąskaitos įrašus iš šaltinio pajamų kategorijos ir išlaikys mėnesio įskaitymą.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Simboliai rodo, kokio tipo yra sąskaitos įrašas.</value>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Failo kelias</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Turi būti pasirinkta šaltinio paskyra.</value>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategorija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Norėdami sujungti vieną kategoriją su kita, šio stulpelio piktogramą reikia vilkti iš pradinės eilutės ir nuleisti į tikslinę eilutę.
-Tikslinė kategorija paveldės visus paskyros įrašus ir subkategorijas iš pradinės kategorijos.
-Jei poros subkategorijų pavadinimai yra vienodi, šaltinio subkategorijos pavadinimas bus automatiškai pakeistas (pridėtas numeris).</value>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Sukurti naują paskyrą</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Perdavimas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Paskelbta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Slaptažodis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Ar esate tikri, kad pajamų kategorija "{0}" turėtų būti sujungta su pajamų kategorija "{1}"?</value>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Separatorius</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Sukurti</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ContentIsLoading" xml:space="preserve">
-    <value>Įkeliamas turinys...</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Paskutinio mėnesio biudžeto vertė</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Nulinis balansas</value>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Naujo žymeklio pavadinimas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Per</value>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Neigiamas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Sandoris leidžia pinigams išplaukti iš sąskaitos arba įplaukti į ją.</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Rodyti bendras sumas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profilis</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Pajamų kategorijos</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Paskutinio mėnesio išlaidos</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Naršykite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Ar tikrai norite ištrinti gavėją "{0}"?</value>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Sukuriamas naujas leidinys</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>Trumpai</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Sąskaitos likutis nustatytą pradžios datą.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Spalva</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Simbolis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Neatsižvelgta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Atviras</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Ne</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Sukurti naują finansinį planą</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Kalba</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Mėnesio įskaitymas kiekvieną mėnesį keičia pajamų aktyvumo momentą.
+Pavyzdžiui, mėnesio įskaitymas vienetu perkelia pajamas į kitą mėnesį, o minus vienas - į ankstesnį mėnesį.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Įrašai</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Perdavimas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Importas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Pranešimai</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Ar tikrai norite ištrinti žymeklį "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Užpildykite visus tuščius biudžeto langelius:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Jei įjungta bendra suma, subkategorijų reikšmės pridedamos prie savosios reikšmės.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Trūkstama suma, išskyrus nepateiktus įrašus</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -182,169 +251,164 @@ Kadangi kategorijos gali būti hierarchinės, įrankių užuominoje rodomas visa
 Jei įrašas yra pervedimas, čia įrašoma tikslinė sąskaita.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Vidutinės išlaidos per pastaruosius tris mėnesius</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Perkelti į priekį vieną mėnesį</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Sublimuota kategorija</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Redaguoti paskyras</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Rodyti žymeklius</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Kelias į YNAB sandorių CSV:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Paskyros pavadinimas negali būti tuščias arba panašus į esamos paskyros pavadinimą.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Pašalinti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Pajamų įrašas žymi operaciją, kuri laikoma pajamomis.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
     <value>Trūkstama suma</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Pranešimai</value>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Rodyti čekių numerius</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Valiutos formatas</value>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Konfigūracijos importavimas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Gavėjo formatas</value>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Žymekliai</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Importas</value>
+  <data name="ContentIsLoading" xml:space="preserve">
+    <value>Įkeliamas turinys...</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Sandoris</value>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Pradinis sąskaitos likutis</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Jei pažymėta, sukuriama pajamų kategorija.
-Pajamomis bus laikomi tik prie tokios kategorijos priskirti sandoriai.</value>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Atšaukti</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Išsaugoti profilį</value>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Visada paslėpti stulpelių pavadinimus redagavimo lentelėje</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Sukurti naują kategoriją</value>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Scheck skaičius</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>Šis pavadinimas jau egzistuoja pasirinktam kategorijos lygiui!</value>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Ar pajamos svarbios?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Ar tikrai norite, kad žymeklis "{0}" susijungtų su žymekliu "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Sąskaitos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Sumos formatas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>Žymeklis vizualiai paryškina įrašą spalva ir yra visiškai neprivalomas.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Šį mėnesį pervesta, bet dar neįrašyta į jokią kategoriją pinigų suma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Eksporto tikslas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>iš naujo nustatyti profilį</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Bendra visų kategorijų praėjusio mėnesio viršyto biudžeto suma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Jei pasirinkta pagrindinė kategorija, nauja kategorija bus prijungta prie jos kaip subkategorija.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Uždaryti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Datos formatas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Dabartinė suma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Užbaigta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Pradžios data</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Sukuria naują padalytą išvestį</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Užbaigta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Konfigūracija</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Paspauskite šio stulpelio mygtuką, kad ištrintumėte atitinkamos eilutės elementą.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Spustelėkite norėdami peržiūrėti ir redaguoti dalines operacijas.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Naujojo gavėjo pavadinimas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Sukurti naują mokamą</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
+  <data name="Domain_Payees" xml:space="preserve">
     <value>Gavėjas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Vienašaliai pervedimai gali atsirasti ištrynus paskyrą. Į jas reikia atsižvelgti, nes apskaitos tikslais jos nėra neutralios.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Redaguoti žymeklius</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
     <value>Perkelti vieną mėnesį atgal</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Color" xml:space="preserve">
-    <value>Spalva</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Išsaugoti naują biudžeto planą:</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Šis failo kelias neegzistuoja!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Per daug užsakymų</value>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Šis įvesties laukas negali likti tuščias!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Nustatymai</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Užpildykite visus biudžeto langelius:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>Turi būti pasirinktas gavėjas.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Pinigų suma, kurios praėjusį mėnesį trūko visoms kategorijoms patenkinti.</value>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Nulinis balansas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Paskelbta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importuokite ir išsaugokite toliau nurodytu keliu:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Įrašo suma.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Šiame kategorijos lygyje kategorija su pasirinktu pavadinimu jau egzistuoja!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Pinigų suma, kuri buvo duota praėjusį mėnesį, bet nebuvo įrašyta į jokią kategoriją.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Uždaryti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Pajamų kategorija</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Sukuriamas naujas perdavimas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Banko išrašas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Sąskaitos likutis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Mėnesio įskaita</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -353,312 +417,143 @@ Projekto kūrimas, atidarymas arba importavimas
 atidarykite failų meniu viršutiniame kairiajame kampe.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Užpildykite visus biudžeto langelius:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Jei įjungta bendra suma, subkategorijų reikšmės pridedamos prie savosios reikšmės.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Šio atminties kelio failo pavadinimas yra tuščias!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Sąskaitos likutis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Ar tikrai norite ištrinti pajamų kategoriją "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Bendras sąskaitos likutis, atsižvelgiant į būsimos datos įrašus.
-Geriau atskirti žr. įrankių užuominą.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Importuokite ir išsaugokite toliau nurodytu keliu:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Pajamų kategorijos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Pradinis sąskaitos likutis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Jei reikia, čia galima įrašyti čekio numerį.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>Įrašo įsigaliojimo data.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Separatorius</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Atviras</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Tema</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Dabartinis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Perdavimas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Ne</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Ar esate tikri, kad gavėjas "{0}" turėtų būti sujungtas su gavėju "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Bendra visų šį mėnesį kategorijoms skirtų lėšų suma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Nepriskirta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Akcentai</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Sukurti naują žymeklį</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
     <value>Pastaba skirta tam, kad įrašui būtų suteiktas bet koks apibūdinimas.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Turi būti pasirinkta tikslinė paskyra</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Ar pajamos svarbios?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Sukurti naują žymeklį</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Sukurti naują gavėją, jei jo nėra?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Pašalinti profilį</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Balansas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Sukurti pirmąjį paskyros įrašą</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Nustatyti tikslinį sąskaitos balansą</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Kategorijos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>Paskyros pavadinimas negali būti tuščias arba panašus į esamos paskyros pavadinimą.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Pastabos formatas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>Sąskaita, kuriai priklauso įrašas.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Visų operacijų, kurioms nepriskirta kategorija, suma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Antraštės duomenys</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Prieš pridedant įrašą turi būti pasirinkta paskyra.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Šaltinio sąskaita</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Tarpinė suma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Pašalinti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Pinigų suma, kuri buvo duota praėjusį mėnesį, bet nebuvo įrašyta į jokią kategoriją.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Nepriskirta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Tarpinė suma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Nustatymai</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Sukurti naują paskyrą</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Išlaidos</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Sąskaita</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Valiutos formatas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Šią žymę galima naudoti norint atskirti užbaigtus įrašus nuo tų, kuriuos dar reikia peržiūrėti.
-Bendras sumas galima peržiūrėti sąskaitos balanso įrankių užuominose.</value>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Bendra visų kategorijų praėjusio mėnesio viršyto biudžeto suma.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Reikšmė nepatenka į galiojimo intervalą: [ {0} .. {1} ]!</value>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Sukuria naują padalytą išvestį</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>Mėnesio įskaitymas kiekvieną mėnesį keičia pajamų aktyvumo momentą.
-Pavyzdžiui, mėnesio įskaitymas vienetu perkelia pajamas į kitą mėnesį, o minus vienas - į ankstesnį mėnesį.</value>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Jei reikia, čia galima įrašyti čekio numerį.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Kategorija</value>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Šis pavadinimas jau egzistuoja pasirinktam kategorijos lygiui!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Norint sujungti vieną pajamų kategoriją su kita, šio stulpelio simbolį reikia vilkti iš pradinės eilutės ir paleisti į tikslinę eilutę.
-Tikslinė pajamų kategorija paveldės visus sąskaitos įrašus iš šaltinio pajamų kategorijos ir išlaikys mėnesio įskaitymą.</value>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Biudžetas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Kelias į "YNAB Budget CSV":</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Vidutinės išlaidos per pastaruosius metus</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Sukuriamas naujas leidinys</value>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Redaguoti žymeklius</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>Šiame kategorijos lygyje kategorija su pasirinktu pavadinimu jau egzistuoja!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Visos sąskaitos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Nustačius tikslinį sąskaitos likutį galima automatiškai apskaičiuoti trūkstamą sumą.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Reikia pasirinkti kategoriją.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Turi būti pasirinkta paskyra.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Pajamų kategorija</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Rodyti bendras sumas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Uždirbta pinigų suma, skirta šio mėnesio išlaidoms.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Ar tikrai?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Sublimuota kategorija</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Sukuriamas naujas perdavimas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>Naujo žymeklio pavadinimas neturi būti tuščias arba jau egzistuoti.</value>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Pradžios data</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
     <value>Sukurti naują gavėją</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Naujo gavėjo pavadinimas negali būti tuščias arba jau egzistuoti.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Nustačius tikslinį sąskaitos likutį galima automatiškai apskaičiuoti trūkstamą sumą.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Dabartinis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Sukurti naują mokamą</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Naujos kategorijos pavadinimas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Naujos kategorijos pavadinimas negali būti tuščias!</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Atidarykite finansinį planą</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Atviras banko išrašas</value>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Turi būti pasirinkta paskyra.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Kelias į YNAB sandorių CSV:</value>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategorijos</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Atšaukti</value>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Per daug užsakymų</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Norint sujungti vieną gavėją su kitu, šio stulpelio simbolį reikia vilkti iš pradinės eilutės ir nuleisti į tikslinę eilutę.
+Tikslinis gavėjas perims visus pradinio gavėjo sąskaitos įrašus.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Kelias į "YNAB Budget CSV":</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Čia įrašomas mokėtojas arba mokėtojas.
+
+Jei įrašas yra pervedimas, čia įrašoma šaltinio sąskaita.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Data</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Iš viso</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Prieš pridedant įrašą turi būti pasirinkta paskyra.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Kuriant įrašus įvyko klaida. Patikrinkite konfigūraciją.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Pašalinti profilį</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Sukurti naują žymeklį</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Vienašaliai pervedimai gali atsirasti ištrynus paskyrą. Į jas reikia atsižvelgti, nes apskaitos tikslais jos nėra neutralios.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Ar esate tikri, kad gavėjas "{0}" turėtų būti sujungtas su gavėju "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Šaltinio sąskaita</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
@@ -667,116 +562,139 @@ Tikslinė pajamų kategorija paveldės visus sąskaitos įrašus iš šaltinio p
 Ar tikrai esate tikri? (Bus sukurta automatinė atsarginė kopija, kad būtų galima atkurti prieš ištrynimą buvusią būseną).</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Ar esate tikri, kad kategorija "{0}" turėtų būti sujungta su kategorija "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Konfigūracijos importavimas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>Kuriant įrašus įvyko klaida. Patikrinkite konfigūraciją.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Failo kelias</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Trūkstama suma, išskyrus nepateiktus įrašus</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Redaguoti paskyras</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Ar tikrai norite ištrinti žymeklį "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Sukurti naują finansinį planą</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Ištrinti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Šis įvesties laukas negali likti tuščias!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>Įrašo suma.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Pajamos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Įrašai</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Data</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Perdavimas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Naujo žymeklio pavadinimas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Suma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Naudokite šį datos pasirinkimo įrankį, jei norite pereiti į bet kurį mėnesį (diena nesvarbi).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
     <value>BFF finansinis planas (*.realm)|*.realm|BFF finansinis planas (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Banko išrašas</value>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Užpildykite visus tuščius biudžeto langelius:</value>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Atviras banko išrašas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Išsaugoti profilį</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Sąskaita, kuriai priklauso įrašas.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Jei pažymėta, sukuriama pajamų kategorija.
+Pajamomis bus laikomi tik prie tokios kategorijos priskirti sandoriai.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Atšaukti taikymą</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Sukurti naują gavėją, jei jo nėra?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Sąskaita</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Katalogas iš įrašymo kelio neegzistuoja!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Pinigų suma, kurios praėjusį mėnesį trūko visoms kategorijoms patenkinti.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Datos formatas</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Overspend" xml:space="preserve">
     <value>Peržengimas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Vidutinės išlaidos per pastaruosius metus</value>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Reikia pasirinkti kategoriją.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Rodyti žymeklius</value>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Eksporto tikslas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Tarpinė suma</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Nepavyko rasti failo "{0}".</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Atšaukti</value>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nepriskirta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Tikslinis sąskaitos likutis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Visų operacijų, kurioms nepriskirta kategorija, suma.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Norėdami sujungti vieną kategoriją su kita, šio stulpelio piktogramą reikia vilkti iš pradinės eilutės ir nuleisti į tikslinę eilutę.
+Tikslinė kategorija paveldės visus paskyros įrašus ir subkategorijas iš pradinės kategorijos.
+Jei poros subkategorijų pavadinimai yra vienodi, šaltinio subkategorijos pavadinimas bus automatiškai pakeistas (pridėtas numeris).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Bendra visų šį mėnesį kategorijoms skirtų lėšų suma.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Sukurti naują kategoriją</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Antraštės duomenys</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>iš naujo nustatyti profilį</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Sukurti naują kategoriją</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Ar tikrai norite ištrinti gavėją "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Sąskaitos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profilis</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Name" xml:space="preserve">
     <value>Pavadinimas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Ar esate tikri, kad pajamų kategorija "{0}" turėtų būti sujungta su pajamų kategorija "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
@@ -784,160 +702,242 @@ Ar tikrai esate tikri? (Bus sukurta automatinė atsarginė kopija, kad būtų ga
 Tikslinis žymeklis perima visus pradinio žymeklio paskyros įrašus ir išlaiko savo spalvą.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Redaguoti gavėją</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Nulis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Šio teksto nepavyko suprasti kaip valiutos!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Trūkstama suma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Naujo gavėjo pavadinimas negali būti tuščias arba jau egzistuoti.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>Naujos kategorijos pavadinimas negali būti tuščias!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Trumpai</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Išsaugoti naują profilį</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="MainWindow_File" xml:space="preserve">
     <value>Failas</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Galima rasti</value>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Atšaukti</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Sukurti naują kategoriją</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Tema</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Iš viso</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Pajamų įrašas žymi operaciją, kuri laikoma pajamomis.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Katalogas iš įrašymo kelio neegzistuoja!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Perkelti į priekį vieną mėnesį</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Biudžetas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Neatsižvelgta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Mėnesio įskaita</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Tikslinis sąskaitos likutis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Sąskaitos likutis nustatytą pradžios datą.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Atšaukti taikymą</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Žymekliai</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Gerai</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Simbolis</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Neigiamas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Datos formatas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Scheck skaičius</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Gavėjas</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Naršykite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Importuoti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>Pervedimu pervedami pinigai iš vienos sąskaitos į kitą.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Rodyti čekių numerius</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Šis failo kelias neegzistuoja!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Pajamų sandoris</value>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Konvertuoti į</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
     <value>Pinigų suma, kurios šį mėnesį trūksta visoms kategorijoms patenkinti.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Paskutinio mėnesio biudžeto vertė</value>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Reikšmė nepatenka į galiojimo intervalą: [ {0} .. {1} ]!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Pervedimu pervedami pinigai iš vienos sąskaitos į kitą.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Išsaugoti naują biudžeto planą:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Redaguoti gavėją</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Paskutinio mėnesio išlaidos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Datos formatas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Uždirbta pinigų suma, skirta šio mėnesio išlaidoms.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Jei pasirinkta pagrindinė kategorija, nauja kategorija bus prijungta prie jos kaip subkategorija.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Naudokite šį datos pasirinkimo įrankį, jei norite pereiti į bet kurį mėnesį (diena nesvarbi).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Per</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Nustatyti tikslinį sąskaitos balansą</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Sukurti pirmąjį paskyros įrašą</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Ar tikrai norite ištrinti kategoriją "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Ištrinti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Paspauskite šio stulpelio mygtuką, kad ištrintumėte atitinkamos eilutės elementą.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Gerai</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Naujojo gavėjo pavadinimas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Pajamos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Šio teksto nepavyko suprasti kaip valiutos!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Dabartinė suma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Tarpinė suma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Skirtumas tarp tikslinės sąskaitos likučio ir tarpinės sumos.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Ar esate tikri, kad kategorija "{0}" turėtų būti sujungta su kategorija "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Turi būti pasirinkta tikslinė paskyra</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Suma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Vienašaliai perdavimai</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Gavėjas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Užbaigta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Šį mėnesį pervesta, bet dar neįrašyta į jokią kategoriją pinigų suma.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Trūkstama suma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Turi būti pasirinkta šaltinio paskyra.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Visos sąskaitos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Išsaugoti naują profilį</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importuoti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Naujo žymeklio pavadinimas neturi būti tuščias arba jau egzistuoti.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Bendras sąskaitos likutis, atsižvelgiant į būsimos datos įrašus.
+Geriau atskirti žr. įrankių užuominą.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Sumos formatas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Spustelėkite norėdami peržiūrėti ir redaguoti dalines operacijas.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Į tarpinę sumą įtraukiami įrašai, kuriuos dar reikia išsaugoti.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfigūracija</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nepriskirta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Slaptažodis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Sukurti naują žymeklį</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Sandoris leidžia pinigams išplaukti iš sąskaitos arba įplaukti į ją.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Simboliai rodo, kokio tipo yra sąskaitos įrašas.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balansas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Galima rasti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Ar tikrai?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Šią žymę galima naudoti norint atskirti užbaigtus įrašus nuo tų, kuriuos dar reikia peržiūrėti.
+Bendras sumas galima peržiūrėti sąskaitos balanso įrankių užuominose.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Nulis</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Įrašo šiuo metu redaguojamus elementus į paskyrą</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Ar tikrai norite, kad žymeklis "{0}" susijungtų su žymekliu "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Gavėjo formatas</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Šio atminties kelio failo pavadinimas yra tuščias!</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>

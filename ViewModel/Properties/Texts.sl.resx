@@ -58,121 +58,190 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>V vmesni seštevek so vključeni vnosi, ki jih je treba še shraniti.</value>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Označevalnik z barvo vizualno poudari vnos in je popolnoma neobvezen.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>shrani trenutno urejene elemente v račun</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Ali ste prepričani, da želite izbrisati kategorijo dohodkov "{0}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Ste prepričani, da želite izbrisati kategorijo "{0}"?</value>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Če želite združiti enega prejemnika plačila z drugim, je treba simbol iz tega stolpca povleči iz izvorne vrstice in ga spustiti v ciljno vrstico.
-Ciljni prejemnik plačila prevzame vse vnose na računu izvornega prejemnika plačila.</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Povprečni izdatki v zadnjih treh mesecih</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Jezik</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Poudarki</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Vedno skrijte naslove stolpcev v tabeli za urejanje</value>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Dohodkovna transakcija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Zaključeno</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Razlika med ciljnim stanjem na računu in vmesnim seštevkom.</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Oblika opombe</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Tukaj se vnese plačana ali plačilna oseba.
-
-Če je vnos prenos, se tukaj vnese izvorni račun.</value>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Datum začetka veljavnosti vpisa.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Enostranski prenosi</value>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transakcija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Pretvori v</value>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Če želite združiti eno dohodkovno kategorijo z drugo, je treba simbol iz tega stolpca povleči iz izvorne vrstice in ga sprostiti v ciljno vrstico.
+Ciljna kategorija dohodka bo podedovala vse vknjižbe izvorne kategorije dohodka in ohranila mesečni pobot.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Simboli prikazujejo, katere vrste je vnos na računu.</value>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Pot do datoteke</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Izbrati je treba izvorni račun.</value>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Kategorija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Če želite združiti eno kategorijo z drugo, morate ikono iz tega stolpca povleči iz izvorne vrstice in jo spustiti v ciljno vrstico.
-Ciljna kategorija podeduje vse vnose in podkategorije računov iz izvorne kategorije.
-Če ima par podkategorij enako ime, se izvorna podkategorija samodejno preimenuje (doda se številka).</value>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Ustvari nov račun</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Prenos</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Objavljeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Passwort</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Ali ste prepričani, da je treba kategorijo dohodkov "{0}" združiti s kategorijo dohodkov "{1}"?</value>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Separator</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Ustvarite spletno stran</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ContentIsLoading" xml:space="preserve">
-    <value>Vsebina se naloži...</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Vrednost proračuna za zadnji mesec</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Ničelno stanje</value>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Ime novega označevalnika</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Prek spletne strani</value>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Transakcija omogoča, da denar odteče z računa ali se nanj vrne.</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Prikaz skupnih zneskov</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profil</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Kategorije dohodkov</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Odhodki v zadnjem mesecu</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Brskanje po</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Ali ste prepričani, da želite izbrisati prejemnika plačila "{0}"?</value>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Ustvari novo izdajo</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>Na kratko</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Stanje na računu na določen začetni datum.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Barva</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Simbol</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Ni upoštevano</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Odpri</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Ne</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Izdelava novega finančnega načrta</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Jezik</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Mesečni zamik premakne čas, ko dohodek postane aktiven, za vsak mesec posebej.
+Na primer, mesečni pobot ena prenese dohodek v naslednji mesec, minus ena pa v prejšnji mesec.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Vnosi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Prenos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Uvoz</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Obvestilo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Ali ste prepričani, da želite izbrisati oznako "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Vse prazne proračunske celice napolnite z:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Če so skupne vrednosti aktivirane, se vrednosti podkategorij prištejejo k lastni vrednosti.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Manjkajoči znesek brez nepredloženih vnosov</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -182,169 +251,164 @@ Ker so kategorije lahko hierarhične, je v opombi prikazana celotna hierarhična
 Če je vnos prenos, se tu vnese ciljni račun.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Povprečni izdatki v zadnjih treh mesecih</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Premaknite se za en mesec naprej</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Nadgrajena kategorija</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Urejanje računov</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Prikaži oznake</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Pot do CSV transakcij YNAB:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Ime računa ne sme biti prazno ali podobno imenu obstoječega računa.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Odstranite</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Z vnosom prihodka se označi transakcija, ki se šteje za prihodek.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
     <value>Manjkajoči znesek</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Obvestilo</value>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Prikaži kontrolne številke</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Oblika valute</value>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Uvoz konfiguracije</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Format prejemnika plačila</value>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Označevalniki</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Uvoz</value>
+  <data name="ContentIsLoading" xml:space="preserve">
+    <value>Vsebina se naloži...</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Transakcija</value>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Začetno stanje na računu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Če je ta možnost označena, se ustvari kategorija dohodka.
-Samo transakcije, ki so vezane na takšno kategorijo, se štejejo za dohodek.</value>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Prekliči</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Shrani profil</value>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Vedno skrijte naslove stolpcev v tabeli za urejanje</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Ustvari novo kategorijo</value>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Številka Scheck</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>To ime že obstaja za izbrano raven kategorije!</value>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Je dohodek pomemben?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Ali ste prepričani, da želite, da se označevalnik "{0}" združi z označevalnikom "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Računi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Oblika zneska</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>Označevalnik z barvo vizualno poudari vnos in je popolnoma neobvezen.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Znesek denarja, ki je dan ta mesec, vendar še ni zabeležen v nobeni kategoriji.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Cilj izvoza</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>ponastavitev profila</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Skupni znesek prekoračitev proračuna, seštet za vse kategorije v zadnjem mesecu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Če je izbrana nadrejena kategorija, bo nova kategorija nanjo priključena kot podkategorija.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Zapri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Format datuma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Trenutni znesek</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Zaključeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Datum začetka</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Ustvari nov razdeljeni izhod</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Zaključeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Konfiguracija</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Če pritisnete gumb v tem stolpcu, izbrišete element v ustrezni vrstici.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Kliknite za ogled in urejanje delnih transakcij.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Ime novega prejemnika plačila</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Ustvarite novo plačano</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
+  <data name="Domain_Payees" xml:space="preserve">
     <value>Prejemnik plačila</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Enostranski prenosi se lahko pojavijo po izbrisu računa. Upoštevati jih je treba, ker za računovodske namene niso nevtralni.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Urejanje označevalcev</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
     <value>Prestavitev za en mesec nazaj</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Color" xml:space="preserve">
-    <value>Barva</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Shranite nov proračunski načrt:</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Ta pot do datoteke ne obstaja!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Preveč zasedene spletne strani</value>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>To vnosno polje ne sme ostati prazno!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Nastavitve</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Izpolnite vsa proračunska polja:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>Izbrati je treba prejemnika plačila.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Znesek denarja, ki je prejšnji mesec manjkal za izpolnitev vseh kategorij.</value>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Ničelno stanje</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Objavljeno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Uvozite in shranite pod naslednjo pot:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Vsota vnosa.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>Na tej ravni kategorije že obstaja kategorija z izbranim imenom!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Znesek denarja, ki je bil dan prejšnji mesec, vendar ni bil zabeležen v nobeni kategoriji.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Zapri</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Dohodkovna kategorija</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Ustvari nov prenos</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bančni izpisek</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Stanje na računu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Mesečni zamik</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -353,312 +417,143 @@ Ustvarjanje, odpiranje ali uvažanje projekta
 odprite meni datotek v zgornjem levem kotu.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Izpolnite vsa proračunska polja:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Če so skupne vrednosti aktivirane, se vrednosti podkategorij prištejejo k lastni vrednosti.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Ime datoteke te pomnilniške poti je prazno!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Stanje na računu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Ali ste prepričani, da želite izbrisati kategorijo dohodkov "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Skupno stanje na računu ob upoštevanju vnosov s prihodnjim datumom.
-Za boljše razlikovanje si oglejte namig orodja.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Uvozite in shranite pod naslednjo pot:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Kategorije dohodkov</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Začetno stanje na računu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Po potrebi lahko tukaj vnesete številko čeka.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>Datum začetka veljavnosti vpisa.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Separator</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Odpri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Zadeva</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Trenutni</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Prenos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Ne</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Ali ste prepričani, da je treba prejemnika plačila "{0}" združiti s prejemnikom plačila "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Skupni znesek vseh sredstev, dodeljenih kategorijam v tem mesecu.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Nerazporejeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Poudarki</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Ustvarjanje novega označevalnika</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
     <value>Opomba je namenjena temu, da se vnos poljubno opiše.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Izbrati je treba ciljni račun.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Je dohodek pomemben?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Ustvarjanje novega označevalnika</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Ustvarite novega prejemnika plačila, če ne obstaja?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Odstranitev profila</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Bilanca</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Ustvarite prvi vnos računa</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Določite ciljno stanje na računu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Kategorije</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>Ime računa ne sme biti prazno ali podobno imenu obstoječega računa.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Oblika opombe</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>Račun, ki mu pripada vnos.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Vsota vseh transakcij, ki nimajo dodeljene kategorije.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Podatki v glavi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Pred dodajanjem vnosa je treba izbrati račun.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Vir računa</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Vmesni seštevek</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Odstranite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Znesek denarja, ki je bil dan prejšnji mesec, vendar ni bil zabeležen v nobeni kategoriji.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Nerazporejeno</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Vmesni seštevek</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Nastavitve</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Ustvari nov račun</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Odhodki</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Račun</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Oblika valute</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Ta kljukica se lahko uporablja za razlikovanje med dokončanimi vnosi in tistimi, ki jih je treba še popraviti.
-Skupne zneske si lahko ogledate v namigu orodja pri stanju na računu.</value>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Skupni znesek prekoračitev proračuna, seštet za vse kategorije v zadnjem mesecu.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Vrednost je zunaj območja veljavnosti: [ {0} .. {1} ]!</value>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Ustvari nov razdeljeni izhod</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>Mesečni zamik premakne čas, ko dohodek postane aktiven, za vsak mesec posebej.
-Na primer, mesečni pobot ena prenese dohodek v naslednji mesec, minus ena pa v prejšnji mesec.</value>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Po potrebi lahko tukaj vnesete številko čeka.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Kategorija</value>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>To ime že obstaja za izbrano raven kategorije!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Če želite združiti eno dohodkovno kategorijo z drugo, je treba simbol iz tega stolpca povleči iz izvorne vrstice in ga sprostiti v ciljno vrstico.
-Ciljna kategorija dohodka bo podedovala vse vknjižbe izvorne kategorije dohodka in ohranila mesečni pobot.</value>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Proračun</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Pot do CSV proračuna YNAB:</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Povprečni izdatki v zadnjem letu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Ustvari novo izdajo</value>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Urejanje označevalcev</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>Na tej ravni kategorije že obstaja kategorija z izbranim imenom!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Vsi računi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Nastavitev ciljnega stanja na računu omogoča samodejni izračun manjkajočega zneska.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Izbrati je treba kategorijo.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Izbrati je treba račun.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Dohodkovna kategorija</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Prikaz skupnih zneskov</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Zasluženi znesek denarja, namenjenega za stroške tega meseca.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Ste prepričani?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Nadgrajena kategorija</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Ustvari nov prenos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>Ime novega označevalca ne sme biti prazno ali že obstoječe.</value>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Datum začetka</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
     <value>Ustvarjanje novega prejemnika plačila</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Ime novega prejemnika plačila ne sme biti prazno ali že obstoječe.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Nastavitev ciljnega stanja na računu omogoča samodejni izračun manjkajočega zneska.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Trenutni</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Ustvarite novo plačano</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Ime nove kategorije</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Ime nove kategorije ne sme biti prazno!</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Odprite finančni načrt</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Odprt bančni izpisek</value>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Izbrati je treba račun.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Pot do CSV transakcij YNAB:</value>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Kategorije</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Prekliči</value>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Preveč zasedene spletne strani</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Če želite združiti enega prejemnika plačila z drugim, je treba simbol iz tega stolpca povleči iz izvorne vrstice in ga spustiti v ciljno vrstico.
+Ciljni prejemnik plačila prevzame vse vnose na računu izvornega prejemnika plačila.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Pot do CSV proračuna YNAB:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Tukaj se vnese plačana ali plačilna oseba.
+
+Če je vnos prenos, se tukaj vnese izvorni račun.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Datum</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Skupaj</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Pred dodajanjem vnosa je treba izbrati račun.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>Pri ustvarjanju vnosov je prišlo do napake. Preverite konfiguracijo.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Odstranitev profila</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Ustvarjanje novega označevalnika</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Enostranski prenosi se lahko pojavijo po izbrisu računa. Upoštevati jih je treba, ker za računovodske namene niso nevtralni.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Ali ste prepričani, da je treba prejemnika plačila "{0}" združiti s prejemnikom plačila "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Vir računa</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
@@ -667,116 +562,139 @@ Ciljna kategorija dohodka bo podedovala vse vknjižbe izvorne kategorije dohodka
 Ste res prepričani? (Za vzpostavitev stanja pred izbrisom bo izdelana samodejna varnostna kopija).</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Ali ste prepričani, da je treba kategorijo "{0}" združiti s kategorijo "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Uvoz konfiguracije</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>Pri ustvarjanju vnosov je prišlo do napake. Preverite konfiguracijo.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Pot do datoteke</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Manjkajoči znesek brez nepredloženih vnosov</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Urejanje računov</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Ali ste prepričani, da želite izbrisati oznako "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Izdelava novega finančnega načrta</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Izbriši</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>To vnosno polje ne sme ostati prazno!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>Vsota vnosa.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Prihodki</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Vnosi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Datum</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Prenos</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Ime novega označevalnika</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Znesek</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>S tem izbirnikom datuma lahko preskočite na katerikoli mesec (dan ni pomemben).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
     <value>Finančni načrt BFF (*.realm)|*.realm|Finančni načrt BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Bančni izpisek</value>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Vse prazne proračunske celice napolnite z:</value>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Odprt bančni izpisek</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Shrani profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Račun, ki mu pripada vnos.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Če je ta možnost označena, se ustvari kategorija dohodka.
+Samo transakcije, ki so vezane na takšno kategorijo, se štejejo za dohodek.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Prekliči cilj</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Ustvarite novega prejemnika plačila, če ne obstaja?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Račun</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Imenik s poti shranjevanja ne obstaja!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Znesek denarja, ki je prejšnji mesec manjkal za izpolnitev vseh kategorij.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Format datuma</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Overspend" xml:space="preserve">
     <value>Prekoračitev</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Povprečni izdatki v zadnjem letu</value>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Izbrati je treba kategorijo.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Prikaži oznake</value>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Cilj izvoza</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Vmesni seštevek</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Datoteke "{0}" ni bilo mogoče najti.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Prekliči</value>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Nerazporejeno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Ciljno stanje na računu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Vsota vseh transakcij, ki nimajo dodeljene kategorije.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Če želite združiti eno kategorijo z drugo, morate ikono iz tega stolpca povleči iz izvorne vrstice in jo spustiti v ciljno vrstico.
+Ciljna kategorija podeduje vse vnose in podkategorije računov iz izvorne kategorije.
+Če ima par podkategorij enako ime, se izvorna podkategorija samodejno preimenuje (doda se številka).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Skupni znesek vseh sredstev, dodeljenih kategorijam v tem mesecu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Ustvari novo kategorijo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Podatki v glavi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>ponastavitev profila</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Ustvarjanje nove kategorije</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Ali ste prepričani, da želite izbrisati prejemnika plačila "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Računi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Name" xml:space="preserve">
     <value>Ime</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Ali ste prepričani, da je treba kategorijo dohodkov "{0}" združiti s kategorijo dohodkov "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
@@ -784,160 +702,242 @@ Ste res prepričani? (Za vzpostavitev stanja pred izbrisom bo izdelana samodejna
 Ciljna oznaka prevzame vse vnose računov iz izvorne oznake in ohrani svojo barvo.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Uredi prejemnika plačila</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Tega besedila ni bilo mogoče razčleniti kot valuto!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Manjkajoči znesek</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Ime novega prejemnika plačila ne sme biti prazno ali že obstoječe.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>Ime nove kategorije ne sme biti prazno!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Na kratko</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Shrani nov profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="MainWindow_File" xml:space="preserve">
     <value>Datoteka</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Na voljo</value>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Prekliči</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Ustvarjanje nove kategorije</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Zadeva</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Skupaj</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Z vnosom prihodka se označi transakcija, ki se šteje za prihodek.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Imenik s poti shranjevanja ne obstaja!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Premaknite se za en mesec naprej</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Proračun</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Ni upoštevano</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Mesečni zamik</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Ciljno stanje na računu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Stanje na računu na določen začetni datum.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Prekliči cilj</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Označevalniki</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>V redu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Simbol</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negativ</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Format datuma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Številka Scheck</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Prejemnik plačila</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Brskanje po</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Uvoziti</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>S prenosom se denar prenese z enega računa na drugega.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Prikaži kontrolne številke</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Ta pot do datoteke ne obstaja!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Dohodkovna transakcija</value>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Pretvori v</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
     <value>Znesek denarja, ki ta mesec manjka za izpolnitev vseh kategorij.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Vrednost proračuna za zadnji mesec</value>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Vrednost je zunaj območja veljavnosti: [ {0} .. {1} ]!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>S prenosom se denar prenese z enega računa na drugega.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Shranite nov proračunski načrt:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Uredi prejemnika plačila</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Odhodki v zadnjem mesecu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Format datuma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Zasluženi znesek denarja, namenjenega za stroške tega meseca.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Če je izbrana nadrejena kategorija, bo nova kategorija nanjo priključena kot podkategorija.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>S tem izbirnikom datuma lahko preskočite na katerikoli mesec (dan ni pomemben).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Prek spletne strani</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Določite ciljno stanje na računu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Ustvarite prvi vnos računa</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Ste prepričani, da želite izbrisati kategorijo "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Izbriši</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Če pritisnete gumb v tem stolpcu, izbrišete element v ustrezni vrstici.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>V redu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Ime novega prejemnika plačila</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Prihodki</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Tega besedila ni bilo mogoče razčleniti kot valuto!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Trenutni znesek</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Vmesni seštevek</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Razlika med ciljnim stanjem na računu in vmesnim seštevkom.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Ali ste prepričani, da je treba kategorijo "{0}" združiti s kategorijo "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Izbrati je treba ciljni račun.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Znesek</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Enostranski prenosi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Prejemnik plačila</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Zaključeno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Znesek denarja, ki je dan ta mesec, vendar še ni zabeležen v nobeni kategoriji.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Manjkajoči znesek</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Izbrati je treba izvorni račun.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Vsi računi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Shrani nov profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Uvoziti</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Ime novega označevalca ne sme biti prazno ali že obstoječe.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Skupno stanje na računu ob upoštevanju vnosov s prihodnjim datumom.
+Za boljše razlikovanje si oglejte namig orodja.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Oblika zneska</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Kliknite za ogled in urejanje delnih transakcij.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>V vmesni seštevek so vključeni vnosi, ki jih je treba še shraniti.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Konfiguracija</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Nerazporejeno</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Passwort</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Ustvarjanje novega označevalnika</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Transakcija omogoča, da denar odteče z računa ali se nanj vrne.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Simboli prikazujejo, katere vrste je vnos na računu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Bilanca</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Na voljo</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Ste prepričani?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Ta kljukica se lahko uporablja za razlikovanje med dokončanimi vnosi in tistimi, ki jih je treba še popraviti.
+Skupne zneske si lahko ogledate v namigu orodja pri stanju na računu.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>shrani trenutno urejene elemente v račun</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Ali ste prepričani, da želite, da se označevalnik "{0}" združi z označevalnikom "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Format prejemnika plačila</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Ime datoteke te pomnilniške poti je prazno!</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>

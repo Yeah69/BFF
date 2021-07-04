@@ -58,121 +58,190 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>Subtotalul include intrările care mai trebuie salvate.</value>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Marcajul evidențiază vizual intrarea prin culoare și este complet opțional.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Salvează în cont elementele editate în prezent</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Sunteți sigur că doriți să ștergeți categoria de venit "{0}"?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Sunteți sigur că doriți să ștergeți categoria "{0}"?</value>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Pentru a unifica un beneficiar de plată cu altul, simbolul din această coloană trebuie tras de pe rândul sursă și aruncat pe rândul țintă.
-Beneficiarul țintă va prelua toate intrările în cont de la beneficiarul sursă.</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Cheltuieli medii în ultimele trei luni</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Limba</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Accente</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Ascundeți întotdeauna titlurile coloanelor în tabelul de editare</value>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Tranzacție de venit</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Kontoname</value>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Completat</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Diferența dintre soldul contului-țintă și subtotalul.</value>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Formatul notei</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Aici se înscrie persoana plătită sau persoana plătitoare.
-
-În cazul în care înregistrarea este un transfer, aici se introduce contul sursă.</value>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Data la care intră în vigoare înscrierea.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Transferuri unilaterale</value>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Tranzacție</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Conversia în</value>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>Pentru a unifica o categorie de venit cu alta, simbolul din această coloană trebuie tras de pe rândul sursă și eliberat pe rândul țintă.
+Categoria de venit țintă va moșteni toate intrările în cont de la categoria de venit sursă și va păstra compensarea lunară.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Simbolurile arată ce tip de înregistrare în cont este.</value>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Calea fișierului</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Trebuie selectat un cont sursă.</value>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Categoria</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Pentru a unifica o categorie cu alta, pictograma din această coloană trebuie trasă de pe rândul sursă și lăsată pe rândul țintă.
-Categoria țintă va moșteni toate intrările de cont și subcategoriile din categoria sursă.
-Dacă o pereche de subcategorii au același nume, atunci subcategoria sursă va fi redenumită automat (se adaugă un număr).</value>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Creați un cont nou</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Transfer</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Postat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Parola de acces</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Sunteți sigur că categoria de venit "{0}" ar trebui să fie fuzionată în categoria de venit "{1}"?</value>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Separator</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
     <value>Creați</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ContentIsLoading" xml:space="preserve">
-    <value>Conținutul este încărcat...</value>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Valoarea bugetului din ultima lună</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Sold la zero</value>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Numele noului marker</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Via</value>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negativ</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Prin intermediul unei tranzacții, banii pot intra sau ieși dintr-un cont.</value>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Afișarea totalurilor</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profil</value>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Categorii de venituri</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Cheltuielile din ultima lună</value>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Răsfoiți</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Sunteți sigur că doriți să ștergeți beneficiarul "{0}"?</value>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Creează o nouă problemă</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
+  <data name="General_Short" xml:space="preserve">
+    <value>Pe scurt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Soldul contului la data de început stabilită.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Culoare</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Simbol</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Nu este contabilizat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Deschideți</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Nu</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Creați un nou plan financiar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Limba</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Decalajul de lună decalează momentul în care venitul devine activ lună de lună.
+De exemplu, un decalaj lunar de unu transferă venitul în luna următoare și minus unu în luna anterioară.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Intrări</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Import</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Notiz</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Sunteți sigur că doriți să ștergeți marcajul "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Kontoname</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Completați toate celulele goale din buget cu:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Dacă sunt activate totalurile, atunci valorile subcategoriilor sunt adăugate la valoarea proprie.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Suma lipsă, cu excepția mențiunilor neprezentate</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -182,169 +251,164 @@ Deoarece categoriile pot fi ierarhice, întreaga cale ierarhică este afișată 
 Dacă este vorba de un transfer, aici se introduce contul țintă.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Cheltuieli medii în ultimele trei luni</value>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Mergi înainte cu o lună</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Categoria suprapusă</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Editarea conturilor</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Afișare marcaje</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Calea de acces către CSV-ul tranzacțiilor YNAB:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Nu este permis ca numele contului să fie gol sau să semene cu numele unui cont existent.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Eliminați</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>O intrare de venit marchează o tranzacție care este considerată venit.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
     <value>Suma lipsă</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Notiz</value>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Afișați numerele de cecuri</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Format valutar</value>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Configurație de import</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Formatul beneficiarului plății</value>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Markeri</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Import</value>
+  <data name="ContentIsLoading" xml:space="preserve">
+    <value>Conținutul este încărcat...</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Tranzacție</value>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Soldul inițial al contului</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Dacă se bifează, se creează o categorie de venit.
-Numai tranzacțiile atașate unei astfel de categorii vor fi interpretate ca fiind venituri.</value>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Anulează</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Salvați profilul</value>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Ascundeți întotdeauna titlurile coloanelor în tabelul de editare</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Creați o nouă categorie</value>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Numărul Scheck</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>Acest nume există deja pentru nivelul de categorie selectat!</value>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Veniturile sunt relevante?</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Sunteți sigur că doriți ca marcajul "{0}" să se unească cu marcajul "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Conturi</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Formatul sumei</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>Marcajul evidențiază vizual intrarea prin culoare și este complet opțional.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Suma de bani dată în această lună, dar care nu a fost încă înregistrată în nicio categorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Țintă de export</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>resetare profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Totalul depășirilor bugetare însumate pentru toate categoriile luna trecută.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Dacă este selectată o categorie părinte, noua categorie va fi atașată acesteia ca subcategorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Închideți</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Formatul datei</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Suma curentă</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Completat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Data de începere</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Creează o nouă ieșire divizată</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Completat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Configurare</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Apăsați butonul din această coloană pentru a șterge elementul din rândul corespunzător.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Faceți clic pentru a vizualiza și edita tranzacțiile parțiale.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Numele noului beneficiar al plății</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Creați o nouă plată</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
+  <data name="Domain_Payees" xml:space="preserve">
     <value>Beneficiarul plății</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Transferurile unilaterale pot apărea după ștergerea unui cont. Acestea trebuie luate în considerare deoarece nu sunt neutre din punct de vedere contabil.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Editarea markerilor</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
     <value>Mutarea înapoi cu o lună</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Color" xml:space="preserve">
-    <value>Culoare</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Salvați noul plan bugetar:</value>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Această cale de fișier nu există!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Suprarezervat</value>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Acest câmp de intrare nu trebuie să rămână gol!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Setări</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Completați toate celulele bugetare:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
     <value>Trebuie selectat un beneficiar al plății.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Suma de bani care a lipsit luna trecută pentru a îndeplini toate categoriile.</value>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Sold la zero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Postat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Importați și salvați în următoarea cale:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Suma de intrare.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>La acest nivel de categorie, există deja o categorie cu un nume ales!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Suma de bani care a fost dată luna trecută, dar care nu a fost înregistrată în nicio categorie.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Închideți</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Unerledigt</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Categoria de venit</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Creează un nou transfer</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Extras de cont bancar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Soldul contului</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Decalaj lunar</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -353,312 +417,143 @@ Pentru a crea, deschide sau importa un proiect
 deschideți meniul de fișiere din colțul din stânga sus.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Completați toate celulele bugetare:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Dacă sunt activate totalurile, atunci valorile subcategoriilor sunt adăugate la valoarea proprie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Numele de fișier al acestei căi de memorie este gol!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Soldul contului</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Sunteți sigur că doriți să ștergeți categoria de venit "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Soldul total al contului luând în considerare înregistrările cu dată viitoare.
-Consultați tooltip pentru o mai bună distincție.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Importați și salvați în următoarea cale:</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Categorii de venituri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Soldul inițial al contului</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Dacă este necesar, numărul cecului poate fi introdus aici.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>Data la care intră în vigoare înscrierea.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Separator</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Deschideți</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Subiect</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Curent</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Transfer</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Nu</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Sunteți sigur că beneficiarul "{0}" trebuie să fie fuzionat cu beneficiarul "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Totalul tuturor fondurilor alocate categoriilor în această lună.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Neatribuite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Accente</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Creați un nou marker</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
     <value>Nota este menită să ofere orice descriere a intrării.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Trebuie selectat un cont țintă</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Veniturile sunt relevante?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Crearea unui nou marker</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Creați un nou beneficiar de plată dacă nu există?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Eliminați profilul</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Balanță</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Creați prima intrare în cont</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Setați soldul țintă al contului</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Categorii</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>Nu este permis ca numele contului să fie gol sau să semene cu numele unui cont existent.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Formatul notei</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>Contul căruia îi aparține intrarea.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Suma tuturor tranzacțiilor care nu au o categorie atribuită.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Date de antet</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Trebuie selectat un cont înainte de a se adăuga o intrare.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Cont sursă</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Subtotal</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Eliminați</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Suma de bani care a fost dată luna trecută, dar care nu a fost înregistrată în nicio categorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Neatribuite</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Subtotal</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Setări</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Creați un cont nou</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
     <value>Cheltuieli</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Cont</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Format valutar</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Această bifă poate fi utilizată pentru a distinge intrările finalizate de cele care mai trebuie revizuite.
-Totalurile pot fi vizualizate în tooltip-ul din soldul contului.</value>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Totalul depășirilor bugetare însumate pentru toate categoriile luna trecută.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Valoarea este în afara intervalului de valabilitate: [ {0} .. {1} ]!</value>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Creează o nouă ieșire divizată</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>Decalajul de lună decalează momentul în care venitul devine activ lună de lună.
-De exemplu, un decalaj lunar de unu transferă venitul în luna următoare și minus unu în luna anterioară.</value>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Dacă este necesar, numărul cecului poate fi introdus aici.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Categoria</value>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Acest nume există deja pentru nivelul de categorie selectat!</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>Pentru a unifica o categorie de venit cu alta, simbolul din această coloană trebuie tras de pe rândul sursă și eliberat pe rândul țintă.
-Categoria de venit țintă va moșteni toate intrările în cont de la categoria de venit sursă și va păstra compensarea lunară.</value>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Buget</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Cale de acces la YNAB Budget CSV:</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Cheltuieli medii în ultimul an</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Creează o nouă problemă</value>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Editarea markerilor</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>La acest nivel de categorie, există deja o categorie cu un nume ales!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Toate conturile</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Stabilirea soldului țintă al contului permite calcularea automată a sumei lipsă.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Trebuie selectată o categorie.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Trebuie selectat un cont.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Categoria de venit</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Afișarea totalurilor</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Suma de bani câștigată alocată pentru cheltuielile din această lună.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Ești sigur?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Categoria suprapusă</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Creează un nou transfer</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>Numele unui nou marker nu trebuie să fie gol sau să existe deja.</value>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Data de începere</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
     <value>Crearea unui nou beneficiar de plată</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Numele unui nou beneficiar al plății nu trebuie să fie gol sau să existe deja.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Stabilirea soldului țintă al contului permite calcularea automată a sumei lipsă.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Curent</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Creați o nouă plată</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="NameOfNewCategory" xml:space="preserve">
     <value>Denumirea noii categorii</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Numele unei noi categorii nu trebuie să fie gol!</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
     <value>Deschideți un plan financiar</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Deschideți extrasul de cont bancar</value>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Trebuie selectat un cont.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Calea de acces către CSV-ul tranzacțiilor YNAB:</value>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Categorii</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Anulează</value>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Suprarezervat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>Pentru a unifica un beneficiar de plată cu altul, simbolul din această coloană trebuie tras de pe rândul sursă și aruncat pe rândul țintă.
+Beneficiarul țintă va prelua toate intrările în cont de la beneficiarul sursă.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Cale de acces la YNAB Budget CSV:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Aici se înscrie persoana plătită sau persoana plătitoare.
+
+În cazul în care înregistrarea este un transfer, aici se introduce contul sursă.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Data</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Total</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Trebuie selectat un cont înainte de a se adăuga o intrare.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>S-a produs o eroare în timpul creării intrărilor. Verificați configurația.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Eliminați profilul</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Creați un nou marker</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Transferurile unilaterale pot apărea după ștergerea unui cont. Acestea trebuie luate în considerare deoarece nu sunt neutre din punct de vedere contabil.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Sunteți sigur că beneficiarul "{0}" trebuie să fie fuzionat cu beneficiarul "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Cont sursă</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
@@ -667,116 +562,139 @@ Categoria de venit țintă va moșteni toate intrările în cont de la categoria
 Ești sigur? (Se va face o copie de rezervă automată pentru a face posibilă restaurarea la starea anterioară ștergerii).</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Sunteți sigur că categoria "{0}" ar trebui să fie fuzionată în categoria "{1}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Configurație de import</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>S-a produs o eroare în timpul creării intrărilor. Verificați configurația.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Calea fișierului</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Suma lipsă, cu excepția mențiunilor neprezentate</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Editarea conturilor</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Sunteți sigur că doriți să ștergeți marcajul "{0}"?</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Creați un nou plan financiar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Ștergeți</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Acest câmp de intrare nu trebuie să rămână gol!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>Suma de intrare.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Venituri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Intrări</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Data</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Transfer</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Numele noului marker</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Suma</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Folosiți acest selector de date pentru a trece la orice lună (ziua este irelevantă).</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
     <value>Plan financiar BFF (*.realm)|*.realm|Plan financiar BFF (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Extras de cont bancar</value>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Completați toate celulele goale din buget cu:</value>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Deschideți extrasul de cont bancar</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Salvați profilul</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Contul căruia îi aparține intrarea.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Dacă se bifează, se creează o categorie de venit.
+Numai tranzacțiile atașate unei astfel de categorii vor fi interpretate ca fiind venituri.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Anulați obiectivul</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Creați un nou beneficiar de plată dacă nu există?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Cont</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Directorul din calea de salvare nu există!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Suma de bani care a lipsit luna trecută pentru a îndeplini toate categoriile.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Formatul datei</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Overspend" xml:space="preserve">
     <value>Depășire</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Cheltuieli medii în ultimul an</value>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Trebuie selectată o categorie.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Afișare marcaje</value>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Țintă de export</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Subtotal</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
     <value>Fișierul "{0}" nu a putut fi găsit.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Anulează</value>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Neatribuite</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Soldul contului țintă</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Suma tuturor tranzacțiilor care nu au o categorie atribuită.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>Pentru a unifica o categorie cu alta, pictograma din această coloană trebuie trasă de pe rândul sursă și lăsată pe rândul țintă.
+Categoria țintă va moșteni toate intrările de cont și subcategoriile din categoria sursă.
+Dacă o pereche de subcategorii au același nume, atunci subcategoria sursă va fi redenumită automat (se adaugă un număr).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Totalul tuturor fondurilor alocate categoriilor în această lună.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Creați o nouă categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Date de antet</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>resetare profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Creați o nouă categorie</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Sunteți sigur că doriți să ștergeți beneficiarul "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Conturi</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profil</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Name" xml:space="preserve">
     <value>Nume</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Sunteți sigur că categoria de venit "{0}" ar trebui să fie fuzionată în categoria de venit "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
@@ -784,160 +702,242 @@ Ești sigur? (Se va face o copie de rezervă automată pentru a face posibilă r
 Marcajul țintă preia toate intrările de cont de la marcajul sursă și își păstrează propria culoare.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Editați beneficiarul plății</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Acest text nu a putut fi interpretat ca monedă!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Suma lipsă</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Numele unui nou beneficiar al plății nu trebuie să fie gol sau să existe deja.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>Numele unei noi categorii nu trebuie să fie gol!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Pe scurt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Salvați noul profil</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="MainWindow_File" xml:space="preserve">
     <value>Fișier</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Disponibil</value>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Anulează</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Creați o nouă categorie</value>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Subiect</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Total</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>O intrare de venit marchează o tranzacție care este considerată venit.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Directorul din calea de salvare nu există!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Mergi înainte cu o lună</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Buget</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Nu este contabilizat</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Decalaj lunar</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Soldul contului țintă</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Soldul contului la data de început stabilită.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Anulați obiectivul</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Markeri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Bine.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Simbol</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negativ</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Formatul datei</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Numărul Scheck</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Beneficiarul plății</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Răsfoiți</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Importieren</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Unerledigt</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>Un transfer transfer transferă bani dintr-un cont în altul.</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Afișați numerele de cecuri</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Această cale de fișier nu există!</value>
-    <comment>Automatically translated.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Tranzacție de venit</value>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Conversia în</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
     <value>Suma de bani care lipsește în această lună pentru a îndeplini toate categoriile.</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Valoarea bugetului din ultima lună</value>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Valoarea este în afara intervalului de valabilitate: [ {0} .. {1} ]!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>Un transfer transfer transferă bani dintr-un cont în altul.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Salvați noul plan bugetar:</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Editați beneficiarul plății</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Cheltuielile din ultima lună</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Formatul datei</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Suma de bani câștigată alocată pentru cheltuielile din această lună.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Dacă este selectată o categorie părinte, noua categorie va fi atașată acesteia ca subcategorie.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Folosiți acest selector de date pentru a trece la orice lună (ziua este irelevantă).</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Via</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Setați soldul țintă al contului</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Creați prima intrare în cont</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Sunteți sigur că doriți să ștergeți categoria "{0}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Ștergeți</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Apăsați butonul din această coloană pentru a șterge elementul din rândul corespunzător.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Bine.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Numele noului beneficiar al plății</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Venituri</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Acest text nu a putut fi interpretat ca monedă!</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Suma curentă</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Subtotal</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Diferența dintre soldul contului-țintă și subtotalul.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Sunteți sigur că categoria "{0}" ar trebui să fie fuzionată în categoria "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Trebuie selectat un cont țintă</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Suma</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Transferuri unilaterale</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Beneficiarul plății</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Completat</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Suma de bani dată în această lună, dar care nu a fost încă înregistrată în nicio categorie.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Suma lipsă</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Trebuie selectat un cont sursă.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Toate conturile</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Salvați noul profil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Importieren</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Numele unui nou marker nu trebuie să fie gol sau să existe deja.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Soldul total al contului luând în considerare înregistrările cu dată viitoare.
+Consultați tooltip pentru o mai bună distincție.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Formatul sumei</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Faceți clic pentru a vizualiza și edita tranzacțiile parțiale.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Subtotalul include intrările care mai trebuie salvate.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Configurare</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Neatribuite</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Parola de acces</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Crearea unui nou marker</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Prin intermediul unei tranzacții, banii pot intra sau ieși dintr-un cont.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Simbolurile arată ce tip de înregistrare în cont este.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balanță</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Disponibil</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Ești sigur?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Această bifă poate fi utilizată pentru a distinge intrările finalizate de cele care mai trebuie revizuite.
+Totalurile pot fi vizualizate în tooltip-ul din soldul contului.</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Salvează în cont elementele editate în prezent</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Sunteți sigur că doriți ca marcajul "{0}" să se unească cu marcajul "{1}"?</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Formatul beneficiarului plății</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Numele de fișier al acestei căi de memorie este gol!</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>
