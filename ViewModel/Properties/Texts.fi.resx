@@ -400,6 +400,10 @@ Oletko todella varma? (Automaattinen varmuuskopio tehdään, jotta voidaan palau
     <value>Merkintöjen luomisessa tapahtui virhe. Tarkista kokoonpano.</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value>Tuo tiliote CSV-tiedoston kautta</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Pankin tiliote</value>
     <comment>Automatically translated.</comment>

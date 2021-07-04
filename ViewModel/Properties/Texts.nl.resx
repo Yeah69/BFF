@@ -400,6 +400,10 @@ Weet je het echt zeker? (Er wordt een automatische back-up gemaakt zodat de toes
     <value>Er is een fout opgetreden bij het aanmaken van de vermeldingen. Controleer de configuratie.</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value>Importeren bankafschriften via CSV-bestand</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Bankafschrift</value>
     <comment>Automatically translated.</comment>
