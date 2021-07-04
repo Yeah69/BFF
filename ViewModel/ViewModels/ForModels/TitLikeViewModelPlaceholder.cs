@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using System.Windows.Input;
@@ -43,10 +44,11 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// Initializes the TransBase-parts of the object
         /// </summary>
         public TransLikeViewModelPlaceholder(
-            Func<IReactiveProperty<long>, 
-            ISumEditViewModel> sumEditFactory)
+            Func<IReactiveProperty<long>,
+                ISumEditViewModel> sumEditFactory,
+            ICurrentTextsViewModel currentTextsViewModel)
         {
-            Memo = "Content is loading…"; // ToDo Localize
+            Memo = currentTextsViewModel.CurrentTexts.ContentIsLoading;
             Sum = new ReactiveProperty<long>(0L, ReactivePropertyMode.DistinctUntilChanged);
             SumEdit = sumEditFactory(new ReactiveProperty<long>());
             Cleared = false;
