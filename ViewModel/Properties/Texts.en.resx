@@ -58,185 +58,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>This file path does not exist!</value>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>The intermediate balance includes the entries which have to be saved yet.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>This name already exists on the chosen category level!</value>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Persists currently edited elements to the account</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Amount of money which is available in this month but not assigned to any category yet.</value>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Are you sure that the category "{0}" should be deleted?</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Creates a new split transaction</value>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target payee will get assigned to all account entries of the source payee.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>Shift one month backward</value>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>The sum of all transactions, which have no category assigned.</value>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Always hide column headers of the editing table</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Theme</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>If necessary the check number can be filled in here.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Configuration</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>Outflows</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>An error occurred while creating the entries. Check the configuration.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Income</value>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Account Name</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ToolTip_Account_MissingSum" xml:space="preserve">
     <value>The difference of the target balance and the intermediate balance.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>If checked, then an income category is created.
-Only transactions assigned to such a category are interpreted as income.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Budgeted</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Create new Category</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Are you sure that the income category "{0}" should get merged into the income category "{1}"?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Missing Sum exlusively unsubmitted entries</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Current</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Convert to</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Name of new flag</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>In order to merge one category to another, drag the merge icon from this column in the source row and drop it on the target row.
-The target category will get assigned to all account entries of the source category and inherit all the subcategories.
-If a pair of the subcategories has the same name, then the subcategory of the  source category is automatically renamed (number is appended).</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Transfer</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Superior Category</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Target-Account</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Budget</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Name of new payee</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Import</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Date Format</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Payee Format</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Color</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Not Budgeted</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>An account has to be chosen before the entry is inserted.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>F</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Fill all budget cells with:</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>The balance of the account on the setup starting date.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Sum</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Cleared</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Save new budget plan to:</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>A payee has to be chosen.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="MainWindow_Empty" xml:space="preserve">
-    <value>No budget project loaded yet.
-In order to create, open or import a project
-open the File-menu in the upper left corner.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>The sum of the entry.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Transfer</value>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>New</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
@@ -245,363 +101,78 @@ open the File-menu in the upper left corner.</value>
 In case the entry is a transfer, the source-account is filled in here.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>One-Sided Transfers</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Overbudgeted</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Import and save to this path:</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Are you sure that the flag "{0}" should get merged into the flag "{1}"?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positive</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Income-Category</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Show Check Numbers</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Create new Account</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Income-Transaction</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Open a Budget Plan</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>The file "{0}" could not be found.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Month Offset</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Path to the YNAB Budget CSV:</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Currency format</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Close</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Save Profile</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value>Uncleared</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Show Flags</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value>Are you sure that the flag "{0}" should be deleted?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Average outflows of the last year</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Edit Flags</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>This will delete the account and all of its transactions, two-sided transfers will become one-sided, and the account-specific outflows in budgeting will disappear.
-
-Are you really sure? (A backup will be created automatically, if you would like to rewind the data afterwards)</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Budget value from last month</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Balance to zero</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>One-Sided Transfers may occur after a deletion of an account. They have to be considered, because they are not neutral to the budget.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Set target balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Memo Format</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Flags</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Create a new Budget Plan</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Total</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Creates a new transaction</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Intermediate balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>The month offset  shifts on which month the income is active.
-For example a month offset one will shift the income to the next month, minus one to the previous.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>In order to merge one flag to another, drag the merge icon from this column in the source row and drop it on the target row.
-The target flag  will get assigned to all account entries of the source flag and keep its color.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Create new category</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>A flag marks an entry visually by color and is completely optional.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Source-Account</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Account_StartingBalance" xml:space="preserve">
-    <value>Starting Balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Use this date picker to jump to an arbitrary month (day is irrelevant).</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Categories</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>A transaction lets money flow out of or into the account.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Fill all empty budget cells with:</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>Reset Profile</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Available</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Settings</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>File Path</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Language</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>This checkmark can be used in order to separate finished entries and entries which still require editing.
-The overall sums can be observed in separate manner in the tooltip of the balance.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Bank Statement</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>The overall balance including entries with a date in future.
-See tooltip for better distinction.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Payees</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Date format</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Target balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Current Sum</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Abort targeting balance</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Are you sure that the income category "{0}" should be deleted?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>The account which owns the entry.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Open Bank Statement</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Import Source</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>The name of a new flag isn't allowed to be empty or an already existing one.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Entries</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>All</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Account_StartingDate" xml:space="preserve">
-    <value>Starting Date</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Remove Profile</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>Name of new category</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Sum of all amounts of money which are budgeted on a category in this month.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Browse</value>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Convert to</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
     <value>The symbols indicate the type of the account entry.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>This input field may not be empty!</value>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>A source-account has to be chosen.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Account</value>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>In order to merge one category to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target category will get assigned to all account entries of the source category and inherit all the subcategories.
+If a pair of the subcategories has the same name, then the subcategory of the  source category is automatically renamed (number is appended).</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Negative</value>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Yes</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>The name of the new category is not allowed to be empty!</value>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Budgeted</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>All Accounts</value>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Password</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Show Aggregates</value>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Are you sure that the income category "{0}" should get merged into the income category "{1}"?</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
-The target income category will get assigned to all account entries of the source income category and keep its month offset.</value>
+  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
+    <value>Create</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Sum Format</value>
+  <data name="ContentIsLoading" xml:space="preserve">
+    <value>The content is loaded...</value>
+    <comment>Automatically translated.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Balance to zero</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>The value is out of range: [ {0} .. {1} ]!</value>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>About</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>BFF budget plan (*.realm)|*.realm|BFF budget plan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>A transaction lets money flow out of or into the account.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Are you sure that the payee "{0}" should get merged into the payee "{1}"?</value>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Profile</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Memo</value>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Outflows of last month</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>One-Sided Transfers</value>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Are you sure that the payee "{0}" should be deleted?</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Target-Account</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
@@ -611,329 +182,762 @@ Because they maybe hierarchical the whole hierarchy path is shown in the tooltip
 In case the entry is a transfer, the target-account is filled in here.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Shift one month forward</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>This text could not be parsed as a currency!</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Header</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Are you sure that the category "{0}" should get merged into the category "{1}"?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>A source-account has to be chosen.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Date</value>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Average outflows of the last three months</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="AccountView_MissingSum" xml:space="preserve">
     <value>Missing sum </value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>Amount of money which is missing to satisfy all categories in this month.</value>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Memo</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Amount of money which was available last month but not assigned to any category.</value>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Currency format</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Setting the target balance enables the automatic calculation of the missing sum.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Open</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Delimiter</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Create new Flag</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>The file name of this save path is empty!</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Accounts</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value>Create</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Always hide column headers of the editing table</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Income Relevant?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Outflows of last month</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Password</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Remove</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Payee</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Account Name</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>This category level already contains a category of chosen name!</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>An account has to be chosen.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Path to the YNAB Transaction CSV:</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Amount of money which was missing to satisfy all categories in last month.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Delete</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Create new flag</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Are you sure that the category "{0}" should be deleted?</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Click in order to see and edit the subtransactions.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Save new Profile</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>About</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>If a superior category is selected, then the new category will be appended as a subcategory.</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Average outflows of the last three months</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Unassigned</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Cleared</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Persists currently edited elements to the account</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Transaction</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>File</value>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Payee Format</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
     <value>Import</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Amount of earned money which is assigned for the expenses of this month.</value>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Transaction</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>New</value>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>If checked, then an income category is created.
+Only transactions assigned to such a category are interpreted as income.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Create new payee if not existing?</value>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Save Profile</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>The directory of the save path does not exist!</value>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Create new category</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Create first account entry</value>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>This name already exists on the chosen category level!</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Create new payee</value>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Are you sure that the flag "{0}" should get merged into the flag "{1}"?</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Edit Payees</value>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Accounts</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>The date on which the entry is active.</value>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Sum Format</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Accents</value>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>A flag marks an entry visually by color and is completely optional.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>Overspend</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Long</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Profile</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Okay</value>
-    <comment>Manually overriden.</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Import Configuration</value>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Amount of money which is available in this month but not assigned to any category yet.</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ImportView_ExportKind" xml:space="preserve">
     <value>Export Target</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Intermediate sum</value>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>Reset Profile</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>A target-account has to be chosen.</value>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Sum of overspend amounts of money accumulated from all categories in last month.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>If a superior category is selected, then the new category will be appended as a subcategory.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>A category has to be chosen.</value>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Close</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Edit Accounts</value>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Date format</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="General_No" xml:space="preserve">
-    <value>No</value>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Current Sum</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Income Categories</value>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Cleared</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Category</value>
+  <data name="Account_StartingDate" xml:space="preserve">
+    <value>Starting Date</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Creates a new split transaction</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Cleared</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Configuration</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
     <value>Press the button in this column to delete the element of the corresponding row.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>An income entry marks a transaction which is considered as income.</value>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Click in order to see and edit the subtransactions.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Creates a new transfer</value>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Name of new payee</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Check Number</value>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Create new payee</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Payee</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>One-Sided Transfers may occur after a deletion of an account. They have to be considered, because they are not neutral to the budget.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Edit Flags</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Shift one month backward</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Save new budget plan to:</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Overbudgeted</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>A payee has to be chosen.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was missing to satisfy all categories in last month.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>No budget project loaded yet.
+In order to create, open or import a project
+open the File-menu in the upper left corner.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Fill all budget cells with:</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>If the aggregation is switched on, then the categories will add the values of their subcategories on top of their own.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>The file name of this save path is empty!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Are you sure that the income category "{0}" should be deleted?</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>The overall balance including entries with a date in future.
+See tooltip for better distinction.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Import and save to this path:</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Income Categories</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Account_StartingBalance" xml:space="preserve">
+    <value>Starting Balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>If necessary the check number can be filled in here.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>The date on which the entry is active.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Delimiter</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Open</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Current</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>No</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Are you sure that the payee "{0}" should get merged into the payee "{1}"?</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Sum of all amounts of money which are budgeted on a category in this month.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
     <value>Unassigned</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>A transfer passes money from one account to another.</value>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Accents</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Are you sure that the payee "{0}" should be deleted?</value>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Create new flag</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positive</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
     <value>The memo is intended as an arbitrary description of the entry.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Symbol</value>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>A target-account has to be chosen.</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Create new Payee</value>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Income Relevant?</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Missing Sum</value>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Create new Flag</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>The intermediate balance includes the entries which have to be saved yet.</value>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Create new payee if not existing?</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Remove Profile</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Create first account entry</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Set target balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Categories</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>A new account's name isn't allowed to be empty or match a name of the existing accounts!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Memo Format</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>The account which owns the entry.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>The sum of all transactions, which have no category assigned.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Header</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>An account has to be chosen before the entry is inserted.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Source-Account</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Intermediate balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Amount of money which was available last month but not assigned to any category.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Unassigned</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Intermediate sum</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Create new Account</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Outflows</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Account</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>This checkmark can be used in order to separate finished entries and entries which still require editing.
+The overall sums can be observed in separate manner in the tooltip of the balance.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>The value is out of range: [ {0} .. {1} ]!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>The month offset  shifts on which month the income is active.
+For example a month offset one will shift the income to the next month, minus one to the previous.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Category</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>In order to merge one income category to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target income category will get assigned to all account entries of the source income category and keep its month offset.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Path to the YNAB Budget CSV:</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Creates a new transaction</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>This category level already contains a category of chosen name!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>All Accounts</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Setting the target balance enables the automatic calculation of the missing sum.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>A category has to be chosen.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>An account has to be chosen.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Income-Category</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Show Aggregates</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Amount of earned money which is assigned for the expenses of this month.</value>
     <comment>Manually overriden.</comment>
   </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
     <value>Are you sure?</value>
     <comment>Manually overriden.</comment>
   </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Superior Category</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Creates a new transfer</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Long</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>The name of a new flag isn't allowed to be empty or an already existing one.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Create new Payee</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Name of new category</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Open a Budget Plan</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Open Bank Statement</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Path to the YNAB Transaction CSV:</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
+    <value>This will delete the account and all of its transactions, two-sided transfers will become one-sided, and the account-specific outflows in budgeting will disappear.
+
+Are you really sure? (A backup will be created automatically, if you would like to rewind the data afterwards)</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Are you sure that the category "{0}" should get merged into the category "{1}"?</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Import Configuration</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>An error occurred while creating the entries. Check the configuration.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>File Path</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Missing Sum exlusively unsubmitted entries</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Edit Accounts</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
+    <value>Are you sure that the flag "{0}" should be deleted?</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Create a new Budget Plan</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>This input field may not be empty!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>The sum of the entry.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Income</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Entries</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Date</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Transfer</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Name of new flag</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Sum</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Use this date picker to jump to an arbitrary month (day is irrelevant).</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>F</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>BFF budget plan (*.realm)|*.realm|BFF budget plan (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Bank Statement</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Fill all empty budget cells with:</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Overspend</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Average outflows of the last year</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Show Flags</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>The file "{0}" could not be found.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Name</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>In order to merge one flag to another, drag the merge icon from this column in the source row and drop it on the target row.
+The target flag  will get assigned to all account entries of the source flag and keep its color.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Edit Payees</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>This text could not be parsed as a currency!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Missing Sum</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>The name of a new payee isn't allowed to be empty or an already existing one.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>The name of the new category is not allowed to be empty!</value>
+    <comment>Manually overriden.</comment>
+  </data>
   <data name="General_Short" xml:space="preserve">
     <value>Short</value>
     <comment>Manually overriden.</comment>
   </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>In order to merge one payee to another, drag the merge icon from this column in the source row and drop it on the target row.
-The target payee will get assigned to all account entries of the source payee.</value>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Save new Profile</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>File</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Available</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Create new Category</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Total</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>An income entry marks a transaction which is considered as income.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>The directory of the save path does not exist!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Shift one month forward</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Budget</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Not Budgeted</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Import Source</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Month Offset</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Target balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>The balance of the account on the setup starting date.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
+    <value>Abort targeting balance</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Flags</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Okay</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Symbol</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Negative</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Date Format</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Check Number</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Payees</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Browse</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Import</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Balance_Uncleared" xml:space="preserve">
+    <value>Uncleared</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>A transfer passes money from one account to another.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>All</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Show Check Numbers</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>This file path does not exist!</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Income-Transaction</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Amount of money which is missing to satisfy all categories in this month.</value>
+    <comment>Manually overriden.</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Budget value from last month</value>
     <comment>Manually overriden.</comment>
   </data>
 </root>
