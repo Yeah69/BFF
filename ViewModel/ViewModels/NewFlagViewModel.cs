@@ -7,11 +7,11 @@ using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -33,6 +33,7 @@ namespace BFF.ViewModel.ViewModels
 
     internal class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
     {
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IFlagViewModelService _flagViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new();
@@ -40,8 +41,10 @@ namespace BFF.ViewModel.ViewModels
 
         public NewFlagViewModel(
             ICreateNewModels createNewModels,
+            ICurrentTextsViewModel currentTextsViewModel,
             IFlagViewModelService flagViewModelService)
         {
+            _currentTextsViewModel = currentTextsViewModel;
             _flagViewModelService = flagViewModelService;
 
             Brush = new ReactiveProperty<Color>(Color.BlueViolet);
@@ -98,7 +101,7 @@ namespace BFF.ViewModel.ViewModels
 
         public void Dispose()
         {
-            _compositeDisposable?.Dispose();
+            _compositeDisposable.Dispose();
         }
 
         private bool ValidateName()
@@ -112,7 +115,7 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongFlagName")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageWrongFlagName
                     .ToEnumerable(), nameof(Text));
                 ret = false;
             }

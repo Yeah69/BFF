@@ -10,6 +10,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MoreLinq;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -27,6 +28,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IIncomeCategory _incomeCategory;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         public override string FullName => Name;
@@ -47,12 +49,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IIncomeCategory category,
             ISummaryAccountViewModel summaryAccountViewModel,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
+            ICurrentTextsViewModel currentTextsViewModel,
             IAccountViewModelService accountViewModelService,
             IRxSchedulerProvider rxSchedulerProvider) : base(category, rxSchedulerProvider)
         {
             _incomeCategory = category;
             _summaryAccountViewModel = summaryAccountViewModel;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
+            _currentTextsViewModel = currentTextsViewModel;
             _accountViewModelService = accountViewModelService;
             _rxSchedulerProvider = rxSchedulerProvider;
 
@@ -70,9 +74,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmIncomeCategoryDeletion"),
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmIncomeCategoryDeletion,
                         Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
@@ -94,9 +98,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title, 
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmIncomeCategoryMerge"),
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmIncomeCategoryMerge,
                         Name, 
                         target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)

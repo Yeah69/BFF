@@ -5,11 +5,11 @@ using System.Windows.Input;
 using BFF.Core.IoC;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using MuVaViMo;
 
@@ -37,6 +37,7 @@ namespace BFF.ViewModel.ViewModels
 
     internal class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
     {
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IPayeeViewModelService _payeeViewModelService;
 
         private readonly CompositeDisposable _compositeDisposable = new();
@@ -44,8 +45,10 @@ namespace BFF.ViewModel.ViewModels
 
         public NewPayeeViewModel(
             ICreateNewModels createNewModels,
+            ICurrentTextsViewModel currentTextsViewModel,
             IPayeeViewModelService payeeViewModelService)
         {
+            _currentTextsViewModel = currentTextsViewModel;
             _payeeViewModelService = payeeViewModelService;
 
             AddPayeeCommand = RxCommand
@@ -112,7 +115,7 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongPayeeName")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageWrongPayeeName
                     .ToEnumerable(), nameof(PayeeText));
                 ret = false;
             }

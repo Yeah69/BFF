@@ -45,7 +45,7 @@ namespace BFF.ViewModel.Helper
                         vmItems.Add(_transactionViewModelFactory(transaction, owner));
                         break;
                     default:
-                        throw new NotImplementedException();
+                        throw new InvalidOperationException();
                 }
             }
             return vmItems;

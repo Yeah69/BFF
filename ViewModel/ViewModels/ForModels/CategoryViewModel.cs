@@ -11,6 +11,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MoreLinq;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -46,6 +47,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly ICategory _category;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly Func<ICategory, IBudgetCategory> _budgetCategoryFactory;
         private readonly Func<IBudgetCategory, (int EntryCount, int MonthOffset), IBudgetCategoryViewModel> _budgetCategoryViewModelFactory;
@@ -105,9 +107,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmCategoryDeletion"), 
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmCategoryDeletion, 
                         Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
@@ -130,9 +132,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmCategoryMerge"),
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmCategoryMerge,
                         Name, 
                         target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
@@ -198,6 +200,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             Lazy<ICategoryViewModelService> service,
             ISummaryAccountViewModel summaryAccountViewModel,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
+            ICurrentTextsViewModel currentTextsViewModel,
             IAccountViewModelService accountViewModelService,
             Func<ICategory, IBudgetCategory> budgetCategoryFactory,
             Func<IBudgetCategory, (int EntryCount, int MonthOffset), IBudgetCategoryViewModel> budgetCategoryViewModelFactory,
@@ -212,6 +215,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .Subscribe(_ => OnPropertyChanged(nameof(Parent)));
             _summaryAccountViewModel = summaryAccountViewModel;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
+            _currentTextsViewModel = currentTextsViewModel;
             _accountViewModelService = accountViewModelService;
             _budgetCategoryFactory = budgetCategoryFactory;
             _budgetCategoryViewModelFactory = budgetCategoryViewModelFactory;

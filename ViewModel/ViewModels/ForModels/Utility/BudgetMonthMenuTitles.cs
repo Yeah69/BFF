@@ -1,4 +1,4 @@
-﻿using BFF.ViewModel.Helper;
+﻿using MrMeeseeks.ResXToViewModelGenerator;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Utility
 {
@@ -16,24 +16,26 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
 
     internal class BudgetMonthMenuTitles : IBudgetMonthMenuTitles
     {
-        public BudgetMonthMenuTitles()
-        {
-        }
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
+        
+        public BudgetMonthMenuTitles(
+            ICurrentTextsViewModel currentTextsViewModel) =>
+            _currentTextsViewModel = currentTextsViewModel;
 
-        public string EmptyCellsHeader => ""; // ToDo _localizer.Localize("Budgeting_Month_ContextMenu_EmptyCellsHeader");
+        public string EmptyCellsHeader => _currentTextsViewModel.CurrentTexts.Budgeting_Month_ContextMenu_EmptyCellsHeader;
 
-        public string BudgetLastMonth => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_BudgetLastMonth");
+        public string BudgetLastMonth => _currentTextsViewModel.CurrentTexts.Budgeting_ContextMenu_BudgetLastMonth;
 
-        public string OutflowsLastMonth => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_OutflowsLastMonth");
+        public string OutflowsLastMonth => _currentTextsViewModel.CurrentTexts.Budgeting_ContextMenu_OutflowsLastMonth;
 
-        public string AvgOutflowLastThreeMonths => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_AvgOutflowsLastThreeMonths");
+        public string AvgOutflowLastThreeMonths => _currentTextsViewModel.CurrentTexts.Budgeting_ContextMenu_AvgOutflowsLastThreeMonths;
 
-        public string AvgOutflowsLastYear => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_AvgOutflowsLastYear");
+        public string AvgOutflowsLastYear => _currentTextsViewModel.CurrentTexts.Budgeting_ContextMenu_AvgOutflowsLastYear;
 
-        public string BalanceToZero => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_BalanceToZero");
+        public string BalanceToZero => _currentTextsViewModel.CurrentTexts.Budgeting_ContextMenu_BalanceToZero;
 
-        public string AllCellsHeader => ""; // ToDo _localizer.Localize("Budgeting_Month_ContextMenu_AllCellsHeader");
+        public string AllCellsHeader => _currentTextsViewModel.CurrentTexts.Budgeting_Month_ContextMenu_AllCellsHeader;
 
-        public string Zero => ""; // ToDo _localizer.Localize("Budgeting_ContextMenu_Zero");
+        public string Zero => _currentTextsViewModel.CurrentTexts.Budgeting_ContextMenu_Zero;
     }
 }

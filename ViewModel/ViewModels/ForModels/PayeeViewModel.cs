@@ -9,6 +9,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MoreLinq;
+using MrMeeseeks.ResXToViewModelGenerator;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -26,12 +27,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
 
         public PayeeViewModel(
             IPayee payee,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             ISummaryAccountViewModel summaryAccountViewModel,
             IAccountViewModelService accountViewModelService,
+            ICurrentTextsViewModel currentTextsViewModel,
             IRxSchedulerProvider rxSchedulerProvider) : base(payee, rxSchedulerProvider)
         {
             AccountViewModelService = accountViewModelService;
@@ -39,6 +42,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _summaryAccountViewModel = summaryAccountViewModel;
             _accountViewModelService = accountViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
         }
 
@@ -47,9 +51,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmPayeeDeletion"), 
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmPayeeDeletion, 
                         Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
@@ -71,9 +75,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmPayeeMerge"), 
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmPayeeMerge, 
                         Name, 
                         target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)

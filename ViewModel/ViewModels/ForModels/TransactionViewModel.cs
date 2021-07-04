@@ -10,6 +10,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -31,6 +32,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly ITransaction _transaction;
         private readonly ICategoryBaseViewModelService _categoryViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private ICategoryBaseViewModel? _category;
         private readonly IReactiveProperty<long> _sum;
 
@@ -45,6 +47,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ICategoryBaseViewModelService categoryViewModelService,
             ITransTransformingManager transTransformingManager,
             ILastSetDate lastSetDate,
+            ICurrentTextsViewModel currentTextsViewModel,
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
@@ -56,6 +59,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 accountViewModelService,
                 payeeViewModelService,
                 lastSetDate, 
+                currentTextsViewModel,
                 rxSchedulerProvider, 
                 summaryAccountViewModel,
                 flagViewModelService,
@@ -63,6 +67,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _transaction = transaction;
             _categoryViewModelService = categoryViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
 
             _category = _categoryViewModelService.GetViewModel(transaction.Category);
             transaction
@@ -156,7 +161,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
             if (!(Category is null)) return;
 
-            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyCategory")
+            SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageEmptyCategory
                 .ToEnumerable(), nameof(Category));
             OnErrorChanged(nameof(Category));
         }

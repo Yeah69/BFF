@@ -16,6 +16,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -93,6 +94,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IBffSettings bffSettings,
             ITransTransformingManager transTransformingManager,
             IRxSchedulerProvider rxSchedulerProvider,
+            ICurrentTextsViewModel currentTextsViewModel,
             ISummaryAccountViewModel summaryAccountViewModel,
             IPayeeViewModelService payeeViewModelService,
             ICreateNewModels createNewModels,
@@ -105,6 +107,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 accountViewModelService,
                 payeeViewModelService, 
                 lastSetDate,
+                currentTextsViewModel,
                 rxSchedulerProvider,
                 summaryAccountViewModel,
                 flagViewModelService,

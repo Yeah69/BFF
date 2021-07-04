@@ -15,6 +15,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.ViewModels.ForModels.Utility;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using MuVaViMo;
 using org.mariuszgromada.math.mxparser;
@@ -53,12 +54,13 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             Func<IReactiveProperty<string>,
             ICsvBankStatementImportNonProfileViewModel> nonProfileViewModelFactory,
             Func<IBffOpenFileDialog> openFileDialogFactory,
+            ICurrentTextsViewModel currentTextsViewModel,
             IRxSchedulerProvider schedulerProvider,
             IBffSettings bffSettings,
             Func<(DateTime? Date, string? Payee, bool CreatePayeeIfNotExisting, string? Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory) 
-            : base("") // ToDo localizer.Localize(""))
+            : base("") // ToDo Localize
         {
             Profiles = csvBankStatementProfileManger.Profiles.Transform(profileViewModelFactory);
             
@@ -168,9 +170,9 @@ namespace BFF.ViewModel.ViewModels.Dialogs
                         var bffOpenFileDialog = openFileDialogFactory();
                         bffOpenFileDialog.Multiselect = false;
                         bffOpenFileDialog.DefaultExt = "csv";
-                        bffOpenFileDialog.Filter = $"{""} (*.csv)|*.csv"; // ToDo localizer.Localize("Domain_BankStatement")
+                        bffOpenFileDialog.Filter = currentTextsViewModel.CurrentTexts.Domain_BankStatement;
                         bffOpenFileDialog.FileName = "";
-                        bffOpenFileDialog.Title = ""; // ToDo localizer.Localize("Domain_OpenBankStatement");
+                        bffOpenFileDialog.Title = currentTextsViewModel.CurrentTexts.Domain_OpenBankStatement;
                         if (bffOpenFileDialog.ShowDialog() == true)
                         {
                             FilePath.Value = bffOpenFileDialog.FileName;

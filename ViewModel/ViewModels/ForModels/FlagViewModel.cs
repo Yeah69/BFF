@@ -11,6 +11,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MoreLinq;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
@@ -26,6 +27,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IFlag _flag;
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
 
@@ -33,12 +35,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IFlag flag,
             IMainBffDialogCoordinator mainBffDialogCoordinator,
             IAccountViewModelService accountViewModelService,
+            ICurrentTextsViewModel currentTextsViewModel,
             ISummaryAccountViewModel summaryAccountViewModel,
             IRxSchedulerProvider rxSchedulerProvider) : base(flag, rxSchedulerProvider)
         {
             _flag = flag;
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _accountViewModelService = accountViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
             _summaryAccountViewModel = summaryAccountViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
 
@@ -54,9 +58,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmFlagDeletion"), 
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmFlagDeletion,
                         Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
@@ -84,9 +88,9 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
                     string.Format(
-                        "", // ToDo _localizer.Localize("ConfirmationDialog_ConfirmFlagMerge"),
+                        _currentTextsViewModel.CurrentTexts.ConfirmationDialog_ConfirmFlagMerge,
                         Name, 
                         target.Name),
                     BffMessageDialogStyle.AffirmativeAndNegative)

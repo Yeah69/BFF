@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Helper;
 using BFF.Model.Models.Structure;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MuVaViMo;
 
 namespace BFF.ViewModel.ViewModels.ForModels.Structure
@@ -29,6 +29,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         private readonly ITransactionBase _transactionBase;
         private readonly IAccountViewModelService _accountViewModelService;
         private readonly IPayeeViewModelService _payeeViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private IAccountViewModel? _account;
         private IPayeeViewModel? _payee;
@@ -62,6 +63,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             IAccountViewModelService accountViewModelService,
             IPayeeViewModelService payeeViewModelService,
             ILastSetDate lastSetDate,
+            ICurrentTextsViewModel currentTextsViewModel,
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
@@ -77,6 +79,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             _transactionBase = transactionBase;
             _accountViewModelService = accountViewModelService;
             _payeeViewModelService = payeeViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
             _summaryAccountViewModel = summaryAccountViewModel;
 
             void RefreshAnAccountViewModel(IAccountViewModel? account)
@@ -148,14 +151,14 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         {
             if (Account is null)
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyAccount")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageEmptyAccount
                     .ToEnumerable(), nameof(Account));
                 OnErrorChanged(nameof(Account));
             }
 
             if (!(Payee is null)) return;
 
-            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyPayee")
+            SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageEmptyPayee
                 .ToEnumerable(), nameof(Payee));
             OnErrorChanged(nameof(Payee));
         }

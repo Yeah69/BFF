@@ -5,12 +5,12 @@ using BFF.Core.Helper;
 using BFF.Model.Helper;
 using BFF.Model.Models;
 using BFF.ViewModel.Extensions;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -44,6 +44,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly ITransfer _transfer;
         private readonly IAccountViewModelService _accountViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly ISummaryAccountViewModel _summaryAccountViewModel;
         private IAccountViewModel? _fromAccount;
         private IAccountViewModel? _toAccount;
@@ -82,6 +83,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             INewFlagViewModel newFlagViewModel,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             ILastSetDate lastSetDate,
+            ICurrentTextsViewModel currentTextsViewModel,
             IRxSchedulerProvider rxSchedulerProvider,
             ITransTransformingManager transTransformingManager,
             ISummaryAccountViewModel summaryAccountViewModel,
@@ -97,6 +99,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             _transfer = transfer;
             _accountViewModelService = accountViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
             _summaryAccountViewModel = summaryAccountViewModel;
 
             _fromAccount = _accountViewModelService.GetViewModel(transfer.FromAccount);
@@ -212,14 +215,14 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             if (FromAccount is null)
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyFromAccount")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageEmptyFromAccount
                     .ToEnumerable(), nameof(FromAccount));
                 OnErrorChanged(nameof(FromAccount));
             }
 
             if (!(ToAccount is null)) return;
 
-            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyToAccount")
+            SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageEmptyToAccount
                 .ToEnumerable(), nameof(ToAccount));
             OnErrorChanged(nameof(ToAccount));
         }

@@ -13,6 +13,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.Dialogs;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -42,6 +43,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         private readonly IMainBffDialogCoordinator _mainBffDialogCoordinator;
         private readonly IConvertFromTransBaseToTransLikeViewModel _convertFromTransBaseToTransLikeViewModel;
         private readonly IRxSchedulerProvider _rxSchedulerProvider;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
 
         /// <summary>
         /// Starting balance of the Account
@@ -79,6 +81,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IRxSchedulerProvider rxSchedulerProvider,
             IBackendCultureManager cultureManager,
+            ICurrentTextsViewModel currentTextsViewModel,
             IMainWindowDialogManager mainWindowDialogManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
@@ -102,6 +105,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             _mainBffDialogCoordinator = mainBffDialogCoordinator;
             _convertFromTransBaseToTransLikeViewModel = convertFromTransBaseToTransLikeViewModel;
             _rxSchedulerProvider = rxSchedulerProvider;
+            _currentTextsViewModel = currentTextsViewModel;
 
             StartingBalance = account
                 .ToReactivePropertyAsSynchronized(a => a.StartingBalance, ReactivePropertyMode.DistinctUntilChanged)
@@ -151,7 +155,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                         NewTransList.Add(parentTransactionViewModel);
                         if (MissingSum is not null)
                         {
-                            parentTransactionViewModel.NewSubTransactionCommand?.Execute(null);
+                            parentTransactionViewModel.NewSubTransactionCommand.Execute(null);
                             parentTransactionViewModel.NewSubTransactions.First().Sum.Value = (long)MissingSum;
                         }
                     });
@@ -242,8 +246,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             TaskCompletionSource<Unit> source = new();
             _mainBffDialogCoordinator
                 .ShowMessageAsync(
-                    "", // ToDo _localizer.Localize("ConfirmationDialog_Title"),
-                    "", // ToDo _localizer.Localize("Account_Delete_ConfirmationMessage"),
+                    _currentTextsViewModel.CurrentTexts.ConfirmationDialog_Title,
+                    _currentTextsViewModel.CurrentTexts.Account_Delete_ConfirmationMessage,
                     BffMessageDialogStyle.AffirmativeAndNegative)
                 .ToObservable()
                 .ObserveOn(_rxSchedulerProvider.UI)
@@ -266,13 +270,13 @@ namespace BFF.ViewModel.ViewModels.ForModels
             return source.Task;
         }
         
-        public sealed override ICommand NewTransactionCommand { get; }
+        public override ICommand NewTransactionCommand { get; }
         
-        public sealed override ICommand NewTransferCommand { get; }
+        public override ICommand NewTransferCommand { get; }
         
-        public sealed override ICommand NewParentTransactionCommand { get; }
+        public override ICommand NewParentTransactionCommand { get; }
         
-        public sealed override ICommand ApplyCommand { get; }
+        public override ICommand ApplyCommand { get; }
 
         public override ICommand ImportCsvBankStatement { get; }
     }

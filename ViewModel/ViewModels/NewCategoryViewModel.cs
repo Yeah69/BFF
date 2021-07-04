@@ -6,12 +6,12 @@ using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
-using BFF.ViewModel.Helper;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -43,6 +43,7 @@ namespace BFF.ViewModel.ViewModels
     internal sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IIncomeCategoryViewModelService _incomeCategoryViewModelService;
         private readonly ICategoryBaseViewModelService _categoryBaseViewModelService;
 
@@ -53,6 +54,7 @@ namespace BFF.ViewModel.ViewModels
             ICreateNewModels createNewModels,
             ICategoryViewModelInitializer categoryViewModelInitializer,
             ICategoryViewModelService categoryViewModelService,
+            ICurrentTextsViewModel currentTextsViewModel,
             IIncomeCategoryViewModelService incomeCategoryViewModelService,
             ICategoryBaseViewModelService categoryBaseViewModelService)
         {
@@ -67,10 +69,11 @@ namespace BFF.ViewModel.ViewModels
             {
                 return ValidateNewCategoryRelationCondition(text, parent)
                     ? null
-                    : ""; // ToDo _localizer.Localize("ErrorMessageWrongCategoryParent");
+                    : currentTextsViewModel.CurrentTexts.ErrorMessageWrongCategoryParent;
             }
 
             _categoryViewModelService = categoryViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
             _incomeCategoryViewModelService = incomeCategoryViewModelService;
             _categoryBaseViewModelService = categoryBaseViewModelService;
 
@@ -195,13 +198,13 @@ namespace BFF.ViewModel.ViewModels
             bool ret;
             if (string.IsNullOrWhiteSpace(Name))
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageCategoryNameEmpty")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageCategoryNameEmpty
                     .ToEnumerable(), nameof(Name));
                 ret = false;
             }
             else if (!ValidateNewCategoryRelationCondition())
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongCategoryName")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageWrongCategoryName
                     .ToEnumerable(), nameof(Name));
                 ret = false;
             }

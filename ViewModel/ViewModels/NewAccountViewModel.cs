@@ -10,6 +10,7 @@ using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels;
 using MrMeeseeks.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using MuVaViMo;
 using Reactive.Bindings;
@@ -39,6 +40,7 @@ namespace BFF.ViewModel.ViewModels
     internal class NewAccountViewModel : NotifyingErrorViewModelBase, INewAccountViewModel, IDisposable
     {
         private readonly IBffSettings _bffSettings;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IAccountViewModelService _viewModelService;
 
         protected readonly CompositeDisposable CompositeDisposable = new();
@@ -48,11 +50,13 @@ namespace BFF.ViewModel.ViewModels
         public NewAccountViewModel(
             ICreateNewModels createNewModels,
             IBffSettings bffSettings,
+            ICurrentTextsViewModel currentTextsViewModel,
             IBackendCultureManager cultureManager,
             ISummaryAccountViewModel summaryAccountViewModel,
             IAccountViewModelService viewModelService)
         {
             _bffSettings = bffSettings;
+            _currentTextsViewModel = currentTextsViewModel;
             _viewModelService = viewModelService;
 
             StartingBalance = new ReactiveProperty<long>(0, ReactivePropertyMode.None).AddTo(CompositeDisposable);
@@ -149,7 +153,7 @@ namespace BFF.ViewModel.ViewModels
             }
             else
             {
-                SetErrors("" // ToDo _localizer.Localize("ErrorMessageWrongAccountName")
+                SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageWrongAccountName
                     .ToEnumerable(), nameof(Name));
                 ret = false;
             }

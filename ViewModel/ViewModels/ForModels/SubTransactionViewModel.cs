@@ -6,6 +6,7 @@ using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
 using MrMeeseeks.Reactive.Extensions;
+using MrMeeseeks.ResXToViewModelGenerator;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -19,6 +20,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     {
         private readonly ISubTransaction _subTransaction;
         private readonly ICategoryBaseViewModelService _categoryViewModelService;
+        private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private ICategoryBaseViewModel? _category;
 
         public SubTransactionViewModel(
@@ -27,11 +29,13 @@ namespace BFF.ViewModel.ViewModels.ForModels
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             IRxSchedulerProvider rxSchedulerProvider,
             ICategoryBaseViewModelService categoryViewModelService,
+            ICurrentTextsViewModel currentTextsViewModel,
             IAccountBaseViewModel owner)
             : base(subTransaction, rxSchedulerProvider, owner)
         {
             _subTransaction = subTransaction;
             _categoryViewModelService = categoryViewModelService;
+            _currentTextsViewModel = currentTextsViewModel;
 
             _category = _categoryViewModelService.GetViewModel(subTransaction.Category);
             subTransaction
@@ -80,7 +84,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         {
             if (!(Category is null)) return;
 
-            SetErrors("" // ToDo _localizer.Localize("ErrorMessageEmptyCategory")
+            SetErrors(_currentTextsViewModel.CurrentTexts.ErrorMessageEmptyCategory
                 .ToEnumerable(), nameof(Category));
             OnErrorChanged(nameof(Category));
         }
