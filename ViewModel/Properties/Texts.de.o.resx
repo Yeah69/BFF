@@ -315,6 +315,9 @@ Bist Du dir wirklich sicher? (Ein automatisches Backup wird hergestellt um es m�
   <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
     <value>Beim Erstellen der Einträge ist ein Fehler aufgetreten. Überprüfe die Konfiguration.</value>
   </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value />
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Kontoauszug</value>
   </data>

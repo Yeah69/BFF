@@ -400,6 +400,10 @@ Ste res prepričani? (Za vzpostavitev stanja pred izbrisom bo izdelana samodejna
     <value>Pri ustvarjanju vnosov je prišlo do napake. Preverite konfiguracijo.</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value>Uvoz bančnega izpiska prek datoteke CSV</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Bančni izpisek</value>
     <comment>Automatically translated.</comment>

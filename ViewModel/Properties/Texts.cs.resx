@@ -400,6 +400,10 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <value>Při vytváření záznamů došlo k chybě. Zkontrolujte konfiguraci.</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value>Importovat bankovní výpis prostřednictvím souboru CSV</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Bankovní výpis</value>
     <comment>Automatically translated.</comment>
