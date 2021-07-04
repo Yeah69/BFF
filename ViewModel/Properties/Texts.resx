@@ -783,4 +783,7 @@ Wenn der Eintrag ein Transfer ist, dann wird hier das Quellkonto eingetragen.</v
   <data name="ContentIsLoading" xml:space="preserve">
     <value>Der Inhalt wird geladen…</value>
   </data>
+  <data name="AllAccounts" xml:space="preserve">
+    <value>Alle Konten</value>
+  </data>
 </root>

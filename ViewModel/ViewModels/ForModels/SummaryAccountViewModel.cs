@@ -9,6 +9,7 @@ using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
 using BFF.ViewModel.Services;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
+using MrMeeseeks.ResXToViewModelGenerator;
 using MrMeeseeks.Windows;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -27,7 +28,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
     /// <summary>
     /// Trans can be added to an Account
     /// </summary>
-    internal class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
+    internal sealed class SummaryAccountViewModel : AccountBaseViewModel, ISummaryAccountViewModel, IOncePerBackend
     {
         private readonly Lazy<IAccountViewModelService> _service;
 
@@ -39,8 +40,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
         /// <summary>
         /// Name of the Account Model
         /// </summary>
-        public override string Name //todo Localization
-            => "All Accounts";
+        public override string Name { get; set; }
         
         public SummaryAccountViewModel(
             ISummaryAccount summaryAccount, 
@@ -51,6 +51,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IConvertFromTransBaseToTransLikeViewModel convertFromTransBaseToTransLikeViewModel,
             IBackendCultureManager cultureManager,
             ITransDataGridColumnManager transDataGridColumnManager,
+            ICurrentTextsViewModel currentTextsViewModel,
             Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
             Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
             Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory) 
@@ -69,8 +70,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             if(string.IsNullOrWhiteSpace(bffSettings.OpenAccountTab))
                 IsOpen = true;
 
-
-
+            Name = currentTextsViewModel.CurrentTexts.AllAccounts;
+            
             StartingBalance = new ReactiveProperty<long>().AddTo(CompositeDisposable);
 
             NewTransactionCommand = RxCommand
