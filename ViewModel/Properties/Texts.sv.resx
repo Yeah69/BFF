@@ -767,10 +767,6 @@ Endast transaktioner som är knutna till en sådan kategori kommer att tolkas so
     <value>Överlagrad kategori</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Detta är nästa test.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Det totala kontosaldot med hänsyn till de poster som har ett framtida datum.
 Se verktygstipsen för en bättre distinktion.</value>

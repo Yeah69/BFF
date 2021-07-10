@@ -767,10 +767,6 @@ Kun transaktioner, der er knyttet til en sådan kategori, vil blive fortolket so
     <value>Overlejret kategori</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Dette er den næste prøve.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Den samlede kontosaldo under hensyntagen til posteringer med en fremtidig dato.
 Se værktøjstip for en bedre skelnen.</value>

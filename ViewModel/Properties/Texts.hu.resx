@@ -767,10 +767,6 @@ Csak az ilyen kategóriához tartozó tranzakciókat kell jövedelemként értel
     <value>Szuperponált kategória</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Ez a következő teszt.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>A teljes számlaegyenleg, figyelembe véve a jövőbeni dátumú bejegyzéseket.
 A jobb megkülönböztetés érdekében lásd az eszköztípust.</value>

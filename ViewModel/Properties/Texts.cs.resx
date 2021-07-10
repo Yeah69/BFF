@@ -767,10 +767,6 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
     <value>Superponovaná kategorie</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Toto je další test.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Celkový zůstatek účtu s ohledem na záznamy s budoucím datem.
 Lepší rozlišení najdete v nápovědě k nástroji.</value>

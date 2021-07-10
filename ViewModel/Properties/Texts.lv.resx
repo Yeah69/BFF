@@ -767,10 +767,6 @@ Par ienākumiem tiks uzskatīti tikai tie darījumi, kas ir saistīti ar šādu 
     <value>Uzklātā kategorija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>Šis ir nākamais tests.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Kopējais konta atlikums, ņemot vērā ierakstus ar datumu nākotnē.
 Lai labāk to atšķirtu, skatiet uz uzrakstu.</value>

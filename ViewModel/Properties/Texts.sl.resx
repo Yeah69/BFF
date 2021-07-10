@@ -767,10 +767,6 @@ Samo transakcije, ki so vezane na takšno kategorijo, se štejejo za dohodek.</v
     <value>Nadgrajena kategorija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value>To je naslednji preizkus.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Skupno stanje na računu ob upoštevanju vnosov s prihodnjim datumom.
 Za boljše razlikovanje si oglejte namig orodja.</value>
