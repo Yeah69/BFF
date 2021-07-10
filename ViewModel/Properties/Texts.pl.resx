@@ -767,6 +767,10 @@ Tylko transakcje dołączone do takiej kategorii będą interpretowane jako przy
     <value>Kategoria nadrzędna</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>To jest test.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Łączny stan konta uwzględniający zapisy z datą przyszłą.
 Zobacz etykietę narzędzia dla lepszego rozróżnienia.</value>

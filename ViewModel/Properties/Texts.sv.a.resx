@@ -775,6 +775,10 @@ Endast transaktioner som är knutna till en sådan kategori kommer att tolkas so
     <value>Och en gång till. Det är så roligt.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Detta är ett test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Det totala kontosaldot med hänsyn till de poster som har ett framtida datum.
 Se verktygstipsen för en bättre distinktion.</value>

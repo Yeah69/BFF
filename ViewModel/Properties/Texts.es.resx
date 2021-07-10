@@ -767,6 +767,10 @@ Sólo se interpretarán como ingresos las operaciones adscritas a dicha categor�
     <value>Categoría superpuesta</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Esto es una prueba.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>El saldo total de la cuenta considerando las entradas con fecha futura.
 Consulte la información sobre herramientas para distinguir mejor.</value>

@@ -767,6 +767,10 @@
     <value>スーパーインポーズされたカテゴリー</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>これはテストです。</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>未来の日付を持つエントリーを考慮したアカウントバランスの合計。
 ツールチップを参照すると、より分かりやすくなります。</value>

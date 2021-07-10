@@ -767,6 +767,10 @@ Solo le transazioni collegate a tale categoria saranno interpretate come reddito
     <value>Categoria sovrapposta</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Questo è un test.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Il saldo totale del conto considerando le voci con una data futura.
 Vedi il tooltip per una migliore distinzione.</value>

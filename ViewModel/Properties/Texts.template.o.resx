@@ -586,6 +586,9 @@
   <data name="SuperiorCategory" xml:space="preserve">
     <value />
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value />
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value />
   </data>

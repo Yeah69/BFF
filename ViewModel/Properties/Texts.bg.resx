@@ -767,6 +767,10 @@
     <value>Наложена категория</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Това е тест.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Общото салдо по сметката, като се вземат предвид записите с бъдеща дата.
 Вижте подсказката за инструменти за по-добро разграничение.</value>

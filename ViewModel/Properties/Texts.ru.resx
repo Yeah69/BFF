@@ -767,6 +767,10 @@
     <value>Наложенная категория</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Это тест.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Общий баланс счета с учетом записей с будущей датой.
 Для более точного определения смотрите всплывающую подсказку.</value>
