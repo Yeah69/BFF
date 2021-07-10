@@ -767,6 +767,10 @@ Only transactions assigned to such a category are interpreted as income.</value>
     <value>Superior Category</value>
     <comment>Manually overriden.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>This is a test.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>The overall balance including entries with a date in future.
 See tooltip for better distinction.</value>

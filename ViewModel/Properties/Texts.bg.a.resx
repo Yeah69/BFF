@@ -58,312 +58,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </resheader>
-  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value>Създава нов разделен изход</value>
+  <data name="Account_Balance" xml:space="preserve">
+    <value>Салдо по сметката</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Common_Configuration" xml:space="preserve">
-    <value>Конфигурация</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_Payees" xml:space="preserve">
-    <value>Получател на плащането</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_Close" xml:space="preserve">
-    <value>Затвори</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value>Липсваща сума</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>За да обедините една категория с друга, иконата от тази колона трябва да се плъзне от изходния ред и да се пусне върху целевия ред.
-Целевата категория ще наследи всички записи на акаунти и подкатегории от изходната категория.
-Ако двойка подкатегории имат едно и също име, изходната подкатегория ще бъде автоматично преименувана (ще бъде добавен номер).</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value>При създаването на записите е възникнала грешка. Проверете конфигурацията.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value>Номер на Scheck</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value>Междинна сума</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_About" xml:space="preserve">
-    <value>Чрез</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>На това ниво на категория вече съществува категория с избрано име!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_SaveFile" xml:space="preserve">
-    <value>Импортирайте и запазете по следния път:</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_Name" xml:space="preserve">
-    <value>Име на сайта</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Theme" xml:space="preserve">
-    <value>Тема</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File" xml:space="preserve">
-    <value>Файл</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value>Сумата на парите, дадени този месец, но все още нерегистрирани в някоя категория.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value>Транзакция на приходите</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value>Трябва да се избере акаунт.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_MissingSum" xml:space="preserve">
-    <value>Липсваща сума</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Настройки</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value>Записът за приход отбелязва транзакция, която се счита за приход.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value>Задаване на целеви баланс на сметката</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value>Обща сума на всички средства, разпределени по категории през този месец.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value>Трябва да се избере получател на плащането.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value>Стойност на бюджета за последния месец</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AllAccounts" xml:space="preserve">
-    <value>Всички сметки</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_All" xml:space="preserve">
-    <value>Alles</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value>Датата, на която вписването влиза в сила.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value>Символите показват какъв тип е записът по сметката.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_MemoFormat" xml:space="preserve">
-    <value>Формат на бележката</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Header" xml:space="preserve">
-    <value>Данни от заглавието</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value>Сметката, към която принадлежи записът.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value>Нулево салдо</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Income" xml:space="preserve">
-    <value>Доходи</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CsvBankStatementImport_Title" xml:space="preserve">
-    <value>Импортиране на банково извлечение чрез CSV файл</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value>Завършен</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value>Ако са активирани общите стойности, стойностите на подкатегориите се добавят към собствената стойност.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value>Обща сума на превишенията на бюджета, обобщена за всички категории през миналия месец.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_Currency" xml:space="preserve">
-    <value>Този текст не може да бъде обработен като валута!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value>Източник на сметката</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_No" xml:space="preserve">
-    <value>Не</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Yes" xml:space="preserve">
-    <value>Ja</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Import" xml:space="preserve">
-    <value>Импортиране на</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Сигурни ли сте, че искате маркерът "{0}" да се слее с маркер "{1}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Exception_FileNotFound" xml:space="preserve">
-    <value>Файлът "{0}" не може да бъде намерен.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_SumFormat" xml:space="preserve">
-    <value>Формат на сумата</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_BankStatement" xml:space="preserve">
-    <value>Банково извлечение</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CreateNewFlag" xml:space="preserve">
-    <value>Създаване на нов маркер</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value>Неназначен</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value>Междинната сума включва записите, които все още трябва да бъдат записани.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Път към CSV файла с транзакциите на YNAB:</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>За да се слее един маркер с друг, символът от тази колона трябва да се плъзне от изходния ред и да се освободи върху целевия ред.
-Целевият маркер поема всички записи на сметки от изходния маркер и запазва собствения си цвят.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Date" xml:space="preserve">
-    <value>Формат на датата</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value>Създаване на нов проблем</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Създаване на нов получател на плащане</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Overspend" xml:space="preserve">
-    <value>Преминаване на границата</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value>Текуща сума</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value>Запълнете всички празни бюджетни клетки с:</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_Empty" xml:space="preserve">
-    <value>Все още не е зареден счетоводен проект.
-Създаване, отваряне или импортиране на проект
-отворете менюто за файлове в горния ляв ъгъл.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Category_CreateNew" xml:space="preserve">
-    <value>Създаване на нова категория</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="SuperiorCategory" xml:space="preserve">
-    <value>Наложена категория</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Test4" xml:space="preserve">
-    <value>И още един път. Толкова е забавно.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value>Създаване на нов финансов план</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Date" xml:space="preserve">
-    <value>Дата</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Profile" xml:space="preserve">
-    <value>Профил</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value>Символ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value>Публикувано на</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value>Едностранни преводи могат да се появят след изтриване на сметка. Те трябва да се вземат предвид, тъй като не са неутрални за счетоводни цели.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value>Сума</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
-    <value>Категорията определя личната ви цел на този запис.
-Тъй като категориите могат да бъдат йерархични, целият йерархичен път се показва в подсказката за инструменти.
-
-Ако записът е прехвърляне, тук се въвежда целевата сметка.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value>Всички сметки</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value>Транзакцията позволява на паричните потоци да излязат от или да влязат в дадена сметка.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value>Сумата, която е била дадена миналия месец, но не е била записана в нито една категория.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value>Средни разходи през последните три месеца</value>
+  <data name="Account_CreateNew" xml:space="preserve">
+    <value>Създаване на нов акаунт</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
@@ -372,536 +72,24 @@
 Наистина ли сте сигурни? (Ще бъде направено автоматично резервно копие, за да се възстанови състоянието преди изтриването).</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value>S</value>
+  <data name="Account_Edit" xml:space="preserve">
+    <value>Редактиране на акаунти</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value>Не е позволено името на акаунта да бъде празно или да наподобява името на съществуващ акаунт.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value>Спечелената сума, разпределена за разходите през този месец.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value>Сметки</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Password" xml:space="preserve">
-    <value>Парола</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_Open" xml:space="preserve">
-    <value>Отворете</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value>Преместване с един месец назад</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value>Едностранни трансфери</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Currency" xml:space="preserve">
-    <value>Формат на валутата</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value>Това име вече съществува за избраното ниво на категорията!</value>
+  <data name="Account_Name" xml:space="preserve">
+    <value>Име на сайта</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="Account_StartingBalance" xml:space="preserve">
     <value>Първоначално салдо по сметката</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value>Откриване на финансов план</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value>Не е отчетено</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Payee_Edit" xml:space="preserve">
-    <value>Редактиране на получателя на плащането</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value>Създава нов трансфер</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value>Този път на файла не съществува!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value>Премахване на</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_PayeeFormat" xml:space="preserve">
-    <value>Формат на получателя на плащането</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_Flags" xml:space="preserve">
-    <value>Маркери</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value>Създаване на ново получател на плащане, ако то не съществува?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value>Средни разходи през последната година</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value>Натиснете бутона в тази колона, за да изтриете елемента от съответния ред.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value>Ако е необходимо, тук може да се въведе номерът на проверката.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value>Получател на плащането</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Сигурни ли сте, че искате да изтриете категорията на доходите "{0}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NameOfNewFlag" xml:space="preserve">
-    <value>Име на новия маркер</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_RemoveProfile" xml:space="preserve">
-    <value>Премахване на профил</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Unassigned" xml:space="preserve">
-    <value>Неназначен</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value>Ако е поставена отметка, се създава категория на дохода.
-Само транзакциите, свързани с такава категория, ще се тълкуват като доход.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Flag_CreateNew" xml:space="preserve">
-    <value>Създаване на нов маркер</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value>Месечното отместване измества момента, в който доходът става активен, месец по месец.
-Например, при компенсиране на месеца с единица, доходът се прехвърля към следващия месец, а минус единица - към предходния месец.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value>Запазване на нов бюджетен план:</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value>Трябва да се избере целева сметка</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Language" xml:space="preserve">
-    <value>Език</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CreateNewCategory" xml:space="preserve">
-    <value>Създаване на нова категория</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Name" xml:space="preserve">
-    <value>Име</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_ShowFlags" xml:space="preserve">
-    <value>Показване на маркери</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value>Сумата на вписването.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Browse" xml:space="preserve">
-    <value>Преглед на</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value>Щракнете, за да видите и редактирате частичните транзакции.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value>M</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value>Доходът е от значение?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value>Името на новия маркер не трябва да е празно или вече да съществува.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Директорията от пътя за запазване не съществува!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Сумата, която е липсвала миналия месец, за да се покрият всички категории.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value>Категории доходи</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value>Целево салдо по сметката</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NameOfNewPayee" xml:space="preserve">
-    <value>Име на новия получател на плащането</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Common_Entries" xml:space="preserve">
-    <value>Вписвания</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value>Междинна сума</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Сигурни ли сте, че искате да изтриете получателя на плащане "{0}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_DateFormat" xml:space="preserve">
-    <value>Формат на датата</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Показване на общите суми</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_CreateNew" xml:space="preserve">
-    <value>Създаване на нов акаунт</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value>За да обедините една категория доход с друга, символът от тази колона трябва да се плъзне от изходния ред и да се освободи върху целевия ред.
-Целевата категория доходи ще наследи всички записи по сметката от категорията доходи на източника и ще запази месечното прихващане.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value>Трябва да се избере акаунт, преди да се добави записът.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value>Сигурни ли сте, че категорията "{0}" трябва да бъде обединена в категорията "{1}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value>Отместване на месеца</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Available" xml:space="preserve">
-    <value>Наличен</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_SaveProfile" xml:space="preserve">
-    <value>Запазване на профил</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value>Завършен</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value>Сигурни ли сте, че получател "{0}" трябва да бъде обединен с получател "{1}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Category" xml:space="preserve">
-    <value>Категория</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Color" xml:space="preserve">
-    <value>Цвят</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_ExportKind" xml:space="preserve">
-    <value>Цел на износа</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_New" xml:space="preserve">
-    <value>Neu</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Flag_Edit" xml:space="preserve">
-    <value>Редактиране на маркери</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Positive" xml:space="preserve">
-    <value>Positiv</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value>Сигурни ли сте, че искате да изтриете категорията "{0}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Cancel" xml:space="preserve">
-    <value>Отмяна на</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value>Свръхзаети</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value>Името на новата категория не трябва да е празно!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value>Zero</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Името на файла на този път в паметта е празно!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Попълнете всички бюджетни клетки:</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value>Разходи за последния месец</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value>Финансов план на БФС (*.realm)|*.realm|Финансов план на БФС (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value>Липсваща сума, с изключение на неподадените записи</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value>Разликата между целевото салдо по сметката и междинната сума.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Общото салдо по сметката, като се вземат предвид записите с бъдеща дата.
-Вижте подсказката за инструменти за по-добро разграничение.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Okay" xml:space="preserve">
-    <value>Добре</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_Balance" xml:space="preserve">
-    <value>Салдо по сметката</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value>Категория на доходите</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value>Тази отметка може да се използва за разграничаване на завършените записи от тези, които все още се нуждаят от преработка.
-Общите суми могат да се видят в подсказката на баланса на сметката.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value>Маркерът визуално подчертава записа с цвят и е напълно незадължителен.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value>Задаването на целевото салдо по сметката позволява автоматично изчисляване на липсващата сума.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Използвайте този селектор за дата, за да преминете към който и да е месец (денят е без значение).</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value>Текущ</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Outflows" xml:space="preserve">
-    <value>Разходи</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value>Сигурни ли сте, че категорията на доходите "{0}" трябва да бъде обединена с категорията на доходите "{1}"?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>За да обедините един получател на плащане с друг, символът от тази колона трябва да се плъзне от изходния ред и да се пусне върху целевия ред.
-Целевият получател ще поеме всички записи по сметката от получателя източник.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value>Стойността е извън диапазона на валидност: [ {0} .. {1} ]!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ContentIsLoading" xml:space="preserve">
-    <value>Съдържанието е заредено...</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value>Трябва да се избере акаунт на източника.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value>Изтриване на</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value>Създаване на първия запис в акаунта</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value>Тук се вписва платеното лице или платецът.
-
-Ако записът е превод, тук се въвежда сметката на източника.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value>Отворено банково извлечение</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Label_ConvertTo" xml:space="preserve">
-    <value>Превръщане в</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Negative" xml:space="preserve">
-    <value>Отрицателен</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value>Общо</value>
-    <comment>Automatically Translated</comment>
-  </data>
   <data name="Account_StartingDate" xml:space="preserve">
     <value>Начална дата</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Ако е избрана родителска категория, новата категория ще бъде прикрепена към нея като подкатегория.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_Accents" xml:space="preserve">
-    <value>Акценти</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Името на новия получател не трябва да е празно или вече да съществува.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_Title" xml:space="preserve">
-    <value>Импортиране на конфигурация</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Account_Edit" xml:space="preserve">
-    <value>Редактиране на акаунти</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value>Преместване напред с един месец</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Delimiter" xml:space="preserve">
-    <value>Сепаратор</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value>Сигурни ли сте?</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value>Известие</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Салдото по сметката на зададената начална дата.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Domain_Categories" xml:space="preserve">
-    <value>Категории</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value>Бележката има за цел да даде на записа някакво описание.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_ResetProfile" xml:space="preserve">
-    <value>нулиране на профила</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value>Това поле за въвеждане не трябва да остава празно!</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value>Винаги скривайте заглавията на колоните в таблицата за редактиране</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_SaveNewProfile" xml:space="preserve">
-    <value>Запазване на нов профил</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_Short" xml:space="preserve">
-    <value>Накратко</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value>Път към CSV на бюджета на YNAB:</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ImportView_ImportKind" xml:space="preserve">
-    <value>Importquelle</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value>Трансфер</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Header_Account" xml:space="preserve">
-    <value>Сметка</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="MainWindow_File_Import" xml:space="preserve">
-    <value>Внос</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Показване на номерата на чековете</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value>Сумата, която липсва този месец, за да се покрият всички категории.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="Budgeting_Balance" xml:space="preserve">
-    <value>Баланс</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Запазва редактираните в момента елементи в акаунта</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value>Транзакция</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="NameOfNewCategory" xml:space="preserve">
-    <value>Име на новата категория</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="CreateNewPayee" xml:space="preserve">
-    <value>Създаване на нов платен</value>
+  <data name="AccountTabsView_AllAccounts" xml:space="preserve">
+    <value>Всички сметки</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
@@ -912,48 +100,864 @@
     <value>Отмяна на целта</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Test 5" xml:space="preserve">
-    <value>Бърз тест</value>
+  <data name="AccountView_Balance_All" xml:space="preserve">
+    <value>Alles</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="General_Long" xml:space="preserve">
-    <value>Lang</value>
+  <data name="AccountView_Balance_Cleared" xml:space="preserve">
+    <value>Завършен</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Сумата от всички транзакции, за които не е определена категория.</value>
+  <data name="AccountView_Balance_Current" xml:space="preserve">
+    <value>Текущ</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value>С превода се прехвърлят пари от една сметка в друга.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value>Трябва да се избере категория.</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value>Трансфер</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value>Бюджет</value>
-    <comment>Automatically Translated</comment>
-  </data>
-  <data name="General_FilePath" xml:space="preserve">
-    <value>Пътят на файла</value>
+  <data name="AccountView_Balance_Total" xml:space="preserve">
+    <value>Общо</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="AccountView_Balance_Uncleared" xml:space="preserve">
     <value>Unerledigt</value>
     <comment>Automatically Translated</comment>
   </data>
-  <data name="ImportView_Cancel" xml:space="preserve">
-    <value>Отмяна на</value>
+  <data name="AccountView_Column_Transfer" xml:space="preserve">
+    <value>Трансфер</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ConMenu_Delete" xml:space="preserve">
+    <value>Изтриване на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ConMenu_Remove" xml:space="preserve">
+    <value>Премахване на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_FirstEntry" xml:space="preserve">
+    <value>Създаване на първия запис в акаунта</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Account" xml:space="preserve">
+    <value>Сметка</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Category" xml:space="preserve">
+    <value>Категория</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_CheckNumber" xml:space="preserve">
+    <value>Номер на Scheck</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Cleared" xml:space="preserve">
+    <value>Завършен</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Date" xml:space="preserve">
+    <value>Дата</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Flag" xml:space="preserve">
+    <value>M</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Memo" xml:space="preserve">
+    <value>Известие</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Payee" xml:space="preserve">
+    <value>Получател на плащането</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_Sum" xml:space="preserve">
+    <value>Сума</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
+    <value>S</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
+    <value>Символ</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_IntermediateBalance" xml:space="preserve">
+    <value>Междинна сума</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_MissingSum" xml:space="preserve">
+    <value>Липсваща сума</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_SetTargetBalance" xml:space="preserve">
+    <value>Задаване на целеви баланс на сметката</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_TargetBalance" xml:space="preserve">
+    <value>Целево салдо по сметката</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
+    <value>Запазва редактираните в момента елементи в акаунта</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
+    <value>Създава нов разделен изход</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
+    <value>Създаване на нов проблем</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
+    <value>Създава нов трансфер</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="AllAccounts" xml:space="preserve">
+    <value>Всички сметки</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Available" xml:space="preserve">
+    <value>Наличен</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_AvailableExplanation" xml:space="preserve">
+    <value>Сумата на парите, дадени този месец, но все още нерегистрирани в някоя категория.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Balance" xml:space="preserve">
+    <value>Баланс</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Budgeted" xml:space="preserve">
+    <value>Публикувано на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
+    <value>Обща сума на всички средства, разпределени по категории през този месец.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
+    <value>Средни разходи през последните три месеца</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
+    <value>Средни разходи през последната година</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
+    <value>Нулево салдо</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
+    <value>Стойност на бюджета за последния месец</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
+    <value>Разходи за последния месец</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
+    <value>Zero</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Income" xml:space="preserve">
+    <value>Доходи</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_IncomeExplanation" xml:space="preserve">
+    <value>Спечелената сума, разпределена за разходите през този месец.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
+    <value>Попълнете всички бюджетни клетки:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
+    <value>Запълнете всички празни бюджетни клетки с:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgeted" xml:space="preserve">
+    <value>Не е отчетено</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
+    <value>Сумата, която е била дадена миналия месец, но не е била записана в нито една категория.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
+    <value>Едностранни трансфери</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
+    <value>Едностранни преводи могат да се появят след изтриване на сметка. Те трябва да се вземат предвид, тъй като не са неутрални за счетоводни цели.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Outflows" xml:space="preserve">
+    <value>Разходи</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overbudgeted" xml:space="preserve">
+    <value>Свръхзаети</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
+    <value>Сумата, която е липсвала миналия месец, за да се покрият всички категории.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
+    <value>Сумата, която липсва този месец, за да се покрият всички категории.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_Overspend" xml:space="preserve">
+    <value>Преминаване на границата</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_OverspendExplanation" xml:space="preserve">
+    <value>Обща сума на превишенията на бюджета, обобщена за всички категории през миналия месец.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_ShowAggregates" xml:space="preserve">
+    <value>Показване на общите суми</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
+    <value>Неназначен</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
+    <value>Сумата от всички транзакции, за които не е определена категория.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Category_CreateNew" xml:space="preserve">
+    <value>Създаване на нова категория</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Цвят</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Common_Configuration" xml:space="preserve">
+    <value>Конфигурация</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Common_Entries" xml:space="preserve">
+    <value>Вписвания</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да изтриете категорията "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че категорията "{0}" трябва да бъде обединена в категорията "{1}"?</value>
     <comment>Automatically Translated</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
     <value>Сигурни ли сте, че искате да изтриете маркера "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че искате маркерът "{0}" да се слее с маркер "{1}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да изтриете категорията на доходите "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че категорията на доходите "{0}" трябва да бъде обединена с категорията на доходите "{1}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да изтриете получателя на плащане "{0}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
+    <value>Сигурни ли сте, че получател "{0}" трябва да бъде обединен с получател "{1}"?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ConfirmationDialog_Title" xml:space="preserve">
+    <value>Сигурни ли сте?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ContentIsLoading" xml:space="preserve">
+    <value>Съдържанието е заредено...</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewCategory" xml:space="preserve">
+    <value>Създаване на нова категория</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewFlag" xml:space="preserve">
+    <value>Създаване на нов маркер</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CreateNewPayee" xml:space="preserve">
+    <value>Създаване на нов платен</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
+    <value>При създаването на записите е възникнала грешка. Проверете конфигурацията.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="CsvBankStatementImport_Title" xml:space="preserve">
+    <value>Импортиране на банково извлечение чрез CSV файл</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_BankStatement" xml:space="preserve">
+    <value>Банково извлечение</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Categories" xml:space="preserve">
+    <value>Категории</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Flags" xml:space="preserve">
+    <value>Маркери</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_IncomeCategories" xml:space="preserve">
+    <value>Категории доходи</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_OpenBankStatement" xml:space="preserve">
+    <value>Отворено банково извлечение</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Domain_Payees" xml:space="preserve">
+    <value>Получател на плащането</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
+    <value>Трябва да се избере акаунт, преди да се добави записът.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
+    <value>Името на новата категория не трябва да е празно!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyAccount" xml:space="preserve">
+    <value>Трябва да се избере акаунт.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyCategory" xml:space="preserve">
+    <value>Трябва да се избере категория.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
+    <value>Трябва да се избере акаунт на източника.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyPayee" xml:space="preserve">
+    <value>Трябва да се избере получател на плащането.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
+    <value>Трябва да се избере целева сметка</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongAccountName" xml:space="preserve">
+    <value>Не е позволено името на акаунта да бъде празно или да наподобява името на съществуващ акаунт.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
+    <value>Това име вече съществува за избраното ниво на категорията!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
+    <value>На това ниво на категория вече съществува категория с избрано име!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongFlagName" xml:space="preserve">
+    <value>Името на новия маркер не трябва да е празно или вече да съществува.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
+    <value>Името на новия получател не трябва да е празно или вече да съществува.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Exception_FileNotFound" xml:space="preserve">
+    <value>Файлът "{0}" не може да бъде намерен.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_CreateNew" xml:space="preserve">
+    <value>Създаване на нов маркер</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Flag_Edit" xml:space="preserve">
+    <value>Редактиране на маркери</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Cancel" xml:space="preserve">
+    <value>Отмяна на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_DateFormat" xml:space="preserve">
+    <value>Формат на датата</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Delimiter" xml:space="preserve">
+    <value>Сепаратор</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_FilePath" xml:space="preserve">
+    <value>Пътят на файла</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Header" xml:space="preserve">
+    <value>Данни от заглавието</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Long" xml:space="preserve">
+    <value>Lang</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_MemoFormat" xml:space="preserve">
+    <value>Формат на бележката</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Name" xml:space="preserve">
+    <value>Име</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Negative" xml:space="preserve">
+    <value>Отрицателен</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
+    <value>Създаване на ново получател на плащане, ако то не съществува?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_No" xml:space="preserve">
+    <value>Не</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Okay" xml:space="preserve">
+    <value>Добре</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_PayeeFormat" xml:space="preserve">
+    <value>Формат на получателя на плащането</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Positive" xml:space="preserve">
+    <value>Positiv</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Profile" xml:space="preserve">
+    <value>Профил</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_RemoveProfile" xml:space="preserve">
+    <value>Премахване на профил</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_ResetProfile" xml:space="preserve">
+    <value>нулиране на профила</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SaveNewProfile" xml:space="preserve">
+    <value>Запазване на нов профил</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SaveProfile" xml:space="preserve">
+    <value>Запазване на профил</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Short" xml:space="preserve">
+    <value>Накратко</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_SumFormat" xml:space="preserve">
+    <value>Формат на сумата</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Unassigned" xml:space="preserve">
+    <value>Неназначен</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="General_Yes" xml:space="preserve">
+    <value>Ja</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Accounts" xml:space="preserve">
+    <value>Сметки</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="HamburgerMenu_Budget" xml:space="preserve">
+    <value>Бюджет</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Browse" xml:space="preserve">
+    <value>Преглед на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Cancel" xml:space="preserve">
+    <value>Отмяна на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ExportKind" xml:space="preserve">
+    <value>Цел на износа</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Import" xml:space="preserve">
+    <value>Импортиране на</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_ImportKind" xml:space="preserve">
+    <value>Importquelle</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Password" xml:space="preserve">
+    <value>Парола</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_SaveFile" xml:space="preserve">
+    <value>Импортирайте и запазете по следния път:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_Title" xml:space="preserve">
+    <value>Импортиране на конфигурация</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Budget" xml:space="preserve">
+    <value>Път към CSV на бюджета на YNAB:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
+    <value>Път към CSV файла с транзакциите на YNAB:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Label_ConvertTo" xml:space="preserve">
+    <value>Превръщане в</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_About" xml:space="preserve">
+    <value>Чрез</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Empty" xml:space="preserve">
+    <value>Все още не е зареден счетоводен проект.
+Създаване, отваряне или импортиране на проект
+отворете менюто за файлове в горния ляв ъгъл.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File" xml:space="preserve">
+    <value>Файл</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Close" xml:space="preserve">
+    <value>Затвори</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Import" xml:space="preserve">
+    <value>Внос</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_New" xml:space="preserve">
+    <value>Neu</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_File_Open" xml:space="preserve">
+    <value>Отворете</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Настройки</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewCategory" xml:space="preserve">
+    <value>Име на новата категория</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewFlag" xml:space="preserve">
+    <value>Име на новия маркер</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NameOfNewPayee" xml:space="preserve">
+    <value>Име на новия получател на плащането</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
+    <value>Ако е поставена отметка, се създава категория на дохода.
+Само транзакциите, свързани с такава категория, ще се тълкуват като доход.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
+    <value>Доходът е от значение?</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="NewCategory_MonthOffset" xml:space="preserve">
+    <value>Отместване на месеца</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_Filter" xml:space="preserve">
+    <value>Финансов план на БФС (*.realm)|*.realm|Финансов план на БФС (*.bffs,*.sqlite)|*bffs;*.sqlite</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
+    <value>Създаване на нов финансов план</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
+    <value>Откриване на финансов план</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
+    <value>Текуща сума</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
+    <value>Междинна сума</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
+    <value>Липсваща сума</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
+    <value>Липсваща сума, с изключение на неподадените записи</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_CreateNew" xml:space="preserve">
+    <value>Създаване на нов получател на плащане</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Payee_Edit" xml:space="preserve">
+    <value>Редактиране на получателя на плащането</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SaveNewBudgetPlanTo" xml:space="preserve">
+    <value>Запазване на нов бюджетен план:</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Accents" xml:space="preserve">
+    <value>Акценти</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
+    <value>Винаги скривайте заглавията на колоните в таблицата за редактиране</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Currency" xml:space="preserve">
+    <value>Формат на валутата</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Date" xml:space="preserve">
+    <value>Формат на датата</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Език</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_ShowCheckNumbers" xml:space="preserve">
+    <value>Показване на номерата на чековете</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_ShowFlags" xml:space="preserve">
+    <value>Показване на маркери</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Тема</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="SuperiorCategory" xml:space="preserve">
+    <value>Наложена категория</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Test 5" xml:space="preserve">
+    <value>Бърз тест</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="Test4" xml:space="preserve">
+    <value>И още един път. Толкова е забавно.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Това е тест.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_Balance" xml:space="preserve">
+    <value>Общото салдо по сметката, като се вземат предвид записите с бъдеща дата.
+Вижте подсказката за инструменти за по-добро разграничение.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
+    <value>Междинната сума включва записите, които все още трябва да бъдат записани.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_MissingSum" xml:space="preserve">
+    <value>Разликата между целевото салдо по сметката и междинната сума.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
+    <value>Задаването на целевото салдо по сметката позволява автоматично изчисляване на липсващата сума.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
+    <value>Салдото по сметката на зададената начална дата.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
+    <value>Ако са активирани общите стойности, стойностите на подкатегориите се добавят към собствената стойност.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
+    <value>Използвайте този селектор за дата, за да преминете към който и да е месец (денят е без значение).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
+    <value>Преместване с един месец назад</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
+    <value>Преместване напред с един месец</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
+    <value>Месечното отместване измества момента, в който доходът става активен, месец по месец.
+Например, при компенсиране на месеца с единица, доходът се прехвърля към следващия месец, а минус единица - към предходния месец.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
+    <value>Ако е избрана родителска категория, новата категория ще бъде прикрепена към нея като подкатегория.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_DeleteRow" xml:space="preserve">
+    <value>Натиснете бутона в тази колона, за да изтриете елемента от съответния ред.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToCategory" xml:space="preserve">
+    <value>За да обедините една категория с друга, иконата от тази колона трябва да се плъзне от изходния ред и да се пусне върху целевия ред.
+Целевата категория ще наследи всички записи на акаунти и подкатегории от изходната категория.
+Ако двойка подкатегории имат едно и също име, изходната подкатегория ще бъде автоматично преименувана (ще бъде добавен номер).</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToFlag" xml:space="preserve">
+    <value>За да се слее един маркер с друг, символът от тази колона трябва да се плъзне от изходния ред и да се освободи върху целевия ред.
+Целевият маркер поема всички записи на сметки от изходния маркер и запазва собствения си цвят.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
+    <value>За да обедините една категория доход с друга, символът от тази колона трябва да се плъзне от изходния ред и да се освободи върху целевия ред.
+Целевата категория доходи ще наследи всички записи по сметката от категорията доходи на източника и ще запази месечното прихващане.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_MergeToPayee" xml:space="preserve">
+    <value>За да обедините един получател на плащане с друг, символът от тази колона трябва да се плъзне от изходния ред и да се пусне върху целевия ред.
+Целевият получател ще поеме всички записи по сметката от получателя източник.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
+    <value>Източник на сметката</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
+    <value>Категория на доходите</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
+    <value>Транзакция на приходите</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
+    <value>Щракнете, за да видите и редактирате частичните транзакции.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
+    <value>Zielkonto</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
+    <value>Транзакция</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
+    <value>Трансфер</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
+    <value>Сметката, към която принадлежи записът.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
+    <value>Категорията определя личната ви цел на този запис.
+Тъй като категориите могат да бъдат йерархични, целият йерархичен път се показва в подсказката за инструменти.
+
+Ако записът е прехвърляне, тук се въвежда целевата сметка.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
+    <value>Ако е необходимо, тук може да се въведе номерът на проверката.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
+    <value>Тази отметка може да се използва за разграничаване на завършените записи от тези, които все още се нуждаят от преработка.
+Общите суми могат да се видят в подсказката на баланса на сметката.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
+    <value>Датата, на която вписването влиза в сила.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
+    <value>Маркерът визуално подчертава записа с цвят и е напълно незадължителен.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
+    <value>Бележката има за цел да даде на записа някакво описание.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
+    <value>Тук се вписва платеното лице или платецът.
+
+Ако записът е превод, тук се въвежда сметката на източника.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
+    <value>Символите показват какъв тип е записът по сметката.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
+    <value>Записът за приход отбелязва транзакция, която се счита за приход.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
+    <value>Транзакцията позволява на паричните потоци да излязат от или да влязат в дадена сметка.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
+    <value>С превода се прехвърлят пари от една сметка в друга.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
+    <value>Сумата на вписването.</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_Currency" xml:space="preserve">
+    <value>Този текст не може да бъде обработен като валута!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
+    <value>Стойността е извън диапазона на валидност: [ {0} .. {1} ]!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NoNull" xml:space="preserve">
+    <value>Това поле за въвеждане не трябва да остава празно!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
+    <value>Този път на файла не съществува!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
+    <value>Директорията от пътя за запазване не съществува!</value>
+    <comment>Automatically Translated</comment>
+  </data>
+  <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
+    <value>Името на файла на този път в паметта е празно!</value>
     <comment>Automatically Translated</comment>
   </data>
 </root>

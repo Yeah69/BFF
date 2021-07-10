@@ -767,6 +767,10 @@ Tuluna tõlgendatakse ainult sellesse kategooriasse kuuluvaid tehinguid.</value>
     <value>Ülesseatud kategooria</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>See on test.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Konto kogusaldo, arvestades tulevase kuupäevaga kandeid.
 Paremaks eristamiseks vt tööriistavihikut.</value>
