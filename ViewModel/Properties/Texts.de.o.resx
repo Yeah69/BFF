@@ -591,9 +591,6 @@ Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkomm
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Übergestellte Kategorie</value>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value />
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Der Gesamtkontostand unter Berücksichtigung der Einträge mit einem zukünftigen Datum.
 Schaue in den Tooltip für eine bessere Unterscheidung.</value>
