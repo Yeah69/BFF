@@ -89,9 +89,9 @@ namespace BFF.View.Wpf.AttachedBehaviors
                                 }
                                 break;
                             case NotifyCollectionChangedAction.Move:
-                                throw new NotImplementedException("Creator did not think of this case.");
+                                throw new InvalidOperationException("Creator did not think of this case.");
                             case NotifyCollectionChangedAction.Replace:
-                                throw new NotImplementedException("Creator did not think of this case.");
+                                throw new InvalidOperationException("Creator did not think of this case.");
                         }
                         //todo
                     };

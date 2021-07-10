@@ -60,7 +60,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             Func<(DateTime? Date, string? Payee, bool CreatePayeeIfNotExisting, string? Memo, long? Sum), ICsvBankStatementImportItemViewModel> createItem,
             ICsvBankStatementProfileManager csvBankStatementProfileManger,
             Func<ICsvBankStatementImportProfile, ICsvBankStatementImportProfileViewModel> profileViewModelFactory) 
-            : base("") // ToDo Localize
+            : base(currentTextsViewModel.CurrentTexts.CsvBankStatementImport_Title) // ToDo Localize
         {
             Profiles = csvBankStatementProfileManger.Profiles.Transform(profileViewModelFactory);
             
