@@ -775,6 +775,10 @@ Csak az ilyen kategóriához tartozó tranzakciókat kell jövedelemként értel
     <value>És még egyszer. Annyira jó móka.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Ez a következő teszt.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Ez egy teszt.</value>
     <comment>Automatically Translated</comment>

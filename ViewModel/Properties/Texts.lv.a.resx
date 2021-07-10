@@ -775,6 +775,10 @@ Par ienākumiem tiks uzskatīti tikai tie darījumi, kas ir saistīti ar šādu 
     <value>Un vēl vienu reizi. Tik daudz jautrības.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Šis ir nākamais tests.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Šis ir tests.</value>
     <comment>Automatically Translated</comment>

@@ -767,6 +767,10 @@ Iba transakcie priradené k takejto kategórii sa budú interpretovať ako príj
     <value>Superponovaná kategória</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Toto je ďalší test.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Celkový zostatok na účte s ohľadom na záznamy s budúcim dátumom.
 Lepšie rozlíšenie nájdete v nápovede k nástroju.</value>

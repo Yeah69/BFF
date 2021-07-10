@@ -775,6 +775,10 @@ Tylko transakcje dołączone do takiej kategorii będą interpretowane jako przy
     <value>I jeszcze raz. Tyle zabawy.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>To jest następny test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>To jest test.</value>
     <comment>Automatically Translated</comment>

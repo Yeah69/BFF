@@ -775,6 +775,10 @@ Pajamomis bus laikomi tik prie tokios kategorijos priskirti sandoriai.</value>
     <value>Ir dar kartą. Labai smagu.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Tai kitas testas.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Tai yra testas.</value>
     <comment>Automatically Translated</comment>

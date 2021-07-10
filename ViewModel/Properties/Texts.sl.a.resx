@@ -775,6 +775,10 @@ Samo transakcije, ki so vezane na takšno kategorijo, se štejejo za dohodek.</v
     <value>In še enkrat. Toliko zabave.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>To je naslednji preizkus.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>To je preizkus.</value>
     <comment>Automatically Translated</comment>

@@ -775,6 +775,10 @@ Nur Transaktionen, die zu so einer Kategorie angehängt sind, werden als Einkomm
     <value>Und noch ein Mal. So viel Spaß.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Das ist der nächste Test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Dies ist ein Test.</value>
     <comment>Automatically Translated</comment>

@@ -775,6 +775,10 @@
     <value>И еще раз. Так весело.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Это следующее испытание.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Это тест.</value>
     <comment>Automatically Translated</comment>

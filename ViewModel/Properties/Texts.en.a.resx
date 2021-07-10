@@ -775,6 +775,10 @@ Only transactions attached to such a category will be interpreted as income.</va
     <value>And one more time. So much fun.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>This is the next test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>This is a test.</value>
     <comment>Automatically Translated</comment>

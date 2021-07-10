@@ -775,6 +775,10 @@ Alleen transacties die onder een dergelijke categorie vallen, zullen als inkomst
     <value>En nog een keer. Zo leuk.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Dit is de volgende test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Dit is een test.</value>
     <comment>Automatically Translated</comment>

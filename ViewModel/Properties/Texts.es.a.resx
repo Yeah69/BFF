@@ -775,6 +775,10 @@ Sólo se interpretarán como ingresos las operaciones adscritas a dicha categor�
     <value>Y una vez más. Muy divertido.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Esta es la siguiente prueba.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Esto es una prueba.</value>
     <comment>Automatically Translated</comment>

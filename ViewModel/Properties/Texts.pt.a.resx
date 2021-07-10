@@ -775,6 +775,10 @@ Somente as transações vinculadas a tal categoria serão interpretadas como ren
     <value>E mais uma vez. Tanta diversão.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Este é o próximo teste.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Isto é um teste.</value>
     <comment>Automatically Translated</comment>
