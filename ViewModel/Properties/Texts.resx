@@ -789,4 +789,7 @@ Wenn der Eintrag ein Transfer ist, dann wird hier das Quellkonto eingetragen.</v
   <data name="CsvBankStatementImport_Title" xml:space="preserve">
     <value>Importiere Kontoauszug über eine CSV-Datei</value>
   </data>
+  <data name="TestFour" xml:space="preserve">
+    <value>Dies ist ein Test.</value>
+  </data>
 </root>
