@@ -775,6 +775,10 @@ Seules les transactions rattachées à une telle catégorie seront interprétée
     <value>Et encore une fois. C'est tellement amusant.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>C'est le prochain test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>C'est un test.</value>
     <comment>Automatically Translated</comment>

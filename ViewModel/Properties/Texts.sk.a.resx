@@ -775,6 +775,10 @@ Iba transakcie priradené k takejto kategórii sa budú interpretovať ako príj
     <value>A ešte raz. Toľko zábavy.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Toto je ďalší test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Toto je test.</value>
     <comment>Automatically Translated</comment>

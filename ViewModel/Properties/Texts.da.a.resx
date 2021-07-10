@@ -775,6 +775,10 @@ Kun transaktioner, der er knyttet til en sådan kategori, vil blive fortolket so
     <value>Og endnu en gang. Det er så sjovt.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Dette er den næste prøve.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Dette er en prøve.</value>
     <comment>Automatically Translated</comment>

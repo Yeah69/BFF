@@ -767,6 +767,10 @@
     <value>Επικαλυπτόμενη κατηγορία</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Αυτή είναι η επόμενη δοκιμασία.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Το συνολικό υπόλοιπο του λογαριασμού λαμβάνοντας υπόψη τις εγγραφές με μελλοντική ημερομηνία.
 Δείτε το tooltip για καλύτερη διάκριση.</value>

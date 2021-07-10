@@ -775,6 +775,10 @@ Numai tranzacțiile atașate unei astfel de categorii vor fi interpretate ca fii
     <value>Și încă o dată. Atât de distractiv.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Acesta este următorul test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Acesta este un test.</value>
     <comment>Automatically Translated</comment>

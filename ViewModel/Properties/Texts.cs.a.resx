@@ -775,6 +775,10 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
     <value>A ještě jednou. Tolik zábavy.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Toto je další test.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Jedná se o test.</value>
     <comment>Automatically Translated</comment>

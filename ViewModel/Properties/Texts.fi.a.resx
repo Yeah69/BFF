@@ -775,6 +775,10 @@ Tuloksi tulkitaan ainoastaan tällaiseen luokkaan liitetyt liiketoimet.</value>
     <value>Ja vielä kerran. Niin hauskaa.</value>
     <comment>Automatically Translated</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>Tämä on seuraava testi.</value>
+    <comment>Automatically Translated</comment>
+  </data>
   <data name="TestFour" xml:space="preserve">
     <value>Tämä on testi.</value>
     <comment>Automatically Translated</comment>

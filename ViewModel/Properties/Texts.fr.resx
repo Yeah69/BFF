@@ -767,6 +767,10 @@ Seules les transactions rattachées à une telle catégorie seront interprétée
     <value>Catégorie superposée</value>
     <comment>Automatically translated.</comment>
   </data>
+  <data name="TestFive" xml:space="preserve">
+    <value>C'est le prochain test.</value>
+    <comment>Automatically translated.</comment>
+  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Le solde total du compte en considérant les entrées avec une date future.
 Voir l'infobulle pour une meilleure distinction.</value>
