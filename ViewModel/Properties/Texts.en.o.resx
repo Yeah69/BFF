@@ -591,9 +591,6 @@ Only transactions assigned to such a category are interpreted as income.</value>
   <data name="SuperiorCategory" xml:space="preserve">
     <value>Superior Category</value>
   </data>
-  <data name="TestFive" xml:space="preserve">
-    <value />
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>The overall balance including entries with a date in future.
 See tooltip for better distinction.</value>
