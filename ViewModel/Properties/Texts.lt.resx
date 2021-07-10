@@ -767,10 +767,6 @@ Pajamomis bus laikomi tik prie tokios kategorijos priskirti sandoriai.</value>
     <value>Sublimuota kategorija</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Tai yra testas.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Bendras sąskaitos likutis, atsižvelgiant į būsimos datos įrašus.
 Geriau atskirti žr. įrankių užuominą.</value>

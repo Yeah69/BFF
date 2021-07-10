@@ -767,10 +767,6 @@
     <value>叠加类别</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>这是个测试。</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>考虑到有未来日期的分录的账户总余额。
 请看工具提示，以便更好地加以区分。</value>

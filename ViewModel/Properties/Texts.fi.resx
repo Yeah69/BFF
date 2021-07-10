@@ -767,10 +767,6 @@ Tuloksi tulkitaan ainoastaan tällaiseen luokkaan liitetyt liiketoimet.</value>
     <value>Päällekkäinen luokka</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Tämä on testi.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Tilin kokonaissaldo ottaen huomioon kirjaukset, joiden päivämäärä on tulevaisuudessa.
 Katso työkaluvihjeitä, jotta voit tehdä paremman eron.</value>

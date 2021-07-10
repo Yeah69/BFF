@@ -767,10 +767,6 @@ Numai tranzacțiile atașate unei astfel de categorii vor fi interpretate ca fii
     <value>Categoria suprapusă</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Acesta este un test.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Soldul total al contului luând în considerare înregistrările cu dată viitoare.
 Consultați tooltip pentru o mai bună distincție.</value>

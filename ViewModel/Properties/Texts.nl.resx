@@ -767,10 +767,6 @@ Alleen transacties die onder een dergelijke categorie vallen, zullen als inkomst
     <value>Gesuperponeerde categorie</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Dit is een test.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>Het totale rekeningsaldo rekening houdend met de boekingen met een toekomstige datum.
 Zie de tooltip voor een beter onderscheid.</value>

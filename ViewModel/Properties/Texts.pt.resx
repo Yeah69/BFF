@@ -767,10 +767,6 @@ Somente as transações vinculadas a tal categoria serão interpretadas como ren
     <value>Categoria sobreposta</value>
     <comment>Automatically translated.</comment>
   </data>
-  <data name="TestFour" xml:space="preserve">
-    <value>Isto é um teste.</value>
-    <comment>Automatically translated.</comment>
-  </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
     <value>O saldo total da conta considerando os lançamentos com uma data futura.
 Veja a dica de ferramentas para uma melhor distinção.</value>
