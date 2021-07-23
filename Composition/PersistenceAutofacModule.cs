@@ -56,7 +56,7 @@ namespace BFF.Composition
                 .InstancePerLifetimeScope();
         }
 
-        private void LoadRealmRegistrations(ContainerBuilder builder, IRealmProjectFileAccessConfiguration config)
+        private static void LoadRealmRegistrations(ContainerBuilder builder, IRealmProjectFileAccessConfiguration config)
         {
             LoadBackendRegistrationsCommon(builder, config);
 

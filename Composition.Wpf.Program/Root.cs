@@ -1,6 +1,6 @@
 using System;
 
-namespace BFF.Composition
+namespace BFF.Composition.Wpf.Program
 {
     public interface IRoot
     {

@@ -6,7 +6,7 @@ using MahApps.Metro.Controls.Dialogs;
 using MrMeeseeks.ResXToViewModelGenerator;
 using Module = Autofac.Module;
 
-namespace BFF.Composition
+namespace BFF.Composition.Wpf.Program
 {
     public class ViewAutofacModule : Module
     {
@@ -16,11 +16,7 @@ namespace BFF.Composition
 
             builder.Register(_ => DialogCoordinator.Instance).As<IDialogCoordinator>();
 
-            builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance();
-
-            builder.Register(_ => new CurrentTextsViewModel())
-                .AsImplementedInterfaces()
-                .SingleInstance();
+            builder.RegisterType<WpfRxSchedulerProvider>().As<IRxSchedulerProvider>().SingleInstance(); 
 
             builder.RegisterType<MainWindow>().AsSelf().SingleInstance();
         }
