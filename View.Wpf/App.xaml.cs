@@ -16,12 +16,15 @@ namespace BFF.View.Wpf
     /// </summary>
     public partial class App
     {
+        public ICurrentTextsViewModel CurrentTextsViewModel { get; }
+        
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public App(
             Lazy<MainWindow> mainWindow,
             ICurrentTextsViewModel currentTextsViewModel)
         {
+            CurrentTextsViewModel = currentTextsViewModel;
             Logger.Trace("Initializing App");
             
             InitializeComponent();
