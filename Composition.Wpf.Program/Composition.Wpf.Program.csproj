@@ -14,10 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Composition\Composition.csproj" />
-      <ProjectReference Include="..\Core\Core.csproj" />
-      <ProjectReference Include="..\Model\Model.csproj" />
-      <ProjectReference Include="..\Persistence\Persistence.csproj" />
       <ProjectReference Include="..\View.Wpf\View.Wpf.csproj" />
-      <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
     </ItemGroup>
 </Project>
