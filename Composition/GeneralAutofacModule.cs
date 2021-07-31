@@ -1,8 +1,13 @@
 using Autofac;
 using BFF.Core.IoC;
 using BFF.ViewModel.ViewModels.ForModels;
+using MrMeeseeks.Extensions;
+using StrongInject;
+using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using Module = Autofac.Module;
 
 namespace BFF.Composition
@@ -18,6 +23,8 @@ namespace BFF.Composition
 
         protected override void Load(ContainerBuilder builder)
         {
+            var stringBuilder = new StringBuilder();
+
             builder.RegisterAssemblyTypes(_assemblies)
                 .Where(t => t.Namespace?.StartsWith("BFF") ?? false)
                 .Where(t => t != typeof(BudgetEntryViewModelPlaceholder))
@@ -32,8 +39,29 @@ namespace BFF.Composition
 
                     return true;
                 })
+                .Where(t =>
+                {
+                    if (t.IsInterface.Not() && (t.FullName?.Contains('+').Not() ?? false) && t.GenericTypeArguments.None())
+                    {
+                        Type[] interfaces = t.GetInterfaces()
+                            .Where(i => (i.FullName?.StartsWith("BFF.") ?? true)
+                                && (i.FullName?.Contains('+').Not() ?? false)
+                                && i.GenericTypeArguments.None())
+                            .ToArray();
+                        var interfacesPart = interfaces.Any()
+                            ? $", {string.Join(", ", interfaces.Select(i => $"typeof({i.FullName})"))}"
+                            : "";
+                        stringBuilder = stringBuilder.AppendLine($"[Register(typeof({t.FullName}){interfacesPart})]");
+                    }
+                    
+                    return true;
+                })
                 .AsImplementedInterfaces()
                 .AsSelf();
+
+            builder.Build();
+
+            var text = stringBuilder.ToString();
 
             builder.RegisterAssemblyTypes(_assemblies)
                 .Where(t =>
