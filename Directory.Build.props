@@ -5,5 +5,10 @@
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
+        <MinVerTagPrefix>v</MinVerTagPrefix>
+        <AssemblyVersion>$(MinVerVersion)</AssemblyVersion>
+        <FileVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).0</FileVersion>
+        <PackageVersion>$(MinVerVersion)</PackageVersion>
+        <Version>$(MinVerVersion)</Version>
     </PropertyGroup>
 </Project>
