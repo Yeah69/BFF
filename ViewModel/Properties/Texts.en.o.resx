@@ -53,10 +53,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Account_Balance" xml:space="preserve">
     <value>Balance</value>
@@ -175,7 +175,7 @@ Are you really sure? (A backup will be created automatically, if you would like 
     <value>Creates a new transfer</value>
   </data>
   <data name="AllAccounts" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
     <value>Available</value>
@@ -301,7 +301,7 @@ Are you really sure? (A backup will be created automatically, if you would like 
     <value>Are you sure?</value>
   </data>
   <data name="ContentIsLoading" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
     <value>Create new category</value>
@@ -316,7 +316,7 @@ Are you really sure? (A backup will be created automatically, if you would like 
     <value>An error occurred while creating the entries. Check the configuration.</value>
   </data>
   <data name="CsvBankStatementImport_Title" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_BankStatement" xml:space="preserve">
     <value>Bank Statement</value>

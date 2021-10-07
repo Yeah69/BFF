@@ -53,663 +53,663 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Account_Balance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Account_CreateNew" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Account_Edit" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Account_Name" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Account_StartingBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Account_StartingDate" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountTabsView_AllAccounts" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountTabsView_NewAccount_Create" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Balance_All" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Balance_Cleared" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Balance_Current" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Balance_Total" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Balance_Uncleared" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Column_Transfer" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_ConMenu_Delete" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_ConMenu_Remove" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_FirstEntry" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Account" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Category" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_CheckNumber" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Cleared" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Date" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Flag" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Memo" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Payee" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_Sum" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_SymbolAbbr" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_Header_SymbolAbbr_Tooltip" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_IntermediateBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_MissingSum" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_SetTargetBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_TargetBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_ToolTip_NewTransaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AccountView_ToolTip_NewTransfer" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="AllAccounts" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Available" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_AvailableExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Balance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Budgeted" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_BudgetedExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastThreeMonths" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ContextMenu_AvgOutflowsLastYear" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ContextMenu_BalanceToZero" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ContextMenu_BudgetLastMonth" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ContextMenu_OutflowsLastMonth" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ContextMenu_Zero" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Income" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_IncomeExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_NotBudgeted" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_NotBudgetedExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_OneSidedTransfers" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_OneSidedTransfersExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Outflows" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Overbudgeted" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_Overspend" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_OverspendExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Category_CreateNew" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Color" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Common_Configuration" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Common_Entries" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmCategoryDeletion" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmCategoryMerge" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagDeletion" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ConfirmationDialog_Title" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ContentIsLoading" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="CreateNewCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="CreateNewFlag" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="CsvBankStatementImport_Title" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_BankStatement" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_Categories" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_Flags" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_OpenBankStatement" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Domain_Payees" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessage_AccountHasToBeChosen" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageCategoryNameEmpty" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageEmptyAccount" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageEmptyCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageEmptyFromAccount" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageEmptyPayee" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageEmptyToAccount" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageWrongAccountName" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageWrongCategoryName" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageWrongFlagName" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Flag_CreateNew" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Flag_Edit" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Cancel" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_DateFormat" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Delimiter" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_FilePath" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Header" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Long" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_MemoFormat" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Name" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Negative" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_NewPayeeIfNotExisting" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_No" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Okay" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_PayeeFormat" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Positive" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Profile" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_RemoveProfile" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_ResetProfile" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_SaveNewProfile" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_SaveProfile" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Short" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_SumFormat" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Unassigned" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="General_Yes" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="HamburgerMenu_Accounts" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="HamburgerMenu_Budget" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_Browse" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_Cancel" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_ExportKind" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_Import" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_ImportKind" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_Password" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_SaveFile" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_Title" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_YNAB4_Budget" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Label_ConvertTo" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_File" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_File_Close" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_File_Import" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_File_New" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_File_Open" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="MainWindow_Settings" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="NameOfNewCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="NameOfNewFlag" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="NameOfNewPayee" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="NewCategory_MonthOffset" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="OpenSaveDialog_Filter" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="OpenSaveDialog_TitleNew" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="OpenSaveDialog_TitleOpen" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ParentTransEditingView_CurrentSum" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ParentTransEditingView_IntermediateSum" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ParentTransEditingView_MissingSumWithoutSubs" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ParentTransEditingView_MissingSumWithSubs" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Payee_Edit" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="SaveNewBudgetPlanTo" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_Accents" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_AlwaysHideEditHeaders" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_Currency" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_Date" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_ShowFlags" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="Settings_Theme" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Account_IntermediateBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Account_MissingSum" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Account_SetTargetBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthForward" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Category_MonthOffset" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_FromAccount" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_IncomeCategory" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_IncomeTransaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_SplitTransaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_Symbol_Transfer" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Account" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_CheckNumber" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Cleared" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Date" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Flag" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Memo" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Payee" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_S" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Income" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transaction" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_S_Transfer" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ToolTip_TransGrid_Header_Sum" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ValidationRule_Currency" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ValidationRule_CurrencyLongRange" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ValidationRule_NoNull" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ValidationRule_NotExistingFilePath" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value />
+    <value></value>
   </data>
 </root>
