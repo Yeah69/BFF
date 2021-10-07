@@ -53,10 +53,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, MrMeeseeks.ResXTranslationCombinator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Account_Balance" xml:space="preserve">
     <value>Zůstatek na účtu</value>
@@ -67,7 +67,7 @@
     <comment>Automatically translated.</comment>
   </data>
   <data name="Account_Delete_ConfirmationMessage" xml:space="preserve">
-    <value>Tím dojde ke smazání účtu a všech jeho transakcí, úplné převody se stanou jednostrannými a problém s rozpočtem specifický pro daný účet zmizí.
+    <value>Tím dojde ke smazání účtu a všech jeho transakcí, úplné převody se stanou jednostrannými a zmizí otázka týkající se konkrétního účtu v rozpočtu.
 
 Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnovit stav před smazáním).</value>
     <comment>Automatically translated.</comment>
@@ -97,7 +97,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_AbortTargetingBalance" xml:space="preserve">
-    <value>Zrušit cílení</value>
+    <value>Zrušit zaměřování</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_Balance_All" xml:space="preserve">
@@ -197,7 +197,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_AddToTable" xml:space="preserve">
-    <value>Uloží aktuálně upravované prvky do účtu</value>
+    <value>Uloží právě upravené prvky do účtu</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="AccountView_ToolTip_NewParentTransaction" xml:space="preserve">
@@ -269,7 +269,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Month_ContextMenu_AllCellsHeader" xml:space="preserve">
-    <value>Vyplňte všechny kolonky rozpočtu:</value>
+    <value>Vyplňte všechny buňky rozpočtu:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_Month_ContextMenu_EmptyCellsHeader" xml:space="preserve">
@@ -301,7 +301,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedExplanation" xml:space="preserve">
-    <value>Částka, která minulý měsíc chyběla ke splnění všech kategorií.</value>
+    <value>Částka, která minulý měsíc chyběla k naplnění všech kategorií.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_OverbudgetedThisMonthExplanation" xml:space="preserve">
@@ -317,7 +317,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_ShowAggregates" xml:space="preserve">
-    <value>Zobrazení celkových hodnot</value>
+    <value>Zobrazit celkové součty</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_UnassignedTransactions" xml:space="preserve">
@@ -325,7 +325,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="Budgeting_UnassignedTransactionsExplanation" xml:space="preserve">
-    <value>Součet všech transakcí, které nemají přiřazenou kategorii.</value>
+    <value>Součet všech transakcí, které nemají přiřazenou žádnou kategorii.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Category_CreateNew" xml:space="preserve">
@@ -357,11 +357,11 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmFlagMerge" xml:space="preserve">
-    <value>Určitě chcete, aby se značka "{0}" sloučila se značkou "{1}"?</value>
+    <value>Jste si jisti, že značka "{0}" má být sloučena se značkou "{1}"?</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryDeletion" xml:space="preserve">
-    <value>Opravdu chcete odstranit kategorii příjmů "{0}"?</value>
+    <value>Jste si jisti, že kategorie příjmů "{0}" má být odstraněna?</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmIncomeCategoryMerge" xml:space="preserve">
@@ -369,7 +369,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeDeletion" xml:space="preserve">
-    <value>Opravdu chcete odstranit příjemce "{0}"?</value>
+    <value>Jste si jisti, že příjemce "{0}" má být vymazán?</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ConfirmationDialog_ConfirmPayeeMerge" xml:space="preserve">
@@ -393,7 +393,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="CreateNewPayee" xml:space="preserve">
-    <value>Vytvoření nového placeného</value>
+    <value>Vytvoření nové placené</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="CsvBankStatementImport_ErrorDuringItemsCreation" xml:space="preserve">
@@ -413,7 +413,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_Flags" xml:space="preserve">
-    <value>Značky</value>
+    <value>Označení</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Domain_IncomeCategories" xml:space="preserve">
@@ -465,7 +465,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongCategoryParent" xml:space="preserve">
-    <value>Na této úrovni kategorie již existuje kategorie se zvoleným názvem!</value>
+    <value>Kategorie s vybraným názvem již na této úrovni existuje!</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongFlagName" xml:space="preserve">
@@ -473,7 +473,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="ErrorMessageWrongPayeeName" xml:space="preserve">
-    <value>Jméno nového příjemce nesmí být prázdné nebo již existovat.</value>
+    <value>Název nového příjemce nesmí být prázdný nebo již existovat.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Exception_FileNotFound" xml:space="preserve">
@@ -553,7 +553,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_ResetProfile" xml:space="preserve">
-    <value>obnovení profilu</value>
+    <value>Obnovení profilu</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_SaveNewProfile" xml:space="preserve">
@@ -565,7 +565,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Short" xml:space="preserve">
-    <value>Stručně</value>
+    <value>Krátké</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_SumFormat" xml:space="preserve">
@@ -573,7 +573,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Unassigned" xml:space="preserve">
-    <value>Nepřidělené</value>
+    <value>Nepřiděleno</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="General_Yes" xml:space="preserve">
@@ -625,7 +625,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="ImportView_YNAB4_Transaction" xml:space="preserve">
-    <value>Cesta k CSV transakcí YNAB:</value>
+    <value>Cesta k CSV transakce YNAB:</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Label_ConvertTo" xml:space="preserve">
@@ -633,7 +633,7 @@ Jste si opravdu jistý? (Provede se automatická záloha, aby bylo možné obnov
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_About" xml:space="preserve">
-    <value>Prostřednictvím</value>
+    <value>O stránkách</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="MainWindow_Empty" xml:space="preserve">
@@ -680,7 +680,7 @@ otevřete nabídku souborů v levém horním rohu.</value>
   </data>
   <data name="NewCategory_IncomeRelevantExplanation" xml:space="preserve">
     <value>Pokud je tato možnost zaškrtnuta, vytvoří se kategorie příjmů.
-Pouze transakce přiřazené k takové kategorii budou interpretovány jako příjem.</value>
+Pouze transakce přiřazené k takové kategorii jsou interpretovány jako příjem.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="NewCategory_IsIncomeRelevant" xml:space="preserve">
@@ -720,7 +720,7 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
     <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_CreateNew" xml:space="preserve">
-    <value>Vytvoření nového příjemce</value>
+    <value>Vytvořit nového příjemce</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Payee_Edit" xml:space="preserve">
@@ -752,7 +752,7 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
     <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_ShowCheckNumbers" xml:space="preserve">
-    <value>Zobrazit kontrolní čísla</value>
+    <value>Zobrazit čísla šeků</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_ShowFlags" xml:space="preserve">
@@ -760,7 +760,7 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
     <comment>Automatically translated.</comment>
   </data>
   <data name="Settings_Theme" xml:space="preserve">
-    <value>Předmět</value>
+    <value>Téma</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="SuperiorCategory" xml:space="preserve">
@@ -768,7 +768,7 @@ Pouze transakce přiřazené k takové kategorii budou interpretovány jako př�
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_Balance" xml:space="preserve">
-    <value>Celkový zůstatek účtu s ohledem na záznamy s budoucím datem.
+    <value>Celkový zůstatek účtu se zohledněním zápisů s budoucím datem.
 Lepší rozlišení najdete v nápovědě k nástroji.</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -785,7 +785,7 @@ Lepší rozlišení najdete v nápovědě k nástroji.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Account_StartingBalance" xml:space="preserve">
-    <value>Zůstatek na účtu ke stanovenému počátečnímu datu.</value>
+    <value>Zůstatek na účtu k nastavenému počátečnímu datu.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_Aggregates" xml:space="preserve">
@@ -793,7 +793,7 @@ Lepší rozlišení najdete v nápovědě k nástroji.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_JumpToMonth" xml:space="preserve">
-    <value>Pomocí tohoto voliče data můžete přejít na libovolný měsíc (na dni nezáleží).</value>
+    <value>Pomocí tohoto voliče data můžete přejít na libovolný měsíc (den není důležitý).</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_BudgetOverview_ShiftMonthBackward" xml:space="preserve">
@@ -810,7 +810,7 @@ Například měsíční zápočet jedničky přesune příjem do následujícíh
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Category_SuperiorCategory" xml:space="preserve">
-    <value>Pokud je vybrána nadřazená kategorie, bude k ní nová kategorie připojena jako podkategorie.</value>
+    <value>Pokud je vybrána nadřazená kategorie, nová kategorie se k ní připojí jako podkategorie.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_DeleteRow" xml:space="preserve">
@@ -818,23 +818,23 @@ Například měsíční zápočet jedničky přesune příjem do následujícíh
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToCategory" xml:space="preserve">
-    <value>Chcete-li sloučit jednu kategorii s jinou, přetáhněte ikonu z tohoto sloupce ze zdrojového řádku a pusťte ji na cílový řádek.
-Cílová kategorie zdědí všechny položky účtu a podkategorie ze zdrojové kategorie.
+    <value>Chcete-li sloučit jednu kategorii s jinou, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
+Cílová kategorie přebírá všechny položky a podkategorie účtu ze zdrojové kategorie.
 Pokud má dvojice podkategorií stejný název, zdrojová podkategorie se automaticky přejmenuje (doplní se číslo).</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToFlag" xml:space="preserve">
-    <value>Chcete-li sloučit jednu značku s jinou, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
-Cílová značka přebírá všechny položky účtu ze zdrojové značky a zachovává si svou vlastní barvu.</value>
+    <value>Chcete-li sloučit jednu značku s jinou, je třeba symbol z daného sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
+Cílová značka přebírá všechny účetní položky ze zdrojové značky a zachovává si svou vlastní barvu.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToIncomeCategory" xml:space="preserve">
     <value>Chcete-li sloučit jednu kategorii příjmů s jinou, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
-Cílová kategorie příjmů zdědí všechny účetní položky ze zdrojové kategorie příjmů a zachová si měsíční zápočet.</value>
+Cílová kategorie příjmů přebírá všechny účetní položky ze zdrojové kategorie příjmů a zachovává měsíční zápočet.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_MergeToPayee" xml:space="preserve">
-    <value>Chcete-li sloučit jednoho příjemce s jiným, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a přenést jej na cílový řádek.
+    <value>Chcete-li sloučit jednoho příjemce s jiným, je třeba symbol z tohoto sloupce přetáhnout ze zdrojového řádku a uvolnit jej na cílový řádek.
 Cílový příjemce převezme všechny záznamy na účtu od zdrojového příjemce.</value>
     <comment>Automatically translated.</comment>
   </data>
@@ -855,7 +855,7 @@ Cílový příjemce převezme všechny záznamy na účtu od zdrojového příje
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_ToAccount" xml:space="preserve">
-    <value>Zielkonto</value>
+    <value>Bylinný účet</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ToolTip_Symbol_Transaction" xml:space="preserve">
@@ -872,7 +872,7 @@ Cílový příjemce převezme všechny záznamy na účtu od zdrojového příje
   </data>
   <data name="ToolTip_TransGrid_Header_Category" xml:space="preserve">
     <value>Kategorie určuje váš osobní účel tohoto záznamu.
-Vzhledem k tomu, že kategorie mohou být hierarchické, zobrazuje se v nápovědě celá hierarchická cesta.
+Vzhledem k tomu, že kategorie mohou být hierarchicky strukturované, zobrazuje se v nápovědě celá hierarchická cesta.
 
 Pokud se jedná o převod, zadává se zde cílový účet.</value>
     <comment>Automatically translated.</comment>
@@ -941,11 +941,11 @@ Pokud se jedná o převod, zadává se zde zdrojový účet.</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath" xml:space="preserve">
-    <value>Adresář z cesty k uložení neexistuje!</value>
+    <value>Adresář cesty k úložišti neexistuje!</value>
     <comment>Automatically translated.</comment>
   </data>
   <data name="ValidationRule_NotExistingSavePath_EmptyName" xml:space="preserve">
-    <value>Název souboru této paměťové cesty je prázdný!</value>
+    <value>Název souboru této cesty k úložišti je prázdný!</value>
     <comment>Automatically translated.</comment>
   </data>
 </root>
