@@ -18,5 +18,5 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - run: dotnet build
-    - run: tar cf - Composition.Wpf.Program/bin/Release/net5.0-windows/ | xz -z - > artifacts/BFF_${CI_COMMIT_TAG}.tar.xz
-    - run: gh release create ${CI_COMMIT_TAG} artifacts/BFF_${CI_COMMIT_TAG}.tar.xz
+    - run: tar cf - Composition.Wpf.Program/bin/Release/net5.0-windows/ | xz -z - > "artifacts/BFF_${CI_COMMIT_TAG}.tar.xz"
+    - run: gh release create "${CI_COMMIT_TAG}" "artifacts/BFF_${CI_COMMIT_TAG}.tar.xz"
