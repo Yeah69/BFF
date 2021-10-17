@@ -28,6 +28,7 @@
                       RightWindowCommandsOverlayBehavior="Never"
                       ShowIconOnTitleBar="True"
                       TitleCharacterCasing="Normal"
+                      Icon="../Yeah69Logo.ico"
                       Top="{Binding Y, Mode=TwoWay}"
                       WindowButtonCommandsOverlayBehavior="Never"
                       WindowState="{Binding WindowState, Mode=TwoWay, Converter={x:Static helper:Converters.WindowState}}"
