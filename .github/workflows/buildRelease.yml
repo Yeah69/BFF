@@ -18,5 +18,5 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - run: dotnet build
-    - run: tar -czJ artifacts/0install-win-${{github.ref}}.tar.xz Composition.Wpf.Program/bin/Release/net5.0-windows/
+    - run: tar -cJ artifacts/BFF_${{github.ref}}.tar.xz Composition.Wpf.Program/bin/Release/net5.0-windows/
     - run: gh release create ${{github.ref}} artifacts/BFF_${{github.ref}}.tar.xz
