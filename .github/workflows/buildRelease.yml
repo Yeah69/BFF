@@ -18,11 +18,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - run: dotnet build --configuration Release
-    - run: tar -czf BFF_${GITHUB_REF/refs\/tags\//}.tar.gz Composition.Wpf.Program/bin/Release/net5.0-windows/
+    - run: |
+        cd Composition.Wpf.Program/bin/Release/net5.0-windows
+        tar -czf ../../../../BFF_${GITHUB_REF/refs\/tags\//}.tar.gz *
+        cd ../../../..
       shell: bash
-#    - run: gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
-#        | gh release create ${GITHUB_REF/refs\/tags\//} BFF_${GITHUB_REF/refs\/tags\//}.tar.xz
-#      shell: bash
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
