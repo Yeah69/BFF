@@ -1,0 +1,22 @@
+name: Build & release app on release tag
+
+on:
+  push:
+    tags:
+    - 'v69.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@main
+      with:
+        dotnet-version: 5.0.x
+    - run: dotnet build
+    - run: tar cf - Composition.Wpf.Program/bin/Release/net5.0-windows/ | xz -z - > artifacts/BFF_$CI_COMMIT_TAG.tar.xz
+    - run: gh release create $CI_COMMIT_TAG artifacts/BFF_$CI_COMMIT_TAG.tar.xz
