@@ -20,5 +20,6 @@ jobs:
     - run: dotnet build --configuration Release
     - run: tar -czf BFF_${GITHUB_REF/refs\/tags\//}.tar.gz Composition.Wpf.Program/bin/Release/net5.0-windows/
       shell: bash
-    - run: gh release create ${GITHUB_REF/refs\/tags\//} BFF_${GITHUB_REF/refs\/tags\//}.tar.xz
+    - run: gh auth login --with-token ${{ secrets.GITHUB_TOKEN }}
+        | gh release create ${GITHUB_REF/refs\/tags\//} BFF_${GITHUB_REF/refs\/tags\//}.tar.xz
       shell: bash
