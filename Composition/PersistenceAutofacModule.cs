@@ -44,6 +44,8 @@ namespace BFF.Composition
                     return context;
                 };
             });
+
+            builder.RegisterType<DateTimeStaticDelegate>().AsImplementedInterfaces();
         }
 
         private static void LoadBackendRegistrationsCommon<T>(

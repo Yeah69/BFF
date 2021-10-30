@@ -15,7 +15,7 @@ namespace BFF.Persistence.Realm.ORM
 
     internal class ProvideConnection : ProvideConnectionBase<Realms.Realm>, IProvideRealmConnection
     {
-        private readonly byte[] _hash = {};
+        private readonly byte[] _hash = Array.Empty<byte>();
 
         public override Realms.Realm Connection
         {
