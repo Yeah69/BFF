@@ -6,6 +6,8 @@ on:
   push:
     paths:
     - '**.resx'
+    tags-ignore:
+      - '*'           # ignore all tags because tag pushes ignore paths-filters
 
 # GitHub automatically creates a GITHUB_TOKEN secret to use in your workflow.
 env:
