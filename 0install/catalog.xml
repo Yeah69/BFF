@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type='text/xsl' href='resources/catalog.xsl'?>
+<c:catalog xmlns="http://zero-install.sourceforge.net/2004/injector/interface" xmlns:c="http://0install.de/schema/injector/catalog"><interface uri="https://yeah69.github.io/BFF/0install/bff.xml"><name>BFF</name><summary xml:lang="en">Budget tool for private management of finances</summary><description xml:lang="en">Budget tool for private management of finances</description><icon href="https://yeah69.github.io/BFF/Yeah69Logo.ico" type="image/vnd.microsoft.icon"/><icon href="https://yeah69.github.io/BFF/Yeah69Logo.png" type="image/png"/><category>Utility</category><entry-point app-id="Yeah69.BFF" binary-name="BFF" command="run"/></interface></c:catalog>
+<!-- Base64 Signature
+iQIcBAABAgAGBQJhfV6hAAoJEHCIsEOwB5twqT8QAKGEU2lO2HyDTGCOZ8bUUu9j2yRBSvC9C6UG
+hG6iW6aHlK7/JsOaq/tKokKY57+UQW5u5Kn5TAw2+qGxtW1wrrIZvMZJuyjUURULHZE4lIDnuutS
+/PD9rj2Md3gTEGunYua19MvBo12tnWLwjXC6n6etrb+hLWagKPPsDwpetcQviCpAZZvCMtIXf4k1
+pyqq47azezBQbJjeld+THoD89KQvie/3DjOlYma/tZNxx2/TDknyfQL6WU+J1onpS83FZwHuvnBx
+6RDjlgWN47TZwZDF1eiQC01pd5jr6KvB1RAbqeuQmpclssPAQbxkju6P4iBcqJrsp9Yv+xHRG0Ua
+rPn12VeEnqj+XMP2dNfha2a12aft71/IlNWCeB34eFOVjhBg6SGlCv0YDXFbbIoOtSaLXT5K9M8M
+BCEUcbXx1fe5QWwtROcZbn/nZc3QjLWPh47hp1XkQaa4z05OxsZO/fB5GMGDQjHtdXjkMNh6L2R3
+Fg0ZqGqVGGlY1bWPyAvs7Ur1FLrZkU5vBEMIPgdsDMddOySDXzw9/CHWONgKDx4rs0/T8ECHGNaw
+aSNCzreg7WpV6vVauZuEgB72RVT5wrPEJNfRO3UAxbu4MhBAoENpfEyGqyxjglDsZyxbpmYax+CM
+pZ0rIk1oNQBA4j3QdViaDUWeOVa9nSMcC3C6eMaK
+
+-->

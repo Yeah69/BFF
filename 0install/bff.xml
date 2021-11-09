@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type='text/xsl' href='resources/feed.xsl'?>
+<interface uri="https://yeah69.github.io/BFF/0install/bff.xml" xmlns="http://zero-install.sourceforge.net/2004/injector/interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://zero-install.sourceforge.net/2004/injector/interface https://docs.0install.net/specifications/feed.xsd http://0install.de/schema/desktop-integration/capabilities https://docs.0install.net/specifications/capabilities.xsd">
+  <name>BFF</name>
+  <summary xml:lang="en">Budget tool for private management of finances</summary>
+  <description xml:lang="en">Budget tool for private management of finances</description>
+  <icon href="https://yeah69.github.io/BFF/Yeah69Logo.ico" type="image/vnd.microsoft.icon"/>
+  <icon href="https://yeah69.github.io/BFF/Yeah69Logo.png" type="image/png"/>
+  <category>Utility</category>
+  <group arch="Windows-x86_64" license="MIT/X Consortium License">
+    <command name="run" path="BFF.exe">
+      <requires interface="https://apps.0install.net/dotnet/windowsdesktop-runtime.xml" version="6.0.0.."/>
+    </command>
+    <implementation id="sha256new_HPDG4S3PIYWHXRK6NWI4STPNET42J3HAPZHED62PSQIT3AVWGTIA" stability="buggy" version="69.2021.1">
+      <manifest-digest sha256new="HPDG4S3PIYWHXRK6NWI4STPNET42J3HAPZHED62PSQIT3AVWGTIA"/>
+      <archive href="https://yeah69.github.io/BFF/Releases/BFF_69.2021.1.zip" size="25172217" type="application/zip"/>
+    </implementation>
+    <implementation id="sha256new_JVLXFHUMXV6JWGEGLRVO4FFZOEQAKHSI4GCF4D42LNQECM3UQKSA" stability="buggy" version="69.2021.17">
+      <manifest-digest sha256new="JVLXFHUMXV6JWGEGLRVO4FFZOEQAKHSI4GCF4D42LNQECM3UQKSA"/>
+      <archive href="https://github.com/Yeah69/BFF/releases/download/v69.2021.17/BFF_v69.2021.17.tar.gz" size="26101507" type="application/x-compressed-tar"/>
+    </implementation>
+    <implementation id="sha256new_ZW5CUU56CYGDYLXNQS5JMEZ3L3YCDXGRF6XKIIZ3S5RLIHFVPPDA" released="2021-10-30" stability="stable" version="69.2021.18">
+      <manifest-digest sha256new="ZW5CUU56CYGDYLXNQS5JMEZ3L3YCDXGRF6XKIIZ3S5RLIHFVPPDA"/>
+      <archive href="https://github.com/Yeah69/BFF/releases/download/v69.2021.18/BFF_v69.2021.18.tar.gz" size="26099646" type="application/x-compressed-tar"/>
+    </implementation>
+  </group>
+  <entry-point app-id="Yeah69.BFF" binary-name="BFF" command="run"/>
+</interface>
+<!-- Base64 Signature
+iQIcBAABAgAGBQJhis0VAAoJEHCIsEOwB5twwIIQAKFy/8Pbz7/ja6GWPhJDI2mVE0PBHDX/7Cej
+O11DNtuJXPXl2hnGxDx6Zcmlvy/RGpe/jdetbMLteWqgVpWhXm8p5i1w55ekGUOpu4UsKa4RCZ9U
+Uh/whHLSUbrS1UT3C2e8Kibzye2tUzlOmYSNK5EL0HbFZsobA4bCdEQiEXtvB4bNpgGwAnAmHmxi
+gQYZauMdRXLsE6h4Xzunwjoq2PVqZnhf2RSH1Q2FgcCXELO9wd6FxraFyspOxLoZB5Sob31Jn+c+
+J217Ktkx0Od+NT4fvch2i4OTGwN/8/D6xN7qKxymkHbY8GH3pKyJKo5o5cKrgH+MxDvbSIoFrsHj
+kgLkPMRtx4j7dSHGznDcqNNh2pNy55Ja/OM2E/ZzWm8YZXfdw4tWK9GfM0UKKYlH58B62MEnLzJl
+xxhJgzNL371nj69HcTNyuFHFrXm5M3GNnGVtTgaTFCNzs/CFDVQXv6SEguNqMkZ29YaHqMnIZEj0
+N1tME4MUx4rcEmRXforBK0OYewSAb7EJw8sJXXLvUV52kQf9hZu6OGOA6U765/VyKGmNM2d5EVHD
+DQDcekEarujf+8kcenFyO+tJ4+FgksyjhYZmArKP/jx5VwJGYNfEP2o7BZ65gF6WfNEfZWM08EnZ
+wXBXMewz7y34VvHUB/tpsOmlExlO02NwkKnPHk0N
+
+-->
