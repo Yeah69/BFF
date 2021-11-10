@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<interface xmlns="http://zero-install.sourceforge.net/2004/injector/interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://zero-install.sourceforge.net/2004/injector/interface https://docs.0install.net/specifications/feed.xsd http://0install.de/schema/desktop-integration/capabilities https://docs.0install.net/specifications/capabilities.xsd">
+  <group arch="Windows-x86_64" license="MIT/X Consortium License">
+    <implementation released="{released}" version="{version}">
+      <archive href="https://github.com/Yeah69/BFF/releases/download/v{version}/BFF_v{version}.tar.gz" type="application/x-compressed-tar"/>
+    </implementation>
+  </group>
+  <feed-for interface="https://yeah69.github.io/BFF/0install/bff.xml"/>
+</interface>
