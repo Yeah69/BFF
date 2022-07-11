@@ -11,14 +11,14 @@ using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels.Dialogs
 {
-    public interface IFileAccessViewModel : IMainWindowDialogContentViewModel<IProjectFileAccessConfiguration>
+    public interface IFileAccessViewModel : IMainWindowDialogContentViewModel<IRealmProjectFileAccessConfiguration>
     {
         ICommand BrowseCommand { get; }
         ICommand OkCommand { get; }
         string? Path { get; set; }
     }
 
-    public abstract class FileAccessViewModel : MainWindowDialogContentViewModel<IProjectFileAccessConfiguration>, IFileAccessViewModel
+    public abstract class FileAccessViewModel : MainWindowDialogContentViewModel<IRealmProjectFileAccessConfiguration>, IFileAccessViewModel
     {
         private readonly Func<IPasswordProtectedFileAccessViewModel> _passwordProtectedFileAccessViewModelFactory;
 
@@ -42,7 +42,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
 
             this.OkCommand = okCommand;
             
-            IProjectFileAccessConfiguration GenerateConfiguration()
+            IRealmProjectFileAccessConfiguration GenerateConfiguration()
             {
                 if (this.Path is null) throw new FileNotFoundException();
 

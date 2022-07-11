@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BFF.Core.IoC;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -7,7 +8,7 @@ using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.ViewModels.ForModels
 {
-    public class BudgetEntryViewModelPlaceholder : NotifyingErrorViewModelBase, IBudgetEntryViewModel
+    public class BudgetEntryViewModelPlaceholder : NotifyingErrorViewModelBase, IBudgetEntryViewModel, IContainerInstance
     {
         internal static BudgetEntryViewModelPlaceholder Instance => new();
 

@@ -4,11 +4,11 @@ using BFF.Model.Models;
 
 namespace BFF.Model.Repositories
 {
-    public interface ICreateNewModels : IOncePerBackend
+    public interface ICreateNewModels : IScopeInstance
     {
         ITransaction CreateTransaction();
         ITransfer CreateTransfer();
-        IParentTransaction CreateParentTransfer();
+        IParentTransaction CreateParentTransaction();
         ISubTransaction CreateSubTransaction();
         IAccount CreateAccount();
         IPayee CreatePayee();

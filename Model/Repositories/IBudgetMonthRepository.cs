@@ -6,7 +6,7 @@ using BFF.Model.Models;
 
 namespace BFF.Model.Repositories
 {
-    public interface IBudgetMonthRepository : IDisposable, IOncePerBackend
+    public interface IBudgetMonthRepository : IDisposable, IScopeInstance
     {
         Task<IList<IBudgetMonth>> FindAsync(int year);
 

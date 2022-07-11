@@ -1,11 +1,12 @@
 ﻿using BFF.Core.Helper;
+using BFF.Core.IoC;
 using System.Reactive.Concurrency;
 using System.Windows;
 using System.Windows.Threading;
 
 namespace BFF.View.Wpf.Helper
 {
-    internal class WpfRxSchedulerProvider : IRxSchedulerProvider
+    internal class WpfRxSchedulerProvider : IRxSchedulerProvider, IContainerInstance
     {
         public WpfRxSchedulerProvider()
         {

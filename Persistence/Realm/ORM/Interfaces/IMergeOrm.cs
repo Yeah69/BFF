@@ -4,7 +4,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    internal interface IMergeOrm : IOncePerBackend
+    internal interface IMergeOrm : IScopeInstance
     {
         Task MergePayeeAsync(Payee from, Payee to);
         Task MergeFlagAsync(Flag from, Flag to);

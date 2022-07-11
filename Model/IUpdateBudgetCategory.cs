@@ -16,7 +16,7 @@ namespace BFF.Model
         IObservable<ICategory> Observe { get; }
     }
     
-    internal class UpdateBudgetCategory : IUpdateBudgetCategory, IObserveUpdateBudgetCategory, IDisposable, IOncePerBackend
+    internal class UpdateBudgetCategory : IUpdateBudgetCategory, IObserveUpdateBudgetCategory, IDisposable, IScopeInstance
     {
         private readonly Subject<ICategory> _subject = new(); 
 

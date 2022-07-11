@@ -4,7 +4,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    internal interface IAccountOrm : IOncePerBackend
+    internal interface IAccountOrm : IScopeInstance
     {
         Task<long?> GetClearedBalanceAsync(Account account);
         Task<long?> GetClearedBalanceUntilNowAsync(Account account);

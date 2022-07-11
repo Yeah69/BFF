@@ -4,12 +4,12 @@ namespace BFF.Persistence.Contexts
 {
     internal class RealmProjectFileAccessConfiguration : IRealmProjectFileAccessConfiguration
     {
-        public RealmProjectFileAccessConfiguration(
-            string path,
-            string? password)
+        public RealmProjectFileAccessConfiguration()
+            //string path,
+            //string? password)
         {
-            Path = path;
-            Password = password;
+            Path = "C:\\test.realm"; // path;
+            Password = "asdf";
         }
 
         public string Path { get; }

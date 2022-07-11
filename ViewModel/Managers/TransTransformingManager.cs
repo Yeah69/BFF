@@ -26,7 +26,7 @@ namespace BFF.ViewModel.Managers
 
     }
 
-    internal class TransTransformingManager : ITransTransformingManager, IOncePerBackend
+    internal class TransTransformingManager : ITransTransformingManager, IScopeInstance
     {
         private readonly Func<IAccountBaseViewModel?, ITransactionViewModel> _transactionViewModelFactory;
         private readonly Func<IAccountBaseViewModel?, ITransferViewModel> _transferViewModelFactory;

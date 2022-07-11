@@ -33,13 +33,13 @@ namespace BFF.Persistence.Import
         private readonly IDtoImportContainerBuilder _dtoImportContainerBuilder;
         private readonly IYnab4CsvImportConfiguration _ynab4CsvImportConfiguration;
         private readonly IDateTimeStaticDelegate _dateTimeStaticDelegate;
-        private readonly IDisposable _cleanUpContext;
+        private readonly IAsyncDisposable _cleanUpContext;
 
         public Ynab4CsvImporter(
             IDtoImportContainerBuilder dtoImportContainerBuilder,
             IYnab4CsvImportConfiguration ynab4CsvImportConfiguration,
             IDateTimeStaticDelegate dateTimeStaticDelegate,
-            IDisposable cleanUpContext)
+            IAsyncDisposable cleanUpContext)
         {
             _dtoImportContainerBuilder = dtoImportContainerBuilder;
             _ynab4CsvImportConfiguration = ynab4CsvImportConfiguration;
@@ -331,7 +331,7 @@ namespace BFF.Persistence.Import
         private static bool IsIncomeNextMonth(string master, string sub) => master == "Income" && sub == "Available next month";
 
         public void Dispose() => 
-            _cleanUpContext.Dispose();
+            Task.Run(() => _cleanUpContext.DisposeAsync());
 
         public string Title { get; }
     }

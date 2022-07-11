@@ -31,7 +31,7 @@ namespace BFF.Model.Models.Utility
             string name);
     }
 
-    public class CsvBankStatementProfileManager : ICsvBankStatementProfileManager, ICreateCsvBankStatementImportProfile, IOncePerApplication
+    public class CsvBankStatementProfileManager : ICsvBankStatementProfileManager, ICreateCsvBankStatementImportProfile, IContainerInstance
     {
         private readonly IManageCsvBankStatementImportProfiles _manageCsvBankStatementImportProfiles;
         private readonly ObservableCollection<ICsvBankStatementImportProfile> _profiles;

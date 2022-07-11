@@ -7,7 +7,7 @@ using Realms;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    internal interface ICrudOrm<T> : IOncePerBackend
+    internal interface ICrudOrm<T> : IScopeInstance
         where T : class, IPersistenceModelRealm
     {
         Task<bool> CreateAsync(Func<Realms.Realm, RealmObject> createNewRealmObject);

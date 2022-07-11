@@ -23,7 +23,7 @@ using System.Windows.Input;
 
 namespace BFF.ViewModel.ViewModels
 {
-    public interface IMainWindowViewModel : IViewModel
+    public interface IMainWindowViewModel : IViewModel, IContainerInstance
     {
         ICommand NewBudgetPlanCommand { get; }
         ICommand OpenBudgetPlanCommand { get; }
@@ -43,7 +43,7 @@ namespace BFF.ViewModel.ViewModels
         ITransDataGridColumnManager TransDataGridColumnManager { get; }
     }
 
-    internal class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IOncePerApplication
+    internal class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IContainerInstance
     {
         private readonly IBffSettings _bffSettings;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -218,7 +218,7 @@ namespace BFF.ViewModel.ViewModels
 
             Logger.Trace("Initializing done.");
             
-            void Reset(IProjectFileAccessConfiguration config)
+            void Reset(IRealmProjectFileAccessConfiguration config)
             {
                 if (File.Exists(config.Path))
                 {

@@ -24,7 +24,7 @@
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="MrMeeseeks" Version="69.0.24" />
     <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.24" />
-    <PackageReference Include="MrMeeseeks.ResXToViewModelGenerator" Version="69.0.20" />
+    <PackageReference Include="MrMeeseeks.ResXToViewModelGenerator" Version="69.0.33" />
     <PackageReference Include="MrMeeseeks.Windows" Version="69.0.24" />
     <PackageReference Include="MuVaViMo" Version="0.4.0" />
     <PackageReference Include="NLog" Version="4.7.9" />

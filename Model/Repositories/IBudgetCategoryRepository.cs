@@ -5,7 +5,7 @@ using BFF.Model.Models;
 
 namespace BFF.Model.Repositories
 {
-    public interface IBudgetCategoryRepository : IDisposable, IOncePerBackend
+    public interface IBudgetCategoryRepository : IDisposable, IScopeInstance
     {
         Task<IBudgetCategory> FindAsync(ICategory category);
     }

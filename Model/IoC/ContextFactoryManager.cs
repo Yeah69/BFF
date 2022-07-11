@@ -19,7 +19,7 @@ namespace BFF.Model.IoC
         IExportContext CreateExportContext(IConfiguration configuration);
     }
     
-    internal class ContextManager : IContextManager, IOncePerApplication
+    internal class ContextManager : IContextManager, IContainerInstance
     {
         private readonly IReadOnlyList<IContextFactory> _factories;
 

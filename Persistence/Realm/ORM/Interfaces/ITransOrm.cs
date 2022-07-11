@@ -6,7 +6,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    internal interface ITransOrm : IOncePerBackend
+    internal interface ITransOrm : IScopeInstance
     {
         Task<IEnumerable<Trans>> GetPageFromSpecificAccountAsync(int offset, int pageSize, Account account);
         Task<IEnumerable<Trans>> GetPageFromSummaryAccountAsync(int offset, int pageSize);

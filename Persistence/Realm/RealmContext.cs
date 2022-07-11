@@ -15,19 +15,19 @@ namespace BFF.Persistence.Realm
     internal class RealmContext : IRealmContext
     {
         private readonly IRealmExporter _realmExporter;
-        private readonly Lazy<IProvideRealmConnection> _provideRealmConnection;
-        private readonly IDisposable _cleanUpContext;
+        private readonly IProvideRealmConnection _provideRealmConnection;
+        private readonly IAsyncDisposable _cleanUpContext;
         private readonly IRealmImporter _realmImporter;
 
         public RealmContext(
             // parameters
-            IDisposable cleanUpContext,
+            IAsyncDisposable cleanUpContext,
             
             // dependencies
             IRealmProjectFileAccessConfiguration configuration,
             IRealmImporter realmImporter,
             IRealmExporter realmExporter,
-            Lazy<IProvideRealmConnection> provideRealmConnection)
+            IProvideRealmConnection provideRealmConnection)
         {
             _realmExporter = realmExporter;
             _provideRealmConnection = provideRealmConnection;
@@ -43,11 +43,11 @@ namespace BFF.Persistence.Realm
 
         public void Load()
         {
-            var _ = _provideRealmConnection.Value.Connection;
+            var _ = _provideRealmConnection.Connection;
         }
 
         public void Dispose() => 
-            _cleanUpContext.Dispose();
+            Task.Run(() => _cleanUpContext.DisposeAsync());
 
         public string Title { get; }
     }

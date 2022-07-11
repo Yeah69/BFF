@@ -3,7 +3,7 @@ using BFF.Core.IoC;
 
 namespace BFF.Model.Models
 {
-    public interface ISummaryAccount : IAccount, IOncePerBackend {}
+    public interface ISummaryAccount : IAccount, IScopeInstance {}
 
     /// <summary>
     /// Trans' can be added to an Account

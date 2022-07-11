@@ -22,7 +22,7 @@ namespace BFF.ViewModel.ViewModels
         IBudgetOverviewTableViewModel Table { get; }
     }
 
-    internal class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IOncePerBackend, IDisposable
+    internal class BudgetOverviewViewModel : ViewModelBase, IBudgetOverviewViewModel, IScopeInstance, IDisposable
     {
         
         private readonly IBffSettings _bffSettings;

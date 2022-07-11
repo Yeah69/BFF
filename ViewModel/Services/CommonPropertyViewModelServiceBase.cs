@@ -14,7 +14,7 @@ using MuVaViMo;
 
 namespace BFF.ViewModel.Services
 {
-    public interface ICommonPropertyViewModelServiceBase<TDomain, TViewModel> : IConvertingViewModelServiceBase<TDomain, TViewModel>, IOncePerBackend
+    public interface ICommonPropertyViewModelServiceBase<TDomain, TViewModel> : IConvertingViewModelServiceBase<TDomain, TViewModel>, IScopeInstance
         where TDomain : class, IDataModel
         where TViewModel : class, IDataModelViewModel
     {

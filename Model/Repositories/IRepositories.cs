@@ -7,7 +7,7 @@ using MuVaViMo;
 
 namespace BFF.Model.Repositories
 {
-    public interface IObservableRepositoryBase<TDomain> : IOncePerBackend 
+    public interface IObservableRepositoryBase<TDomain> : IScopeInstance 
         where TDomain : class, IDataModel
     {
         IObservableReadOnlyList<TDomain> All { get; }

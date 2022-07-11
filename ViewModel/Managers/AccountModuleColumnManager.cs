@@ -17,7 +17,7 @@ namespace BFF.ViewModel.Managers
         bool NeverShowEditHeaders { get; set; }
     }
 
-    internal class TransDataGridColumnManager : ObservableObject, ITransDataGridColumnManager, IOncePerApplication, IDisposable
+    internal class TransDataGridColumnManager : ObservableObject, ITransDataGridColumnManager, IContainerInstance, IDisposable
     {
         private readonly IBffSettings _bffSettings;
         private readonly CompositeDisposable _compositeDisposable = new();

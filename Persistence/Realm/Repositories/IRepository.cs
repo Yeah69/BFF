@@ -5,12 +5,12 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.Repositories
 {
-    internal interface IRealmWriteOnlyRepository<in T> : IOncePerBackend
+    internal interface IRealmWriteOnlyRepository<in T> : IScopeInstance
         where T : class, IDataModel
     {
         Task<bool> AddAsync(T dataModel);
     }
-    internal interface IRealmReadOnlyRepository<TDomain, TPersistence> : IOncePerBackend
+    internal interface IRealmReadOnlyRepository<TDomain, TPersistence> : IScopeInstance
         where TDomain : class, IDataModel
         where TPersistence : class, IPersistenceModelRealm
     {

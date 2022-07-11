@@ -6,7 +6,7 @@ using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM.Interfaces
 {
-    internal interface IBudgetOrm : IOncePerBackend
+    internal interface IBudgetOrm : IScopeInstance
     {
         Task<BudgetBlock> FindAsync(int year);
         Task<IReadOnlyList<(BudgetEntry? Entry, BudgetEntryData Data)>> FindAsync(int year, Category category);

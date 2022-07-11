@@ -12,7 +12,7 @@ namespace BFF.Persistence.Common
         IObservable<Unit> Observe { get; }
     }
     
-    public class ClearBudgetCache : IClearBudgetCache, IObserveClearBudgetCache, IDisposable, IOncePerBackend
+    public class ClearBudgetCache : IClearBudgetCache, IObserveClearBudgetCache, IDisposable, IScopeInstance
     {
         private readonly Subject<Unit> _subject = new();
 

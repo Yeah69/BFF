@@ -3,7 +3,7 @@ using BFF.Core.IoC;
 
 namespace BFF.Model.Helper
 {
-    public interface ILastSetDate : IOncePerBackend
+    public interface ILastSetDate : IScopeInstance
     {
         DateTime Date { get; set; }
     }

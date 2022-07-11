@@ -18,7 +18,7 @@ namespace BFF.Model.IoC
         void Close();
     }
     
-    internal class CurrentProject : ICurrentProject, IOncePerApplication
+    internal class CurrentProject : ICurrentProject, IContainerInstance
     {
         private readonly IContextManager _contextManager;
         private readonly IBffSettingsProxy _bffSettingsProxy;
@@ -47,7 +47,7 @@ namespace BFF.Model.IoC
                 _serialContext.Disposable = _current.Value;
                 _bffSettingsProxy.DBLocation = loadProjectFileConfiguration switch
                 {
-                    IProjectFileAccessConfiguration fileConfiguration => fileConfiguration.Path,
+                    IRealmProjectFileAccessConfiguration fileConfiguration => fileConfiguration.Path,
                     _ => ""
                 };
             }

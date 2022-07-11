@@ -1,14 +1,8 @@
 using Autofac;
 using BFF.Core.IoC;
 using BFF.Model.Contexts;
-using BFF.Model.Models;
-using BFF.Model.Repositories;
 using BFF.ViewModel.Contexts;
-using BFF.ViewModel.ViewModels;
-using BFF.ViewModel.ViewModels.ForModels;
-using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Reactive.Extensions;
-using MrMeeseeks.ResXToViewModelGenerator;
 using System;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
@@ -23,7 +17,7 @@ namespace BFF.Composition
         ILifetimeScope Get(object key);
     }
 
-    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IOncePerApplication
+    internal class LifetimeScopeRegistry : ILifetimeScopeRegistry, IContainerInstance
     {
         private readonly IDictionary<object, ILifetimeScope> _registry = new Dictionary<object, ILifetimeScope>();
 
@@ -41,37 +35,6 @@ namespace BFF.Composition
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-
-            builder.RegisterInstance(BudgetEntryViewModelPlaceholder.Instance)
-                .As<BudgetEntryViewModelPlaceholder>()
-                .AsSelf()
-                .SingleInstance();
-
-            builder
-                .RegisterType<MainWindowViewModel>()
-                .As<IMainWindowViewModel>()
-                .SingleInstance();
-
-            builder.Register<Func<IAccountBaseViewModel, ITransactionViewModel>>(cc =>
-            {
-                var factory = cc.Resolve<Func<ITransaction, IAccountBaseViewModel, ITransactionViewModel>>();
-                var createNewModels = cc.Resolve<ICreateNewModels>();
-                return abvm => factory(createNewModels.CreateTransaction(), abvm);
-            }).As<Func<IAccountBaseViewModel, ITransactionViewModel>>();
-
-            builder.Register<Func<IAccountBaseViewModel, ITransferViewModel>>(cc =>
-            {
-                var factory = cc.Resolve<Func<ITransfer, IAccountBaseViewModel, ITransferViewModel>>();
-                var createNewModels = cc.Resolve<ICreateNewModels>();
-                return abvm => factory(createNewModels.CreateTransfer(), abvm);
-            }).As<Func<IAccountBaseViewModel, ITransferViewModel>>();
-
-            builder.Register<Func<IAccountBaseViewModel, IParentTransactionViewModel>>(cc =>
-            {
-                var factory = cc.Resolve<Func<IParentTransaction, IAccountBaseViewModel, IParentTransactionViewModel>>();
-                var createNewModels = cc.Resolve<ICreateNewModels>();
-                return abvm => factory(createNewModels.CreateParentTransfer(), abvm);
-            }).As<Func<IAccountBaseViewModel, IParentTransactionViewModel>>();
 
             builder.Register<Func<IContext, ILoadContextViewModel>>(cc =>
             {
@@ -92,13 +55,7 @@ namespace BFF.Composition
                 };
             });
 
-            builder.RegisterType<BudgetEntryViewModel>().AsImplementedInterfaces();
-
             builder.RegisterType<LifetimeScopeRegistry>()
-                .AsImplementedInterfaces()
-                .SingleInstance();
-
-            builder.RegisterType<CurrentTextsViewModel>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
         }

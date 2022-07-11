@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace BFF.View.Wpf.Helper
 {
-    internal class BffSettings : IBffSettings, IOncePerApplication
+    internal class BffSettings : IBffSettings, IContainerInstance
     {
         public string CsvBankStatementImportProfiles
         {

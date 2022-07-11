@@ -35,7 +35,7 @@ namespace BFF.ViewModel.ViewModels
         IHavePayeeViewModel? CurrentOwner { get; set; }
     }
 
-    internal class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IOncePerBackend, IDisposable
+    internal class NewPayeeViewModel : NotifyingErrorViewModelBase, INewPayeeViewModel, IScopeInstance, IDisposable
     {
         private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IPayeeViewModelService _payeeViewModelService;

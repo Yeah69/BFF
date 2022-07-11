@@ -23,7 +23,7 @@ namespace BFF.ViewModel.Managers
         void RefreshCompletely();
     }
     
-    internal class BudgetRefreshes : IBudgetRefreshes, IOncePerBackend, IDisposable
+    internal class BudgetRefreshes : IBudgetRefreshes, IScopeInstance, IDisposable
     {
         private readonly ConcurrentDictionary<ICategoryViewModel, Subject<Unit>> _categoryEvents = 
             new();

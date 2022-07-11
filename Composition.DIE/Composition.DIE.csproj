@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <AssemblyName>BFF</AssemblyName>
+        <RootNamespace>BFF.Composition.DIE</RootNamespace>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="MinVer" Version="2.5.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+
+      <!--<ProjectReference Include="..\..\..\MrMeeseeks.DIE\Main\Main.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </ProjectReference>-->
+      
+        <PackageReference Include="MrMeeseeks.DIE" Version="0.0.0-alpha.11" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Model\Model.csproj" />
+      <ProjectReference Include="..\Persistence\Persistence.csproj" />
+      <ProjectReference Include="..\View.Wpf\View.Wpf.csproj" />
+      <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+    </ItemGroup>
+</Project>

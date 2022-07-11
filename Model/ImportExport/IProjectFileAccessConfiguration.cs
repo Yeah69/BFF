@@ -2,21 +2,13 @@
 {
     public interface ICreateFileAccessConfiguration
     {
-        IProjectFileAccessConfiguration Create(string path);
-        IProjectFileAccessConfiguration CreateWithEncryption(string path, string password);
+        IRealmProjectFileAccessConfiguration Create(string path);
+        IRealmProjectFileAccessConfiguration CreateWithEncryption(string path, string password);
     }
 
-    public interface IProjectFileAccessConfiguration : ILoadConfiguration
+    public interface IRealmProjectFileAccessConfiguration : ILoadConfiguration, IExportConfiguration
     {
         string Path { get; }
-    }
-
-    public interface IEncryptedProjectFileAccessConfiguration : IProjectFileAccessConfiguration
-    {
         string? Password { get; }
-    }
-
-    public interface IRealmProjectFileAccessConfiguration : IEncryptedProjectFileAccessConfiguration, IExportConfiguration
-    {
     }
 }

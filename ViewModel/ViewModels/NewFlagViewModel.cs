@@ -31,7 +31,7 @@ namespace BFF.ViewModel.ViewModels
         IHaveFlagViewModel? CurrentOwner { get; set; }
     }
 
-    internal class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IOncePerBackend, IDisposable
+    internal class NewFlagViewModel : NotifyingErrorViewModelBase, INewFlagViewModel, IScopeInstance, IDisposable
     {
         private readonly ICurrentTextsViewModel _currentTextsViewModel;
         private readonly IFlagViewModelService _flagViewModelService;

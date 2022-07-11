@@ -40,7 +40,7 @@ namespace BFF.ViewModel.ViewModels
         IHaveCategoryViewModel? CurrentCategoryOwner { get; set; }
     }
 
-    internal sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IOncePerBackend, IDisposable
+    internal sealed class NewCategoryViewModel : NotifyingErrorViewModelBase, INewCategoryViewModel, IScopeInstance, IDisposable
     {
         private readonly ICategoryViewModelService _categoryViewModelService;
         private readonly ICurrentTextsViewModel _currentTextsViewModel;

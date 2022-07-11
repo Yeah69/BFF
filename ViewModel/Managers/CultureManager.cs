@@ -16,7 +16,7 @@ using MrMeeseeks.Windows;
 
 namespace BFF.ViewModel.Managers
 {
-    public interface ICultureManager : IOncePerBackend
+    public interface ICultureManager : IScopeInstance
     {
         IObservable<CultureMessage> RefreshSignal { get; }
 

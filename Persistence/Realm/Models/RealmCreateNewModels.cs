@@ -122,7 +122,7 @@ namespace BFF.Persistence.Realm.Models
                 _transCrudOrm.Value);
         }
 
-        public IParentTransaction CreateParentTransfer()
+        public IParentTransaction CreateParentTransaction()
         {
             return new Domain.ParentTransaction(
                 null,

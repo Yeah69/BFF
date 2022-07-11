@@ -51,7 +51,7 @@ namespace BFF.ViewModel.Helper
         BffWindowState MainWindow_WindowState { get; set; }
     }
 
-    internal class BffSettingsProxy : IBffSettingsProxy, IOncePerApplication
+    internal class BffSettingsProxy : IBffSettingsProxy, IContainerInstance
     {
         private readonly IBffSettings _settings;
         public string CsvBankStatementImportProfiles

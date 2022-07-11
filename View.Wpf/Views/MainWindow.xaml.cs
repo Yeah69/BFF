@@ -1,4 +1,5 @@
-﻿using BFF.Properties;
+﻿using BFF.Core.IoC;
+using BFF.Properties;
 using BFF.View.Wpf.Views.Dialogs;
 using BFF.ViewModel.ViewModels;
 using BFF.ViewModel.ViewModels.Import;
@@ -19,7 +20,7 @@ namespace BFF.View.Wpf.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : IContainerInstance
     {
         public ICurrentTextsViewModel CurrentTextsViewModel { get; }
 

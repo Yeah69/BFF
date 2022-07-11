@@ -30,7 +30,7 @@ namespace BFF.Persistence.Common
         private static string BackupDirectoryPath(string fileName) => $"BFF_{fileName}_Backups";
 
         protected ProvideConnectionBase(
-            IProjectFileAccessConfiguration config,
+            IRealmProjectFileAccessConfiguration config,
             IDateTimeStaticDelegate dateTimeStaticDelegate)
         {
             _dateTimeStaticDelegate = dateTimeStaticDelegate;
