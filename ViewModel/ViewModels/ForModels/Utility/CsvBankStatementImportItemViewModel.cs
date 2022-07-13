@@ -68,7 +68,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
         private string? _payee;
 
         public CsvBankStatementImportItemViewModel(
-            (DateTime? Date, string Payee, bool CreatePayeeIfNotExisting, string Memo, long? Sum) configuration,
+            (DateTime? Date, string? Payee, bool CreatePayeeIfNotExisting, string? Memo, long? Sum) configuration,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
             IBffSettings bffSettings,
             IPayeeViewModelService payeeService)
@@ -76,7 +76,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Utility
             _bffSettings = bffSettings;
             Date     = configuration.Date ?? DateTime.Today;
             Payee    = configuration.Payee;
-            Memo     = configuration.Memo;
+            Memo     = configuration.Memo ?? "";
             Sum      = new ReactivePropertySlim<long>(configuration.Sum ?? 0L, ReactivePropertyMode.DistinctUntilChanged).CompositeDisposalWith(_compositeDisposable);
             HasDate  = configuration.Date.HasValue;
             HasPayee = configuration.Payee is not null;

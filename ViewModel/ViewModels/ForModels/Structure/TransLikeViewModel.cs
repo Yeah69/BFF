@@ -81,7 +81,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         protected TransLikeViewModel(
             ITransLike transLike,
             IRxSchedulerProvider rxSchedulerProvider,
-            IAccountBaseViewModel owner) 
+            IAccountBaseViewModel? owner) 
             : base(transLike, rxSchedulerProvider)
         {
             _transLike = transLike;
@@ -110,7 +110,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
         public ICommand ToggleSign { get; }
         public IObservable<Unit> RemoveRequests => _removeRequestSubject.AsObservable();
         public ICommand RemoveCommand { get; }
-        public IAccountBaseViewModel Owner { get; }
+        public IAccountBaseViewModel? Owner { get; }
 
         public abstract void NotifyErrorsIfAny();
     }

@@ -30,7 +30,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IRxSchedulerProvider rxSchedulerProvider,
             ICategoryBaseViewModelService categoryViewModelService,
             ICurrentTextsViewModel currentTextsViewModel,
-            IAccountBaseViewModel owner)
+            IAccountBaseViewModel? owner)
             : base(subTransaction, rxSchedulerProvider, owner)
         {
             _subTransaction = subTransaction;

@@ -94,7 +94,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             ILastSetDate lastSetDate,
             IRxSchedulerProvider rxSchedulerProvider,
             IFlagViewModelService flagViewModelService,
-            IAccountBaseViewModel owner)
+            IAccountBaseViewModel? owner)
             : base(transBase, rxSchedulerProvider, owner)
         {
             _transBase = transBase;

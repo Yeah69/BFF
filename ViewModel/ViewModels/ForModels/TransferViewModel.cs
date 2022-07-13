@@ -88,7 +88,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ITransTransformingManager transTransformingManager,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
-            IAccountBaseViewModel owner) 
+            IAccountBaseViewModel? owner) 
             : base(
                 transfer, 
                 newFlagViewModel, 
@@ -185,7 +185,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => Owner.ReplaceNewTrans(
+                    () => Owner?.ReplaceNewTrans(
                         this,
                         transTransformingManager.NotInsertedToTransactionViewModel(this)));
 
@@ -193,7 +193,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => Owner.ReplaceNewTrans(
+                    () => Owner?.ReplaceNewTrans(
                         this,
                         transTransformingManager.NotInsertedToParentTransactionViewModel(this)));
         }

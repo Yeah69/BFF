@@ -67,7 +67,7 @@ namespace BFF.ViewModel.ViewModels.ForModels.Structure
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
-            IAccountBaseViewModel owner) 
+            IAccountBaseViewModel? owner) 
             : base(
                 transactionBase, 
                 newFlagViewModel, 

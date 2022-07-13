@@ -1,23 +1,18 @@
-using BFF.Composition.DIE;
+using BFF.View.Wpf;
 using System;
+using System.Threading.Tasks;
 
-namespace BFF.Composition.Wpf.Program
+namespace BFF.Composition.DIE
 {
     public class Program
     {
         [STAThread]
         public static void Main()
-        { 
+        {
             var container = new Container();
-            /*var (app, disposable) = Root.Create().WpfComposition();
-            try
-            {
-                app.Run();
-            }
-            finally
-            {
-                disposable.Dispose();
-            }*/
+            App app = container.Create();
+            app.Run();
+            Task.Run(() => container.DisposeAsync()).Wait();
         }
     }
 }

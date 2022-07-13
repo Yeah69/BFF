@@ -98,8 +98,8 @@ namespace BFF.ViewModel.ViewModels.ForModels
             ISummaryAccountViewModel summaryAccountViewModel,
             IPayeeViewModelService payeeViewModelService,
             ICreateNewModels createNewModels,
-            Func<ISubTransaction, IAccountBaseViewModel, ISubTransactionViewModel> subTransactionViewModelFactory, 
-            IAccountBaseViewModel owner) 
+            Func<ISubTransaction, IAccountBaseViewModel?, ISubTransactionViewModel> subTransactionViewModelFactory, 
+            IAccountBaseViewModel? owner) 
             : base(
                 parentTransaction,
                 newPayeeViewModel,
@@ -227,7 +227,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => Owner.ReplaceNewTrans(
+                    () => Owner?.ReplaceNewTrans(
                         this,
                         transTransformingManager.NotInsertedToTransactionViewModel(this)));
 
@@ -235,7 +235,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => Owner.ReplaceNewTrans(
+                    () => Owner?.ReplaceNewTrans(
                         this,
                         transTransformingManager.NotInsertedToTransferViewModel(this)));
 

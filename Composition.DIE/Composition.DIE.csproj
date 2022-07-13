@@ -23,7 +23,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </ProjectReference>-->
       
-        <PackageReference Include="MrMeeseeks.DIE" Version="0.0.0-alpha.11" />
+        <PackageReference Include="MrMeeseeks.DIE" Version="0.0.0-alpha.24" />
     </ItemGroup>
 
 

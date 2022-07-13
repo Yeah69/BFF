@@ -51,7 +51,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IRxSchedulerProvider rxSchedulerProvider,
             ISummaryAccountViewModel summaryAccountViewModel,
             IFlagViewModelService flagViewModelService,
-            IAccountBaseViewModel owner)
+            IAccountBaseViewModel? owner)
             : base(
                 transaction, 
                 newPayeeViewModel,
@@ -112,7 +112,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => Owner.ReplaceNewTrans(
+                    () => Owner?.ReplaceNewTrans(
                         this,
                         transTransformingManager.NotInsertedToParentTransactionViewModel(this)));
 
@@ -120,7 +120,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => Owner.ReplaceNewTrans(
+                    () => Owner?.ReplaceNewTrans(
                         this,
                         transTransformingManager.NotInsertedToTransferViewModel(this)));
 
