@@ -1,3 +1,4 @@
+using BFF.Core.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         Task<IEnumerable<ISubTransaction>> GetChildrenOfAsync(Trans parentTransaction);
     }
 
-    internal sealed class RealmSubTransactionRepository : RealmRepositoryBase<ISubTransaction, Models.Persistence.SubTransaction>, IRealmSubTransactionRepository
+    internal sealed class RealmSubTransactionRepository : RealmRepositoryBase<ISubTransaction, Models.Persistence.SubTransaction>, IRealmSubTransactionRepository, IScopeInstance
     {
         private readonly ICrudOrm<Models.Persistence.SubTransaction> _crudOrm;
         private readonly IRealmOperations _realmOperations;

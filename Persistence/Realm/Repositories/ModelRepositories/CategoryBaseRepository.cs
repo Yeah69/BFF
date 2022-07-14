@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using BFF.Core.IoC;
+using System.Threading.Tasks;
 using BFF.Model.Models.Structure;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
@@ -8,7 +9,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
     }
 
-    internal class RealmCategoryBaseRepository : IRealmCategoryBaseRepositoryInternal
+    internal class RealmCategoryBaseRepository : IRealmCategoryBaseRepositoryInternal, IScopeInstance
     {
         private readonly IRealmCategoryRepositoryInternal _categoryRepository;
         private readonly IRealmIncomeCategoryRepositoryInternal _incomeCategoryRepository;

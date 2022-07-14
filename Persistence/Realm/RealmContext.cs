@@ -16,6 +16,7 @@ namespace BFF.Persistence.Realm
     {
         private readonly IRealmExporter _realmExporter;
         private readonly IProvideRealmConnection _provideRealmConnection;
+        private readonly Func<IContext, ILoadContextViewModelProxy> _loadContextViewModelProxyFactory;
         private readonly IAsyncDisposable _cleanUpContext;
         private readonly IRealmImporter _realmImporter;
 
@@ -27,10 +28,12 @@ namespace BFF.Persistence.Realm
             IRealmProjectFileAccessConfiguration configuration,
             IRealmImporter realmImporter,
             IRealmExporter realmExporter,
-            IProvideRealmConnection provideRealmConnection)
+            IProvideRealmConnection provideRealmConnection,
+            Func<IContext, ILoadContextViewModelProxy> loadContextViewModelProxyFactory)
         {
             _realmExporter = realmExporter;
             _provideRealmConnection = provideRealmConnection;
+            _loadContextViewModelProxyFactory = loadContextViewModelProxyFactory;
             _cleanUpContext = cleanUpContext;
             _realmImporter = realmImporter;
 
@@ -45,6 +48,9 @@ namespace BFF.Persistence.Realm
         {
             var _ = _provideRealmConnection.Connection;
         }
+
+        public ILoadContextViewModelProxy ViewModelContext(IContext context) => 
+            _loadContextViewModelProxyFactory(context);
 
         public void Dispose() => 
             Task.Run(() => _cleanUpContext.DisposeAsync());

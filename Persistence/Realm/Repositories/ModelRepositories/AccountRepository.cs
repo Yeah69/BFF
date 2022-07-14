@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -20,7 +21,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
     {
     }
 
-    internal sealed class RealmAccountRepository : RealmObservableRepositoryBase<IAccount, Models.Persistence.Account>, IRealmAccountRepositoryInternal
+    internal sealed class RealmAccountRepository : RealmObservableRepositoryBase<IAccount, Models.Persistence.Account>, IRealmAccountRepositoryInternal, IScopeInstance
     {
         private readonly ICrudOrm<Models.Persistence.Account> _crudOrm;
         private readonly IRealmOperations _realmOperations;

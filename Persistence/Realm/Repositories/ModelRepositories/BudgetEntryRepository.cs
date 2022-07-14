@@ -1,3 +1,4 @@
+using BFF.Core.IoC;
 using System;
 using System.Threading.Tasks;
 using BFF.Model;
@@ -20,7 +21,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
             long aggregatedBalance);
     }
 
-    internal sealed class RealmBudgetEntryRepository : RealmWriteOnlyRepositoryBase<IBudgetEntry>, IRealmBudgetEntryRepository
+    internal sealed class RealmBudgetEntryRepository : RealmWriteOnlyRepositoryBase<IBudgetEntry>, IRealmBudgetEntryRepository, IScopeInstance
     {
         private readonly ICrudOrm<Models.Persistence.BudgetEntry> _crudOrm;
         private readonly IRealmOperations _realmOperations;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BFF.Core.IoC;
+using System;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace BFF.Persistence.Realm
         Task<T> RunFuncAsync<T>(Func<Realms.Realm, Task<T>> func);
     }
 
-    internal class RealmOperations : IDisposable, IRealmOperations
+    internal class RealmOperations : IDisposable, IRealmOperations, IScopeInstance
     {
         private readonly IProvideRealmConnection _provideConnection;
         private readonly EventLoopScheduler _eventLoopScheduler;

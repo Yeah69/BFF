@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BFF.Core.IoC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Realms;
 
 namespace BFF.Persistence.Realm.ORM
 {
-    internal class RealmCrudOrm<T> : ICrudOrm<T>
+    internal class RealmCrudOrm<T> : ICrudOrm<T>, IScopeInstance
         where T : class, IPersistenceModelRealm
     {
         private readonly IProvideRealmConnection _provideConnection;

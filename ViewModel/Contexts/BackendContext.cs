@@ -14,7 +14,7 @@ namespace BFF.ViewModel.Contexts
     internal abstract class ContextViewModel : ObservableObject, IContextViewModel
     {
         public abstract ICultureManager CultureManager { get; }
-        public virtual string Title { get; } = "BFF";
+        public virtual string Title => "BFF";
         public abstract TopLevelViewModelCompositionBase LoadProject();
     }
 }

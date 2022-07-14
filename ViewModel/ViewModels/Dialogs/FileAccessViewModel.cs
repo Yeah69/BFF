@@ -28,7 +28,8 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             
             // dependencies
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
-            ICreateFileAccessConfiguration createFileAccessConfiguration) : base(title)
+            ICreateFileAccessConfiguration createFileAccessConfiguration,
+            Func<(string, string?), IRealmProjectFileAccessConfiguration> configurationFactory) : base(title)
         {
             _passwordProtectedFileAccessViewModelFactory = passwordProtectedFileAccessViewModelFactory;
             
@@ -46,9 +47,7 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             {
                 if (this.Path is null) throw new FileNotFoundException();
 
-                return PasswordConfiguration is { IsEncryptionActive: true, Password: {} password}
-                    ? createFileAccessConfiguration.CreateWithEncryption(Path, password)
-                    : createFileAccessConfiguration.Create(Path);
+                return configurationFactory((this.Path, this.PasswordConfiguration?.Password));
             }
         }
 
@@ -92,11 +91,13 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
             Func<IBffSaveFileDialog> bffSaveFileDialogFactory,
             ICurrentTextsViewModel currentTextsViewModel,
-            ICreateFileAccessConfiguration createFileAccessConfiguration) 
+            ICreateFileAccessConfiguration createFileAccessConfiguration,
+            Func<(string, string?), IRealmProjectFileAccessConfiguration> configurationFactory) 
             : base(
                 currentTextsViewModel.CurrentTexts.OpenSaveDialog_TitleNew,
                 passwordProtectedFileAccessViewModelFactory,
-                createFileAccessConfiguration)
+                createFileAccessConfiguration,
+                configurationFactory)
         {
             BrowseCommand = RxCommand
                 .CanAlwaysExecute()
@@ -128,11 +129,13 @@ namespace BFF.ViewModel.ViewModels.Dialogs
             Func<IPasswordProtectedFileAccessViewModel> passwordProtectedFileAccessViewModelFactory,
             Func<IBffOpenFileDialog> bffOpenFileDialogFactory,
             ICurrentTextsViewModel currentTextsViewModel,
-            ICreateFileAccessConfiguration createFileAccessConfiguration)
+            ICreateFileAccessConfiguration createFileAccessConfiguration,
+            Func<(string, string?), IRealmProjectFileAccessConfiguration> configurationFactory)
             : base(
                 currentTextsViewModel.CurrentTexts.OpenSaveDialog_TitleOpen,
                 passwordProtectedFileAccessViewModelFactory, 
-                createFileAccessConfiguration)
+                createFileAccessConfiguration,
+                configurationFactory)
         {
             BrowseCommand = RxCommand
                 .CanAlwaysExecute()

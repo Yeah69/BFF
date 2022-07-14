@@ -1,3 +1,4 @@
+using BFF.Core.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         Task<long> GetCountAsync(IAccount specifyingObject);
     }
 
-    internal sealed class RealmTransRepository : RealmRepositoryBase<ITransBase, Trans>, IRealmTransRepository
+    internal sealed class RealmTransRepository : RealmRepositoryBase<ITransBase, Trans>, IRealmTransRepository, IScopeInstance
     {
         private readonly Lazy<IRealmAccountRepositoryInternal> _accountRepository;
         private readonly Lazy<IRealmCategoryBaseRepositoryInternal> _categoryBaseRepository;

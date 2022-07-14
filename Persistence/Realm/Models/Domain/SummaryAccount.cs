@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BFF.Core.IoC;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BFF.Model.Models.Structure;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -6,7 +7,7 @@ using BFF.Persistence.Realm.Repositories.ModelRepositories;
 
 namespace BFF.Persistence.Realm.Models.Domain
 {
-    internal class SummaryAccount : Model.Models.SummaryAccount
+    internal class SummaryAccount : Model.Models.SummaryAccount, IScopeInstance
     {
         private readonly IAccountOrm _accountOrm;
         private readonly IRealmTransRepository _transRepository;

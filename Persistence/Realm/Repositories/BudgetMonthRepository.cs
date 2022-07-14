@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BFF.Core.IoC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using MrMeeseeks.Extensions;
 
 namespace BFF.Persistence.Realm.Repositories
 {
-    internal class RealmBudgetMonthRepository : IBudgetMonthRepository
+    internal class RealmBudgetMonthRepository : IBudgetMonthRepository, IScopeInstance
     {
         private readonly Lazy<IIncomeCategoryRepository> _incomeCategoryRepository;
         private readonly Lazy<IRealmTransRepository> _transRepository;

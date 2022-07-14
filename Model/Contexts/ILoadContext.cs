@@ -2,6 +2,6 @@
 {
     public interface ILoadContext : IContext
     {
-        void Load();
+        ILoadContextViewModelProxy ViewModelContext(IContext context);
     }
 }

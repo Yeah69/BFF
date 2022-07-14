@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
+using BFF.Core.IoC;
 using BFF.Model.Models;
 using BFF.Model.Repositories;
 using BFF.Persistence.Realm.ORM.Interfaces;
@@ -14,7 +15,7 @@ namespace BFF.Persistence.Realm.Repositories.ModelRepositories
         void InitializeAll();
     }
 
-    internal sealed class RealmCategoryRepository : RealmObservableRepositoryBase<ICategory, Models.Persistence.Category>, IRealmCategoryRepositoryInternal
+    internal sealed class RealmCategoryRepository : RealmObservableRepositoryBase<ICategory, Models.Persistence.Category>, IRealmCategoryRepositoryInternal, IScopeInstance
     {
         private readonly ICrudOrm<Models.Persistence.Category> _crudOrm;
         private readonly IRealmOperations _realmOperations;

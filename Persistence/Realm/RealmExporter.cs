@@ -1,4 +1,5 @@
-﻿using BFF.Model.Import;
+﻿using BFF.Core.IoC;
+using BFF.Model.Import;
 using BFF.Model.Import.Models;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace BFF.Persistence.Realm
         Task Export(DtoImportContainer container);
     }
 
-    internal class RealmExporter : IRealmExporter
+    internal class RealmExporter : IRealmExporter, IScopeInstance
     {
         private readonly RealmExportingOrm _realmExportingOrm;
 

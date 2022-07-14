@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using BFF.Core.IoC;
+using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.ViewModels.ForModels;
 using BFF.ViewModel.ViewModels.ForModels.Structure;
 using MrMeeseeks.Extensions;
@@ -28,15 +30,18 @@ namespace BFF.ViewModel.Managers
 
     internal class TransTransformingManager : ITransTransformingManager, IScopeInstance
     {
-        private readonly Func<IAccountBaseViewModel?, ITransactionViewModel> _transactionViewModelFactory;
-        private readonly Func<IAccountBaseViewModel?, ITransferViewModel> _transferViewModelFactory;
-        private readonly Func<IAccountBaseViewModel?, IParentTransactionViewModel> _parentTransactionViewModelFactory;
+        private readonly ICreateNewModels _createNewModels;
+        private readonly Func<ITransaction, IAccountBaseViewModel?, ITransactionViewModel> _transactionViewModelFactory;
+        private readonly Func<ITransfer, IAccountBaseViewModel?, ITransferViewModel> _transferViewModelFactory;
+        private readonly Func<IParentTransaction, IAccountBaseViewModel?, IParentTransactionViewModel> _parentTransactionViewModelFactory;
 
         public TransTransformingManager(
-            Func<IAccountBaseViewModel?, ITransactionViewModel> transactionViewModelFactory,
-            Func<IAccountBaseViewModel?, ITransferViewModel> transferViewModelFactory,
-            Func<IAccountBaseViewModel?, IParentTransactionViewModel> parentTransactionViewModelFactory)
+            ICreateNewModels createNewModels,
+            Func<ITransaction, IAccountBaseViewModel?, ITransactionViewModel> transactionViewModelFactory,
+            Func<ITransfer, IAccountBaseViewModel?, ITransferViewModel> transferViewModelFactory,
+            Func<IParentTransaction, IAccountBaseViewModel?, IParentTransactionViewModel> parentTransactionViewModelFactory)
         {
+            _createNewModels = createNewModels;
             _transactionViewModelFactory = transactionViewModelFactory;
             _transferViewModelFactory = transferViewModelFactory;
             _parentTransactionViewModelFactory = parentTransactionViewModelFactory;
@@ -44,7 +49,7 @@ namespace BFF.ViewModel.Managers
 
         public IParentTransactionViewModel NotInsertedToParentTransactionViewModel(ITransactionViewModel transactionViewModel)
         {
-            var parentTransactionViewModel = _parentTransactionViewModelFactory(transactionViewModel.Owner);
+            var parentTransactionViewModel = _parentTransactionViewModelFactory(_createNewModels.CreateParentTransaction(), transactionViewModel.Owner);
 
             parentTransactionViewModel.NewSubTransactionCommand.Execute(null);
             var subTransactionViewModel = parentTransactionViewModel.NewSubTransactions.First();
@@ -65,7 +70,7 @@ namespace BFF.ViewModel.Managers
 
         public ITransferViewModel NotInsertedToTransferViewModel(ITransactionViewModel transactionViewModel)
         {
-            var transferViewModel = _transferViewModelFactory(transactionViewModel.Owner);
+            var transferViewModel = _transferViewModelFactory(_createNewModels.CreateTransfer(), transactionViewModel.Owner);
 
             if (transactionViewModel.Sum.Value <= 0)
                 transferViewModel.FromAccount = transactionViewModel.Account;
@@ -84,7 +89,7 @@ namespace BFF.ViewModel.Managers
 
         public ITransactionViewModel NotInsertedToTransactionViewModel(IParentTransactionViewModel parentTransactionViewModel)
         {
-            var transactionViewModel = _transactionViewModelFactory(parentTransactionViewModel.Owner);
+            var transactionViewModel = _transactionViewModelFactory(_createNewModels.CreateTransaction(), parentTransactionViewModel.Owner);
 
             transactionViewModel.Date        = parentTransactionViewModel.Date;
             transactionViewModel.Account     = parentTransactionViewModel.Account;
@@ -101,7 +106,7 @@ namespace BFF.ViewModel.Managers
 
         public ITransferViewModel NotInsertedToTransferViewModel(IParentTransactionViewModel parentTransactionViewModel)
         {
-            var transferViewModel = _transferViewModelFactory(parentTransactionViewModel.Owner);
+            var transferViewModel = _transferViewModelFactory(_createNewModels.CreateTransfer(), parentTransactionViewModel.Owner);
 
             if (parentTransactionViewModel.Sum.Value <= 0)
                 transferViewModel.FromAccount = parentTransactionViewModel.Account;
@@ -120,7 +125,7 @@ namespace BFF.ViewModel.Managers
 
         public ITransactionViewModel NotInsertedToTransactionViewModel(ITransferViewModel transferViewModel)
         {
-            var transactionViewModel = _transactionViewModelFactory(transferViewModel.Owner);
+            var transactionViewModel = _transactionViewModelFactory(_createNewModels.CreateTransaction(), transferViewModel.Owner);
 
             if (transferViewModel.FromAccount is not null)
             {
@@ -146,7 +151,7 @@ namespace BFF.ViewModel.Managers
 
         public IParentTransactionViewModel NotInsertedToParentTransactionViewModel(ITransferViewModel transferViewModel)
         {
-            var parentTransactionViewModel = _parentTransactionViewModelFactory(transferViewModel.Owner);
+            var parentTransactionViewModel = _parentTransactionViewModelFactory(_createNewModels.CreateParentTransaction(), transferViewModel.Owner);
 
             parentTransactionViewModel.NewSubTransactionCommand.Execute(null);
             var subTransactionViewModel = parentTransactionViewModel.NewSubTransactions.First();

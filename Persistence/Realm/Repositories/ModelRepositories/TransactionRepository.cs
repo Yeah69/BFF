@@ -1,3 +1,4 @@
+using BFF.Core.IoC;
 using System;
 using System.Threading.Tasks;
 using BFF.Model.Models;
@@ -6,7 +7,7 @@ using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
-    internal sealed class RealmTransactionRepository : RealmRepositoryBase<ITransaction, Trans>
+    internal sealed class RealmTransactionRepository : RealmRepositoryBase<ITransaction, Trans>, IScopeInstance
     {
         private readonly ICrudOrm<Trans> _crudOrm;
         private readonly IRealmOperations _realmOperations;

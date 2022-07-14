@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using BFF.Core.IoC;
+using System.Threading.Tasks;
 using BFF.Persistence.Common;
 using BFF.Persistence.Realm.Models.Persistence;
 
 namespace BFF.Persistence.Realm.ORM
 {
-    internal class RealmCreateBackendOrm : ICreateBackendOrm
+    internal class RealmCreateBackendOrm : ICreateBackendOrm, IScopeInstance
     {
         private readonly IRealmOperations _realmOperations;
 

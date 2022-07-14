@@ -129,7 +129,7 @@ namespace BFF.ViewModel.Managers
         {
             _bffSettings = bffSettings;
             _saveDbSettingsSubject.CompositeDisposalWith(CompositeDisposable);
-
+            
             schedulerProvider.Task.MinimalScheduleAsync(async () =>
             {
                 IDbSetting dbSetting = await dbSettingRepository.GetSetting().ConfigureAwait(false);

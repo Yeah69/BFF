@@ -6,6 +6,7 @@ using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using BFF.Core.Helper;
 using BFF.Model.Models;
+using BFF.Model.Repositories;
 using BFF.ViewModel.Extensions;
 using BFF.ViewModel.Helper;
 using BFF.ViewModel.Managers;
@@ -85,11 +86,12 @@ namespace BFF.ViewModel.ViewModels.ForModels
             IMainWindowDialogManager mainWindowDialogManager,
             ITransDataGridColumnManager transDataGridColumnManager,
             IBffSettings bffSettings,
+            ICreateNewModels createNewModels,
             Func<IImportCsvBankStatementViewModel> importCsvBankStatementFactory,
             Func<IReactiveProperty<long>, ISumEditViewModel> createSumEdit,
-            Func<IAccountBaseViewModel, ITransactionViewModel> transactionViewModelFactory,
-            Func<IAccountBaseViewModel, ITransferViewModel> transferViewModelFactory,
-            Func<IAccountBaseViewModel, IParentTransactionViewModel> parentTransactionViewModelFactory) 
+            Func<ITransaction, IAccountBaseViewModel?, ITransactionViewModel> transactionViewModelFactory,
+            Func<ITransfer, IAccountBaseViewModel?, ITransferViewModel> transferViewModelFactory,
+            Func<IParentTransaction, IAccountBaseViewModel?, IParentTransactionViewModel> parentTransactionViewModelFactory) 
             : base(
                 account,
                 accountViewModelService,
@@ -134,7 +136,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     CompositeDisposable,
                     () =>
                     {
-                        var transactionViewModel = transactionViewModelFactory(this);
+                        var transactionViewModel = transactionViewModelFactory(createNewModels.CreateTransaction(), this);
                         if (MissingSum is not null) transactionViewModel.Sum.Value = (long)MissingSum;
                         NewTransList.Add(transactionViewModel);
                     });
@@ -143,7 +145,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                 .CanAlwaysExecute()
                 .StandardCase(
                     CompositeDisposable,
-                    () => NewTransList.Add(transferViewModelFactory(this)));
+                    () => NewTransList.Add(transferViewModelFactory(createNewModels.CreateTransfer(), this)));
 
             NewParentTransactionCommand = RxCommand
                 .CanAlwaysExecute()
@@ -151,7 +153,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
                     CompositeDisposable,
                     () =>
                     {
-                        var parentTransactionViewModel = parentTransactionViewModelFactory(this);
+                        var parentTransactionViewModel = parentTransactionViewModelFactory(createNewModels.CreateParentTransaction(), this);
                         NewTransList.Add(parentTransactionViewModel);
                         if (MissingSum is not null)
                         {
@@ -188,7 +190,7 @@ namespace BFF.ViewModel.ViewModels.ForModels
 
                         foreach (var item in importCsvBankStatementViewModel.Items)
                         {
-                            var transactionViewModel = transactionViewModelFactory(this);
+                            var transactionViewModel = transactionViewModelFactory(createNewModels.CreateTransaction(), this);
 
                             if (item.HasDate)
                                 transactionViewModel.Date = item.Date;

@@ -1,3 +1,4 @@
+using BFF.Core.IoC;
 using System.Linq;
 using System.Threading.Tasks;
 using BFF.Model.Models;
@@ -6,7 +7,7 @@ using BFF.Persistence.Realm.ORM.Interfaces;
 
 namespace BFF.Persistence.Realm.Repositories.ModelRepositories
 {
-    internal sealed class RealmDbSettingRepository : RealmRepositoryBase<IDbSetting, Models.Persistence.DbSetting>, IDbSettingRepository
+    internal sealed class RealmDbSettingRepository : RealmRepositoryBase<IDbSetting, Models.Persistence.DbSetting>, IDbSettingRepository, IScopeInstance
     {
         private readonly ICrudOrm<Models.Persistence.DbSetting> _crudOrm;
         private readonly IRealmOperations _realmOperations;

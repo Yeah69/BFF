@@ -1,7 +1,8 @@
-﻿namespace BFF.ViewModel.Contexts
-{
+﻿using BFF.Model.Contexts;
 
-    public interface ILoadContextViewModel : IContextViewModel
+namespace BFF.ViewModel.Contexts
+{
+    public interface ILoadContextViewModel : IContextViewModel, ILoadContextViewModelProxy
     {
     }
 }

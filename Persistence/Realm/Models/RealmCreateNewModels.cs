@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BFF.Core.IoC;
+using System;
 using System.Drawing;
 using BFF.Model;
 using BFF.Model.Helper;
@@ -21,7 +22,7 @@ namespace BFF.Persistence.Realm.Models
     {
     }
 
-    internal class RealmCreateNewModels : IRealmCreateNewModels
+    internal class RealmCreateNewModels : IRealmCreateNewModels, IScopeInstance
     {
         private readonly Lazy<RealmCrudOrm<Trans>> _transCrudOrm;
         private readonly Lazy<RealmCrudOrm<SubTransaction>> _subTransactionCrudOrm;
