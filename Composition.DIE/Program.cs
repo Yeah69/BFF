@@ -9,7 +9,7 @@ namespace BFF.Composition.DIE
         [STAThread]
         public static void Main()
         {
-            var container = new Container();
+            var container = Container.DIE_CreateContainer();
             App app = container.Create();
             app.Run();
             Task.Run(() => container.DisposeAsync()).Wait();

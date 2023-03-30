@@ -27,6 +27,7 @@ namespace BFF.Composition.DIE
     [CreateFunction(typeof(App), "Create")]
     internal sealed partial class Container
     {
+        private Container() {}
 
         private Func<IExportConfiguration, IExportContext> DIE_Factory_IExportContextFactory(
             Func<IRealmProjectFileAccessConfiguration, IRealmContext> realmFactory) =>
