@@ -17,7 +17,7 @@
     <PackageReference Include="MrMeeseeks.Reactive" Version="69.0.24" />
     <PackageReference Include="MrMeeseeks.Windows" Version="69.0.24" />
     <PackageReference Include="MuVaViMo" Version="0.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="ReactiveProperty" Version="7.8.3" />
     <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
   </ItemGroup>
